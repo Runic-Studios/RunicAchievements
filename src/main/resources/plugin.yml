@@ -1,0 +1,6 @@
+name: RunicAchievements
+version: '${project.version}'
+main: com.runicrealms.plugin.RunicAchievements
+api-version: 1.16
+softdepend: [ RunicCore ]
+authors: [ Skyfallin ]
