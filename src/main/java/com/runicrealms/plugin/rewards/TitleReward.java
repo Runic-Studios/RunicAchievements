@@ -7,6 +7,7 @@ public class TitleReward extends Reward {
     public TitleReward(String title) {
         super(RewardType.TITLE);
         this.title = title;
+        this.setRewardMessage("Title: " + title);
     }
 
     public String getTitle() {

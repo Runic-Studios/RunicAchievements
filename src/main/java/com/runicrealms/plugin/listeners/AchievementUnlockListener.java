@@ -38,7 +38,7 @@ public class AchievementUnlockListener implements Listener {
         launchFirework(player, Color.GREEN);
         player.getWorld().playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 0.5f, 2.0f);
         ChatUtils.sendCenteredMessage(player, "");
-        ChatUtils.sendCenteredMessage(player, "&2&lACHIEVEMENT UNLOCKED: &e&l" + achievement.getName());
+        ChatUtils.sendCenteredMessage(player, "&2&lACHIEVEMENT COMPLETE: &e&l" + achievement.getName());
         for (Reward reward : achievement.getRewards()) {
             ChatUtils.sendCenteredMessage(player, "&aYou have earned: " + reward.getRewardMessage());
         }

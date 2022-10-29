@@ -28,7 +28,7 @@ public enum Achievement {
             (
                     "discover-koldore",
                     "Digging Deeper",
-                    "Obtained by fishing discovering Koldore!",
+                    "Obtained by discovering Koldore!",
                     5,
                     Material.IRON_PICKAXE,
                     new LocationUnlock("koldore"),

@@ -19,6 +19,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
@@ -116,8 +117,8 @@ public class AchievementGUI implements InventoryHolder {
         lore.add
                 (
                         ChatColor.YELLOW + "Status: " + (achievementStatus.isUnlocked() ?
-                                ChatColor.GREEN + "" + ChatColor.BOLD + "UNLOCKED" :
-                                ChatColor.RED + "" + ChatColor.BOLD + "LOCKED")
+                                ChatColor.GREEN + "" + ChatColor.BOLD + "COMPLETE" :
+                                ChatColor.RED + "" + ChatColor.BOLD + "INCOMPLETE")
                 );
         if (achievement.getUnlockMethod() instanceof ProgressUnlock) {
             lore.add(buildProgressBar(achievementStatus));
@@ -130,7 +131,11 @@ public class AchievementGUI implements InventoryHolder {
         lore.add("");
         lore.add(ChatColor.YELLOW + "Set: " + ChatColor.DARK_AQUA + achievement.getAchievementSet().getName());
         meta.setLore(lore);
+        ((Damageable) meta).setDamage(5);
+        meta.setUnbreakable(true);
         meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+        meta.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
         menuItem.setItemMeta(meta);
         return menuItem;
     }
@@ -158,6 +163,8 @@ public class AchievementGUI implements InventoryHolder {
         }
         meta.setLore(lore);
         meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+        meta.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
         menuItem.setItemMeta(meta);
         return menuItem;
     }

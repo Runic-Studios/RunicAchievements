@@ -58,11 +58,21 @@ public class ExplorerSetManager {
             AchievementStatus achievementStatus = achievementData.getAchievementStatusList().get(achievement.getId());
             String regionId = ((LocationUnlock) achievement.getUnlockMethod()).getRegionId();
             if (regionIds.contains(regionId)) {
-                achievementStatus.setUnlocked(true);
-                AchievementUnlockEvent achievementUnlockEvent = new AchievementUnlockEvent(player, achievementStatus.getAchievement());
-                Bukkit.getPluginManager().callEvent(achievementUnlockEvent);
+                Bukkit.getScheduler().runTask(RunicAchievements.getInstance(), () -> triggerUnlockSynchronously(achievementStatus, player));
                 return;
             }
         }
+    }
+
+    /**
+     * Events cannot be triggered async, so we run this task later sync
+     *
+     * @param achievementStatus the status of the achievement to unlock
+     * @param player            to unlock achievement for
+     */
+    private void triggerUnlockSynchronously(AchievementStatus achievementStatus, Player player) {
+        achievementStatus.setUnlocked(true);
+        AchievementUnlockEvent achievementUnlockEvent = new AchievementUnlockEvent(player, achievementStatus.getAchievement());
+        Bukkit.getPluginManager().callEvent(achievementUnlockEvent);
     }
 }
