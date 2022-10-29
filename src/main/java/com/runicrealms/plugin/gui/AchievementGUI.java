@@ -1,6 +1,7 @@
 package com.runicrealms.plugin.gui;
 
 import com.runicrealms.plugin.Achievement;
+import com.runicrealms.plugin.AchievementSet;
 import com.runicrealms.plugin.AchievementStatus;
 import com.runicrealms.plugin.RunicAchievements;
 import com.runicrealms.plugin.model.AchievementData;
@@ -12,6 +13,7 @@ import com.runicrealms.plugin.utilities.GUIUtil;
 import com.runicrealms.plugin.utilities.NumRounder;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
@@ -34,13 +36,19 @@ public class AchievementGUI implements InventoryHolder {
         openMenu();
     }
 
+    /**
+     * Calculates the total achievement points of the player
+     *
+     * @param achievementData their data wrapper object
+     * @return points for each achievement
+     */
     private static int calculateTotalAchievementPoints(AchievementData achievementData) {
-        return 0;
-//        int totalLevel = 0;
-//        for (GatheringSkill gatheringSkill : GatheringSkill.values()) {
-//            totalLevel += gatheringData.getGatheringLevel(gatheringSkill);
-//        }
-//        return totalLevel;
+        int totalPoints = 0;
+        for (AchievementStatus achievementStatus : achievementData.getAchievementStatusList().values()) {
+            if (!achievementStatus.isUnlocked()) continue;
+            totalPoints += achievementStatus.getAchievement().getPointValue();
+        }
+        return totalPoints;
     }
 
     @NotNull
@@ -80,22 +88,7 @@ public class AchievementGUI implements InventoryHolder {
         this.inventory.clear();
         GUIUtil.fillInventoryBorders(this.inventory);
         this.inventory.setItem(0, GUIUtil.closeButton());
-        // todo: player head with total achievement points?
-//        this.inventory.setItem(4, GUIUtil.dispItem(
-//                Material.PAPER,
-//                ChatColor.YELLOW + "Skills Info",
-//                new String[]{
-//                        "",
-//                        ChatColor.YELLOW + "Cooking " + ChatColor.GRAY + gatheringData.getGatheringLevel(GatheringSkill.COOKING),
-//                        ChatColor.YELLOW + "Farming " + ChatColor.GRAY + gatheringData.getGatheringLevel(GatheringSkill.FARMING),
-//                        ChatColor.YELLOW + "Fishing " + ChatColor.GRAY + gatheringData.getGatheringLevel(GatheringSkill.FISHING),
-//                        ChatColor.YELLOW + "Harvesting " + ChatColor.GRAY + gatheringData.getGatheringLevel(GatheringSkill.HARVESTING),
-//                        ChatColor.YELLOW + "Mining " + ChatColor.GRAY + gatheringData.getGatheringLevel(GatheringSkill.MINING),
-//                        ChatColor.YELLOW + "Woodcutting " + ChatColor.GRAY + gatheringData.getGatheringLevel(GatheringSkill.WOODCUTTING),
-//                        "",
-//                        ChatColor.GRAY + "Total Level " + calculateTotalLevel(gatheringData)
-//                }
-//        ));
+        this.inventory.setItem(4, achievementInfoItem(achievementData));
         for (Achievement achievement : Achievement.values()) {
             AchievementStatus achievementStatus = achievementData.getAchievementStatusList().get(achievement.getId());
             this.inventory.setItem(inventory.firstEmpty(), achievementItem(achievementStatus, achievement));
@@ -136,6 +129,33 @@ public class AchievementGUI implements InventoryHolder {
         }
         lore.add("");
         lore.add(ChatColor.YELLOW + "Set: " + ChatColor.DARK_AQUA + achievement.getAchievementSet().getName());
+        meta.setLore(lore);
+        meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        menuItem.setItemMeta(meta);
+        return menuItem;
+    }
+
+    private ItemStack achievementInfoItem(AchievementData achievementData) {
+        ItemStack menuItem = new ItemStack(Material.PAPER);
+        ItemMeta meta = menuItem.getItemMeta();
+        if (meta == null) return menuItem;
+        meta.setDisplayName(ChatColor.YELLOW + "Achievement Info");
+        List<String> lore = new ArrayList<>();
+        lore.add("");
+        lore.add(ChatColor.GOLD + "Achievement Points: " + calculateTotalAchievementPoints(achievementData));
+        lore.addAll(ChatUtils.formattedText("&7Achievement points track your total achievement progress!"));
+        lore.add("");
+        lore.add(ChatColor.DARK_AQUA + "Set Progress:");
+        for (AchievementSet achievementSet : AchievementSet.values()) {
+            int total = AchievementSet.getTotalAchievementsInSet(achievementSet);
+            int progress = 0;
+            for (AchievementStatus achievementStatus : achievementData.getAchievementStatusList().values()) {
+                if (!achievementStatus.isUnlocked()) continue;
+                if (achievementStatus.getAchievement().getAchievementSet() != achievementSet) continue;
+                progress += 1;
+            }
+            lore.add(ChatColor.AQUA + "- [" + ChatColor.WHITE + progress + ChatColor.AQUA + "/" + total + "] " + achievementSet.getName());
+        }
         meta.setLore(lore);
         meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         menuItem.setItemMeta(meta);

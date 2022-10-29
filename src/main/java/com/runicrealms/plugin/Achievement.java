@@ -1,7 +1,9 @@
 package com.runicrealms.plugin;
 
+import com.runicrealms.plugin.rewards.ExpReward;
 import com.runicrealms.plugin.rewards.ItemReward;
 import com.runicrealms.plugin.rewards.Reward;
+import com.runicrealms.plugin.unlocks.LocationUnlock;
 import com.runicrealms.plugin.unlocks.ProgressUnlock;
 import com.runicrealms.plugin.unlocks.UnlockMethod;
 import org.bukkit.Material;
@@ -14,13 +16,24 @@ public enum Achievement {
     FISH_10_COD
             (
                     "fish-10-cod",
-                    "Fish 10 Cod",
-                    "Obtained by fishing 10 cod!",
+                    "Go Fish!",
+                    "Obtained by fishing 2 cod!",
                     5,
                     Material.COD,
                     new ProgressUnlock(2),
                     Collections.singletonList(new ItemReward("OakWood", 10)),
                     AchievementSet.MASTER_GATHERER
+            ),
+    DISCOVER_KOLDORE
+            (
+                    "discover-koldore",
+                    "Digging Deeper",
+                    "Obtained by fishing discovering Koldore!",
+                    5,
+                    Material.IRON_PICKAXE,
+                    new LocationUnlock("koldore"),
+                    Collections.singletonList(new ExpReward(500)),
+                    AchievementSet.EXPLORER
             );
 
     private final String id;

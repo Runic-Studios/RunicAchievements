@@ -2,8 +2,14 @@ package com.runicrealms.plugin.listeners;
 
 import com.runicrealms.plugin.Achievement;
 import com.runicrealms.plugin.events.AchievementUnlockEvent;
+import com.runicrealms.plugin.events.RunicExpEvent;
+import com.runicrealms.plugin.rewards.ExpReward;
+import com.runicrealms.plugin.rewards.ItemReward;
 import com.runicrealms.plugin.rewards.Reward;
 import com.runicrealms.plugin.utilities.ChatUtils;
+import com.runicrealms.runicitems.RunicItemsAPI;
+import com.runicrealms.runicitems.item.RunicItem;
+import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
 import org.bukkit.Sound;
@@ -37,11 +43,43 @@ public class AchievementUnlockListener implements Listener {
             ChatUtils.sendCenteredMessage(player, "&aYou have earned: " + reward.getRewardMessage());
         }
         ChatUtils.sendCenteredMessage(player, "");
+        for (Reward reward : achievement.getRewards()) {
+            if (reward instanceof ExpReward) {
+                handleExpReward(player, ((ExpReward) reward).getExp());
+            } else if (reward instanceof ItemReward) {
+                handleItemReward(player, (ItemReward) reward);
+            } else {
+                handleTitleReward();
+            }
+        }
     }
 
     @EventHandler(priority = EventPriority.LOWEST) // early
     public void onEntityDamage(EntityDamageByEntityEvent event) {
         if (event.getDamager() instanceof Firework)
             event.setCancelled(true);
+    }
+
+    /**
+     * @param player
+     * @param exp
+     */
+    public void handleExpReward(Player player, int exp) {
+        RunicExpEvent runicExpEvent = new RunicExpEvent(exp, exp, player, RunicExpEvent.RunicExpSource.OTHER, 0, null);
+        Bukkit.getPluginManager().callEvent(runicExpEvent);
+    }
+
+    /**
+     * @param player
+     * @param itemReward
+     */
+    private void handleItemReward(Player player, ItemReward itemReward) {
+        String runicItemId = itemReward.getRunicItemId();
+        RunicItem runicItem = RunicItemsAPI.generateItemFromTemplate(runicItemId, itemReward.getAmount());
+        RunicItemsAPI.addItem(player.getInventory(), runicItem.generateItem());
+    }
+
+    private void handleTitleReward() {
+
     }
 }

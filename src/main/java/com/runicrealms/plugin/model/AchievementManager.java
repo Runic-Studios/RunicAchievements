@@ -20,12 +20,22 @@ public class AchievementManager implements Listener {
         RunicAchievements.getInstance().getServer().getPluginManager().registerEvents(this, RunicAchievements.getInstance());
     }
 
+    /**
+     * THIS INITIALIZES STUFF
+     */
     @EventHandler
     public void onCharacterSelect(CharacterSelectEvent event) {
-        AchievementStatus dummy = new AchievementStatus(event.getPlayer().getUniqueId(), Achievement.FISH_10_COD, 0, false);
-        Map<String, AchievementStatus> dummy2 = new HashMap<>();
-        dummy2.put(Achievement.FISH_10_COD.getId(), dummy);
-        achievementDataMap.put(event.getPlayer().getUniqueId(), new AchievementData(event.getPlayer().getUniqueId(), dummy2));
+        UUID uuid = event.getPlayer().getUniqueId();
+//        if (achievementDataMap.get(uuid) == null)
+//            achievementDataMap.put(uuid, loadAchievementData(uuid)); // todo: from redis
+
+        if (achievementDataMap.get(uuid) == null)
+            achievementDataMap.put(event.getPlayer().getUniqueId(), new AchievementData(event.getPlayer().getUniqueId(), new HashMap<>()));
+
+        AchievementData achievementData = loadAchievementData(uuid);
+        for (Achievement achievement : Achievement.values()) {
+            achievementData.getAchievementStatusList().put(achievement.getId(), new AchievementStatus(uuid, achievement)); // todo: load this from redis
+        }
     }
 
     /**

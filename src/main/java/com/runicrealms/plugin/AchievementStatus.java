@@ -15,6 +15,17 @@ public class AchievementStatus {
     /**
      * @param uuid
      * @param achievement
+     */
+    public AchievementStatus(UUID uuid, Achievement achievement) {
+        this.uuid = uuid;
+        this.achievement = achievement;
+        this.progress = 0;
+        this.isUnlocked = false;
+    }
+
+    /**
+     * @param uuid
+     * @param achievement
      * @param progress
      * @param isUnlocked
      */

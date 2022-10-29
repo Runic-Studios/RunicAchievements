@@ -15,4 +15,13 @@ public enum AchievementSet {
     public String getName() {
         return name;
     }
+
+    public static int getTotalAchievementsInSet(AchievementSet achievementSet) {
+        int result = 0;
+        for (Achievement achievement : Achievement.values()) {
+            if (achievement.getAchievementSet() != achievementSet) continue;
+            result += 1;
+        }
+        return result;
+    }
 }

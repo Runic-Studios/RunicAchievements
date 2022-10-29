@@ -3,6 +3,7 @@ package com.runicrealms.plugin;
 import com.runicrealms.plugin.gui.AchievementGUIListener;
 import com.runicrealms.plugin.gui.PlayerMenuListener;
 import com.runicrealms.plugin.listeners.AchievementUnlockListener;
+import com.runicrealms.plugin.listeners.ExplorerSetManager;
 import com.runicrealms.plugin.listeners.FishingAchievementListener;
 import com.runicrealms.plugin.model.AchievementManager;
 import org.bukkit.event.Listener;
@@ -12,6 +13,7 @@ public final class RunicAchievements extends JavaPlugin implements Listener {
 
     private static RunicAchievements plugin;
     private static AchievementManager achievementManager;
+    private static ExplorerSetManager explorerSetManager;
 
     public static RunicAchievements getInstance() {
         return plugin;
@@ -21,10 +23,15 @@ public final class RunicAchievements extends JavaPlugin implements Listener {
         return achievementManager;
     }
 
+    public static ExplorerSetManager getExplorerSetManager() {
+        return explorerSetManager;
+    }
+
     @Override
     public void onEnable() {
         plugin = this;
         achievementManager = new AchievementManager();
+        explorerSetManager = new ExplorerSetManager();
         registerEvents();
     }
 
@@ -32,7 +39,7 @@ public final class RunicAchievements extends JavaPlugin implements Listener {
     public void onDisable() {
         plugin = null;
         achievementManager = null;
-        registerEvents();
+        explorerSetManager = null;
     }
 
     private void registerEvents() {
