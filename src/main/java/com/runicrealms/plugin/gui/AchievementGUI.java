@@ -4,9 +4,11 @@ import com.runicrealms.plugin.Achievement;
 import com.runicrealms.plugin.AchievementStatus;
 import com.runicrealms.plugin.RunicAchievements;
 import com.runicrealms.plugin.model.AchievementData;
+import com.runicrealms.plugin.unlocks.ProgressUnlock;
 import com.runicrealms.plugin.utilities.ChatUtils;
 import com.runicrealms.plugin.utilities.ColorUtil;
 import com.runicrealms.plugin.utilities.GUIUtil;
+import com.runicrealms.plugin.utilities.NumRounder;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -31,39 +33,6 @@ public class AchievementGUI implements InventoryHolder {
         openMenu();
     }
 
-//    private static String[] gatheringSkillDescription(GatheringData gatheringData, GatheringSkill gatheringSkill) {
-//        String[] unlockMessageArray = GatheringLevelChangeListener.nextReagentUnlockMessage(gatheringSkill,
-//                gatheringData.getGatheringLevel(gatheringSkill), true).toArray(new String[0]);
-//        int level = gatheringData.getGatheringLevel(gatheringSkill);
-////        boolean isSpecialized = RunicProfessionsAPI.isSpecializedInGatheringSkill(gatheringData, gatheringSkill);
-//        boolean isSpecialized = false;
-//        boolean professionIsMaxed = (level == 60 && !isSpecialized) || (level == 100 && isSpecialized);
-//        String[] descriptionArray = new String[]{
-//                buildProgressBar(gatheringData, gatheringSkill),
-//                "",
-//                ChatColor.GRAY + "Level: " + ChatColor.WHITE + level + (professionIsMaxed ? " (Cap Reached)" : ""),
-//                ChatColor.GRAY + "Exp: " + ChatColor.WHITE + gatheringData.getGatheringExp(gatheringSkill),
-//                "",
-//                ChatColor.GOLD + "" + ChatColor.BOLD + "CLICK " + ChatColor.GRAY + "to view all available reagents",
-//                ""
-//        };
-//        return (String[]) ArrayUtils.addAll(descriptionArray, unlockMessageArray); // append formatted unlock message
-//    }
-
-//    private static String buildProgressBar(GatheringData gatheringData, GatheringSkill gatheringSkill) {
-//        String bar = "❚❚❚❚❚❚❚❚❚❚"; // 10 bars
-//        int currentExp = gatheringData.getGatheringExp(gatheringSkill);
-//        int currentLv = gatheringData.getGatheringLevel(gatheringSkill);
-//        int totalExpAtLevel = ProfExpUtil.calculateTotalExperience(currentLv);
-//        int totalExpToLevel = ProfExpUtil.calculateTotalExperience(currentLv + 1);
-//        double progress = (double) (currentExp - totalExpAtLevel) / (totalExpToLevel - totalExpAtLevel); // 60 - 55 = 5 / 75 - 55 = 20, 5 /20
-//        int progressRounded = (int) NumRounder.round(progress * 100);
-//        int percent = progressRounded / 10;
-//        return ChatColor.GREEN + bar.substring(0, percent) + ChatColor.WHITE + bar.substring(percent) +
-//                " (" + (currentExp - totalExpAtLevel) + "/" + (totalExpToLevel - totalExpAtLevel) + ") " +
-//                ChatColor.GREEN + ChatColor.BOLD + progressRounded + "% ";
-//    }
-
     private static int calculateTotalAchievementPoints(AchievementData achievementData) {
         return 0;
 //        int totalLevel = 0;
@@ -84,6 +53,23 @@ public class AchievementGUI implements InventoryHolder {
     }
 
     /**
+     * @param achievementStatus
+     * @return
+     */
+    private static String buildProgressBar(AchievementStatus achievementStatus) {
+        String bar = "❚❚❚❚❚❚❚❚❚❚"; // 10 bars
+        double current = achievementStatus.getProgress();
+        ProgressUnlock progressUnlock = (ProgressUnlock) achievementStatus.getAchievement().getUnlockMethod();
+        int max = progressUnlock.getAmountToUnlock();
+        double progress = current / max;
+        int progressRounded = (int) NumRounder.round(progress * 100);
+        int percent = progressRounded / 10;
+        return ChatColor.GREEN + bar.substring(0, percent) + ChatColor.WHITE + bar.substring(percent) +
+                " (" + (current) + "/" + (max) + ") " +
+                ChatColor.GREEN + ChatColor.BOLD + progressRounded + "% ";
+    }
+
+    /**
      * Opens the inventory associated w/ this GUI, ordering perks
      */
     private void openMenu() {
@@ -91,6 +77,7 @@ public class AchievementGUI implements InventoryHolder {
         this.inventory.clear();
         GUIUtil.fillInventoryBorders(this.inventory);
         this.inventory.setItem(0, GUIUtil.closeButton());
+        // todo: player head with total achievement points?
 //        this.inventory.setItem(4, GUIUtil.dispItem(
 //                Material.PAPER,
 //                ChatColor.YELLOW + "Skills Info",
@@ -123,11 +110,27 @@ public class AchievementGUI implements InventoryHolder {
         ItemMeta meta = menuItem.getItemMeta();
         if (meta == null) return menuItem;
         meta.setDisplayName(ChatColor.YELLOW + displayName);
-        List<String> lore = new ArrayList<>(ChatUtils.formattedText("&7" + achievement.getDescription()));
+        List<String> lore = new ArrayList<>();
+        lore.add(ChatColor.GOLD + "[" + achievement.getPointValue() + "] pts");
         lore.add("");
-        lore.add("Status: " + (achievementStatus.isUnlocked() ? "&a&lUNLOCKED" : "&c&lNOT YET UNLOCKED"));
-        // todo: progress bar
-        meta.setLore(ChatUtils.formattedText("&7" + achievement.getDescription()));
+        lore.addAll(ChatUtils.formattedText("&7" + achievement.getDescription()));
+        lore.add("");
+        lore.add
+                (
+                        ChatColor.YELLOW + "Status: " + (achievementStatus.isUnlocked() ?
+                                ChatColor.GREEN + "" + ChatColor.BOLD + "UNLOCKED" :
+                                ChatColor.RED + "" + ChatColor.BOLD + "LOCKED")
+                );
+        lore.add("");
+        lore.add
+                (
+                        ChatColor.YELLOW + "Set: " + ChatColor.DARK_AQUA + "" +
+                                ChatColor.BOLD + achievement.getAchievementSet().getName()
+                );
+        if (achievement.getUnlockMethod() instanceof ProgressUnlock) {
+            lore.add(buildProgressBar(achievementStatus));
+        }
+        meta.setLore(lore);
         meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         menuItem.setItemMeta(meta);
         return menuItem;

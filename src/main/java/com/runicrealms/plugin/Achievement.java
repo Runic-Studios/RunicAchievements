@@ -20,7 +20,7 @@ public enum Achievement {
                     Material.COD,
                     new ProgressUnlock(2),
                     Collections.singletonList(new ItemReward("OakWood", 10)),
-                    AchievementSet.GATHERING
+                    AchievementSet.MASTER_GATHERER
             );
 
     private final String id;
