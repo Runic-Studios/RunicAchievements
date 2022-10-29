@@ -1,11 +1,13 @@
 package com.runicrealms.plugin.unlock;
 
-public class ProgressUnlock extends UnlockMethod {
+import com.runicrealms.plugin.api.UnlockMethod;
+
+public class ProgressUnlock implements UnlockMethod {
 
     private final int amountToUnlock; // some total value to unlock the achievement (10 fish)
 
     public ProgressUnlock(int amountToUnlock) {
-        super(AchievementType.PROGRESS);
+        super();
         this.amountToUnlock = amountToUnlock;
     }
 

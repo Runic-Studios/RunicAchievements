@@ -1,4 +1,6 @@
-package com.runicrealms.plugin.reward;
+package com.runicrealms.plugin.api;
+
+import com.runicrealms.plugin.reward.RewardType;
 
 public abstract class Reward {
 

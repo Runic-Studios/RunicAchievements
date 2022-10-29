@@ -1,5 +1,7 @@
 package com.runicrealms.plugin.reward;
 
+import com.runicrealms.plugin.api.Reward;
+
 public class TitleReward extends Reward {
 
     private final String title;

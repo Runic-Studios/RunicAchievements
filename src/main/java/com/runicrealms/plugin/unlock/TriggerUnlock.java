@@ -1,8 +1,10 @@
 package com.runicrealms.plugin.unlock;
 
-public class TriggerUnlock extends UnlockMethod {
+import com.runicrealms.plugin.api.UnlockMethod;
+
+public class TriggerUnlock implements UnlockMethod {
 
     public TriggerUnlock() {
-        super(AchievementType.TRIGGER);
+        super();
     }
 }
