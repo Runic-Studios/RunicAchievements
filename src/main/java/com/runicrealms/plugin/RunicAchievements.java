@@ -1,5 +1,6 @@
 package com.runicrealms.plugin;
 
+import com.runicrealms.plugin.listeners.AchievementUnlockListener;
 import com.runicrealms.plugin.listeners.FishingAchievementListener;
 import com.runicrealms.plugin.model.AchievementManager;
 import org.bukkit.event.Listener;
@@ -36,7 +37,8 @@ public final class RunicAchievements extends JavaPlugin implements Listener {
         this.registerEvents
                 (
                         this,
-                        new FishingAchievementListener()
+                        new FishingAchievementListener(),
+                        new AchievementUnlockListener()
                 );
     }
 

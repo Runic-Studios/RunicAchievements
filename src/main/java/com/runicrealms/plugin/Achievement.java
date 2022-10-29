@@ -16,7 +16,7 @@ public enum Achievement {
                     "Fish 10 Cod",
                     "Obtained by fishing 10 cod!",
                     5,
-                    new ProgressUnlock(10),
+                    new ProgressUnlock(2),
                     Collections.singletonList(new ItemReward("OakWood", 10)),
                     AchievementSet.NONE
             );
