@@ -15,14 +15,15 @@ public enum Achievement {
 
     FISH_10_COD
             (
-                    "fish-10-cod",
+                    "fish-cod-1",
                     "Go Fish!",
-                    "Obtained by fishing 2 cod!",
-                    5,
+                    "Obtained by fishing 500 cod!",
+                    25,
                     Material.COD,
-                    new ProgressUnlock(2),
-                    Collections.singletonList(new ItemReward("OakWood", 10)),
-                    AchievementSet.MASTER_GATHERER
+                    new ProgressUnlock(500),
+                    Collections.singletonList(new ItemReward("Coin", 64)),
+                    AchievementSet.MASTER_GATHERER,
+                    true
             ),
     DISCOVER_KOLDORE
             (
@@ -33,7 +34,8 @@ public enum Achievement {
                     Material.IRON_PICKAXE,
                     new LocationUnlock("koldore"),
                     Collections.singletonList(new ExpReward(500)),
-                    AchievementSet.EXPLORER
+                    AchievementSet.EXPLORER,
+                    false
             );
 
     private final String id;
@@ -44,9 +46,23 @@ public enum Achievement {
     private final UnlockMethod unlockMethod;
     private final List<Reward> rewards;
     private final AchievementSet achievementSet;
+    private final boolean shootsFirework;
 
+    /**
+     * An enumerated list of achievements
+     *
+     * @param id             of the achievement. MUST be unique. used for data storage
+     * @param name           of the achievement. for ui displays, chat
+     * @param description    of the achievement
+     * @param pointValue     the achievement points
+     * @param guiItem        the material of the achievement in the ui
+     * @param unlockMethod   how to unlock the achievement
+     * @param rewards        a list of rewards
+     * @param achievementSet some achievements belong to a greater 'set'
+     * @param shootsFirework whether the achievement will shoot a firework
+     */
     Achievement(String id, String name, String description, int pointValue, Material guiItem,
-                UnlockMethod unlockMethod, List<Reward> rewards, AchievementSet achievementSet) {
+                UnlockMethod unlockMethod, List<Reward> rewards, AchievementSet achievementSet, boolean shootsFirework) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -55,6 +71,7 @@ public enum Achievement {
         this.unlockMethod = unlockMethod;
         this.rewards = rewards;
         this.achievementSet = achievementSet;
+        this.shootsFirework = shootsFirework;
     }
 
     public String getId() {
@@ -87,5 +104,9 @@ public enum Achievement {
 
     public AchievementSet getAchievementSet() {
         return achievementSet;
+    }
+
+    public boolean shouldShootFirework() {
+        return shootsFirework;
     }
 }

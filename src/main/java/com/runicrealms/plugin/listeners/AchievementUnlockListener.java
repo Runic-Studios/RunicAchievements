@@ -6,6 +6,7 @@ import com.runicrealms.plugin.events.RunicExpEvent;
 import com.runicrealms.plugin.rewards.ExpReward;
 import com.runicrealms.plugin.rewards.ItemReward;
 import com.runicrealms.plugin.rewards.Reward;
+import com.runicrealms.plugin.rewards.TitleReward;
 import com.runicrealms.plugin.utilities.ChatUtils;
 import com.runicrealms.runicitems.RunicItemsAPI;
 import com.runicrealms.runicitems.item.RunicItem;
@@ -23,6 +24,12 @@ import org.bukkit.inventory.meta.FireworkMeta;
 
 public class AchievementUnlockListener implements Listener {
 
+    /**
+     * Shoots a green firework for more significant achievements
+     *
+     * @param player to shoot firework for
+     * @param color  of the firework
+     */
     public static void launchFirework(Player player, Color color) {
         Firework firework = player.getWorld().spawn(player.getEyeLocation(), Firework.class);
         FireworkMeta meta = firework.getFireworkMeta();
@@ -35,7 +42,8 @@ public class AchievementUnlockListener implements Listener {
     public void onAchievementUnlock(AchievementUnlockEvent event) {
         Player player = event.getPlayer();
         Achievement achievement = event.getAchievement();
-        launchFirework(player, Color.GREEN);
+        if (achievement.shouldShootFirework())
+            launchFirework(player, Color.AQUA);
         player.getWorld().playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 0.5f, 2.0f);
         ChatUtils.sendCenteredMessage(player, "");
         ChatUtils.sendCenteredMessage(player, "&2&lACHIEVEMENT COMPLETE: &e&l" + achievement.getName());
@@ -49,7 +57,7 @@ public class AchievementUnlockListener implements Listener {
             } else if (reward instanceof ItemReward) {
                 handleItemReward(player, (ItemReward) reward);
             } else {
-                handleTitleReward();
+                handleTitleReward(player, ((TitleReward) reward).getTitle());
             }
         }
     }
@@ -61,8 +69,10 @@ public class AchievementUnlockListener implements Listener {
     }
 
     /**
-     * @param player
-     * @param exp
+     * Handles logic for giving player experience
+     *
+     * @param player to give exp to
+     * @param exp    the amount of exp
      */
     public void handleExpReward(Player player, int exp) {
         RunicExpEvent runicExpEvent = new RunicExpEvent(exp, exp, player, RunicExpEvent.RunicExpSource.OTHER, 0, null);
@@ -70,8 +80,10 @@ public class AchievementUnlockListener implements Listener {
     }
 
     /**
-     * @param player
-     * @param itemReward
+     * Handles logic for giving player item rewards
+     *
+     * @param player     to give item to
+     * @param itemReward the item to give
      */
     private void handleItemReward(Player player, ItemReward itemReward) {
         String runicItemId = itemReward.getRunicItemId();
@@ -79,7 +91,7 @@ public class AchievementUnlockListener implements Listener {
         RunicItemsAPI.addItem(player.getInventory(), runicItem.generateItem());
     }
 
-    private void handleTitleReward() {
+    private void handleTitleReward(Player player, String title) { // todo: Title title
 
     }
 }
