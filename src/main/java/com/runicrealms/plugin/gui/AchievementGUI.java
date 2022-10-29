@@ -4,6 +4,7 @@ import com.runicrealms.plugin.Achievement;
 import com.runicrealms.plugin.AchievementStatus;
 import com.runicrealms.plugin.RunicAchievements;
 import com.runicrealms.plugin.model.AchievementData;
+import com.runicrealms.plugin.rewards.Reward;
 import com.runicrealms.plugin.unlocks.ProgressUnlock;
 import com.runicrealms.plugin.utilities.ChatUtils;
 import com.runicrealms.plugin.utilities.ColorUtil;
@@ -53,8 +54,10 @@ public class AchievementGUI implements InventoryHolder {
     }
 
     /**
-     * @param achievementStatus
-     * @return
+     * Creates a visual progress bar for progress-based achievements in the ui
+     *
+     * @param achievementStatus the current status of the achievement progress
+     * @return a visual string to demonstrate progress
      */
     private static String buildProgressBar(AchievementStatus achievementStatus) {
         String bar = "❚❚❚❚❚❚❚❚❚❚"; // 10 bars
@@ -65,7 +68,7 @@ public class AchievementGUI implements InventoryHolder {
         int progressRounded = (int) NumRounder.round(progress * 100);
         int percent = progressRounded / 10;
         return ChatColor.GREEN + bar.substring(0, percent) + ChatColor.WHITE + bar.substring(percent) +
-                " (" + (current) + "/" + (max) + ") " +
+                " (" + ((int) current) + "/" + (max) + ") " +
                 ChatColor.GREEN + ChatColor.BOLD + progressRounded + "% ";
     }
 
@@ -100,9 +103,11 @@ public class AchievementGUI implements InventoryHolder {
     }
 
     /**
-     * @param achievementStatus
-     * @param achievement
-     * @return
+     * Creates an ItemStack which contains all visual information for an achievement in the UI
+     *
+     * @param achievementStatus the current progress of the achievement
+     * @param achievement       the enumerated achievement itself
+     * @return an ItemStack menu item
      */
     private ItemStack achievementItem(AchievementStatus achievementStatus, Achievement achievement) {
         String displayName = achievement.getName();
@@ -121,15 +126,16 @@ public class AchievementGUI implements InventoryHolder {
                                 ChatColor.GREEN + "" + ChatColor.BOLD + "UNLOCKED" :
                                 ChatColor.RED + "" + ChatColor.BOLD + "LOCKED")
                 );
-        lore.add("");
-        lore.add
-                (
-                        ChatColor.YELLOW + "Set: " + ChatColor.DARK_AQUA + "" +
-                                ChatColor.BOLD + achievement.getAchievementSet().getName()
-                );
         if (achievement.getUnlockMethod() instanceof ProgressUnlock) {
             lore.add(buildProgressBar(achievementStatus));
         }
+        lore.add("");
+        lore.add(ChatColor.DARK_GREEN + "Reward(s):");
+        for (Reward reward : achievement.getRewards()) {
+            lore.add(ChatColor.GREEN + "- " + reward.getRewardMessage());
+        }
+        lore.add("");
+        lore.add(ChatColor.YELLOW + "Set: " + ChatColor.DARK_AQUA + achievement.getAchievementSet().getName());
         meta.setLore(lore);
         meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         menuItem.setItemMeta(meta);

@@ -26,12 +26,11 @@ public class FishingAchievementListener implements Listener {
         int progress = achievementStatus.getProgress();
         achievementStatus.setProgress(progress + 1);
         ProgressUnlock progressUnlock = (ProgressUnlock) achievementStatus.getAchievement().getUnlockMethod();
-        // if the player is set to unlock achievement
+        // if the player has unlocked achievement
         if (achievementStatus.getProgress() == progressUnlock.getAmountToUnlock()) {
+            achievementStatus.setUnlocked(true);
             AchievementUnlockEvent achievementUnlockEvent = new AchievementUnlockEvent(event.getPlayer(), achievementStatus.getAchievement());
             Bukkit.getPluginManager().callEvent(achievementUnlockEvent);
-        } else {
-            Bukkit.broadcastMessage("achievement progress for cod is now: " + achievementStatus.getProgress());
         }
     }
 }
