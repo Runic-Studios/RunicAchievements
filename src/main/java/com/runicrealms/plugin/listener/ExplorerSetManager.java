@@ -1,13 +1,13 @@
-package com.runicrealms.plugin.listeners;
+package com.runicrealms.plugin.listener;
 
 import com.runicrealms.plugin.Achievement;
 import com.runicrealms.plugin.AchievementSet;
 import com.runicrealms.plugin.AchievementStatus;
 import com.runicrealms.plugin.RunicAchievements;
 import com.runicrealms.plugin.api.RunicCoreAPI;
-import com.runicrealms.plugin.events.AchievementUnlockEvent;
+import com.runicrealms.plugin.api.event.AchievementUnlockEvent;
 import com.runicrealms.plugin.model.AchievementData;
-import com.runicrealms.plugin.unlocks.LocationUnlock;
+import com.runicrealms.plugin.unlock.LocationUnlock;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 

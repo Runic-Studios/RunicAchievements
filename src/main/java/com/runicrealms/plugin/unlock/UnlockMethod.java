@@ -1,6 +1,6 @@
-package com.runicrealms.plugin.unlocks;
+package com.runicrealms.plugin.unlock;
 
-public class UnlockMethod {
+public abstract class UnlockMethod {
 
     private final AchievementType achievementType;
 

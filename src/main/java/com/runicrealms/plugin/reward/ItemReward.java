@@ -1,4 +1,4 @@
-package com.runicrealms.plugin.rewards;
+package com.runicrealms.plugin.reward;
 
 import com.runicrealms.runicitems.RunicItemsAPI;
 import com.runicrealms.runicitems.item.RunicItem;

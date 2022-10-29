@@ -1,12 +1,12 @@
-package com.runicrealms.plugin.listeners;
+package com.runicrealms.plugin.listener;
 
 import com.runicrealms.plugin.Achievement;
-import com.runicrealms.plugin.events.AchievementUnlockEvent;
+import com.runicrealms.plugin.api.event.AchievementUnlockEvent;
 import com.runicrealms.plugin.events.RunicExpEvent;
-import com.runicrealms.plugin.rewards.ExpReward;
-import com.runicrealms.plugin.rewards.ItemReward;
-import com.runicrealms.plugin.rewards.Reward;
-import com.runicrealms.plugin.rewards.TitleReward;
+import com.runicrealms.plugin.reward.ExpReward;
+import com.runicrealms.plugin.reward.ItemReward;
+import com.runicrealms.plugin.reward.Reward;
+import com.runicrealms.plugin.reward.TitleReward;
 import com.runicrealms.plugin.utilities.ChatUtils;
 import com.runicrealms.runicitems.RunicItemsAPI;
 import com.runicrealms.runicitems.item.RunicItem;

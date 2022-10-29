@@ -1,4 +1,4 @@
-package com.runicrealms.plugin.unlocks;
+package com.runicrealms.plugin.unlock;
 
 public class TriggerUnlock extends UnlockMethod {
 

@@ -2,9 +2,9 @@ package com.runicrealms.plugin;
 
 import com.runicrealms.plugin.gui.AchievementGUIListener;
 import com.runicrealms.plugin.gui.PlayerMenuListener;
-import com.runicrealms.plugin.listeners.AchievementUnlockListener;
-import com.runicrealms.plugin.listeners.ExplorerSetManager;
-import com.runicrealms.plugin.listeners.FishingAchievementListener;
+import com.runicrealms.plugin.listener.AchievementUnlockListener;
+import com.runicrealms.plugin.listener.ExplorerSetManager;
+import com.runicrealms.plugin.listener.FishingAchievementListener;
 import com.runicrealms.plugin.model.AchievementManager;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;

@@ -1,4 +1,4 @@
-package com.runicrealms.plugin.rewards;
+package com.runicrealms.plugin.reward;
 
 public enum RewardType {
 

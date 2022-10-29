@@ -1,4 +1,4 @@
 package com.runicrealms.plugin.api;
 
-public class AchievementsAPI {
+public interface AchievementsAPI {
 }

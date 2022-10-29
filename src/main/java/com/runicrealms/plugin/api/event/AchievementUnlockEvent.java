@@ -1,4 +1,4 @@
-package com.runicrealms.plugin.events;
+package com.runicrealms.plugin.api.event;
 
 import com.runicrealms.plugin.Achievement;
 import org.bukkit.entity.Player;

@@ -1,11 +1,11 @@
 package com.runicrealms.plugin;
 
-import com.runicrealms.plugin.rewards.ExpReward;
-import com.runicrealms.plugin.rewards.ItemReward;
-import com.runicrealms.plugin.rewards.Reward;
-import com.runicrealms.plugin.unlocks.LocationUnlock;
-import com.runicrealms.plugin.unlocks.ProgressUnlock;
-import com.runicrealms.plugin.unlocks.UnlockMethod;
+import com.runicrealms.plugin.reward.ExpReward;
+import com.runicrealms.plugin.reward.ItemReward;
+import com.runicrealms.plugin.reward.Reward;
+import com.runicrealms.plugin.unlock.LocationUnlock;
+import com.runicrealms.plugin.unlock.ProgressUnlock;
+import com.runicrealms.plugin.unlock.UnlockMethod;
 import org.bukkit.Material;
 
 import java.util.Collections;
