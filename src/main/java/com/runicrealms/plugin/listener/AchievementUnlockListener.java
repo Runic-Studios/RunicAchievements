@@ -6,7 +6,6 @@ import com.runicrealms.plugin.api.event.AchievementUnlockEvent;
 import com.runicrealms.plugin.events.RunicExpEvent;
 import com.runicrealms.plugin.reward.ExpReward;
 import com.runicrealms.plugin.reward.ItemReward;
-import com.runicrealms.plugin.reward.TitleReward;
 import com.runicrealms.plugin.utilities.ChatUtils;
 import com.runicrealms.runicitems.RunicItemsAPI;
 import com.runicrealms.runicitems.item.RunicItem;
@@ -56,9 +55,10 @@ public class AchievementUnlockListener implements Listener {
                 handleExpReward(player, ((ExpReward) reward).getExp());
             } else if (reward instanceof ItemReward) {
                 handleItemReward(player, (ItemReward) reward);
-            } else {
-                handleTitleReward(player, ((TitleReward) reward).getTitle());
             }
+//            } else {
+//                handleTitleReward(player, (TitleReward) reward);
+//            }
         }
     }
 
@@ -91,7 +91,11 @@ public class AchievementUnlockListener implements Listener {
         RunicItemsAPI.addItem(player.getInventory(), runicItem.generateItem());
     }
 
-    private void handleTitleReward(Player player, String title) { // todo: Title title
-
-    }
+//    private void handleTitleReward(Player player, TitleReward titleReward) { // todo: Title title
+//        // set redis value
+//        // todo: add 'current title' somewhere
+//        try (Jedis jedis = RunicCoreAPI.getNewJedisResource()) {
+//
+//        }
+//    }
 }

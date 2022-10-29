@@ -107,6 +107,14 @@
             <scope>system</scope>
             <systemPath>${project.basedir}/../lib/craftbukkit-1.16.5.jar</systemPath>
         </dependency>
+        <!-- Jedis / Redis -->
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+            <version>4.2.3</version>
+            <type>jar</type>
+            <scope>compile</scope>
+        </dependency>
         <!-- MythicMobs -->
         <dependency>
             <groupId>net.elseland.xikage</groupId>

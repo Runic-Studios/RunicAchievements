@@ -3,7 +3,7 @@ package com.runicrealms.plugin;
 import com.runicrealms.plugin.api.Reward;
 import com.runicrealms.plugin.api.UnlockMethod;
 import com.runicrealms.plugin.reward.ExpReward;
-import com.runicrealms.plugin.reward.ItemReward;
+import com.runicrealms.plugin.reward.TitleReward;
 import com.runicrealms.plugin.unlock.LocationUnlock;
 import com.runicrealms.plugin.unlock.ProgressUnlock;
 import org.bukkit.Material;
@@ -21,7 +21,7 @@ public enum Achievement {
                     25,
                     Material.COD,
                     new ProgressUnlock(500),
-                    Collections.singletonList(new ItemReward("Coin", 64)),
+                    Collections.singletonList(new TitleReward("Master Fisher", false)),
                     AchievementSet.MASTER_GATHERER,
                     true
             ),

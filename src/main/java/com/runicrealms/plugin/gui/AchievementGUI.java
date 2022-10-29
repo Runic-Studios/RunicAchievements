@@ -6,6 +6,7 @@ import com.runicrealms.plugin.AchievementStatus;
 import com.runicrealms.plugin.RunicAchievements;
 import com.runicrealms.plugin.api.Reward;
 import com.runicrealms.plugin.model.AchievementData;
+import com.runicrealms.plugin.reward.TitleReward;
 import com.runicrealms.plugin.unlock.ProgressUnlock;
 import com.runicrealms.plugin.utilities.ChatUtils;
 import com.runicrealms.plugin.utilities.ColorUtil;
@@ -130,6 +131,11 @@ public class AchievementGUI implements InventoryHolder {
         }
         lore.add("");
         lore.add(ChatColor.YELLOW + "Set: " + ChatColor.DARK_AQUA + achievement.getAchievementSet().getName());
+        if (achievement.getRewards().stream().anyMatch(r -> r instanceof TitleReward)) {
+            TitleReward titleReward = (TitleReward) achievement.getRewards().stream().filter(r -> r instanceof TitleReward).findFirst().get();
+            lore.add("");
+            lore.add(ChatColor.DARK_AQUA + "CLICK to enable title: " + titleReward.getTitle());
+        }
         meta.setLore(lore);
         ((Damageable) meta).setDamage(5);
         meta.setUnbreakable(true);
