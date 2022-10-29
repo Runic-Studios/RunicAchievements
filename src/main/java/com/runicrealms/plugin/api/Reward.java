@@ -1,31 +1,10 @@
 package com.runicrealms.plugin.api;
 
-import com.runicrealms.plugin.reward.RewardType;
+public interface Reward {
 
-public abstract class Reward {
+    /**
+     * @return a reward message which can be used in chat and UI menus
+     */
+    String getRewardMessage();
 
-    private final RewardType rewardType;
-    private String rewardMessage;
-
-    public Reward(RewardType rewardType) {
-        this.rewardType = rewardType;
-        this.rewardMessage = "";
-    }
-
-    public Reward(RewardType rewardType, String rewardMessage) {
-        this.rewardType = rewardType;
-        this.rewardMessage = rewardMessage;
-    }
-
-    public RewardType getRewardType() {
-        return this.rewardType;
-    }
-
-    public String getRewardMessage() {
-        return rewardMessage;
-    }
-
-    public void setRewardMessage(String rewardMessage) {
-        this.rewardMessage = rewardMessage;
-    }
 }
