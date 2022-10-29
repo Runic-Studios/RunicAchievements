@@ -1,5 +1,7 @@
 package com.runicrealms.plugin;
 
+import com.runicrealms.plugin.gui.AchievementGUIListener;
+import com.runicrealms.plugin.gui.PlayerMenuListener;
 import com.runicrealms.plugin.listeners.AchievementUnlockListener;
 import com.runicrealms.plugin.listeners.FishingAchievementListener;
 import com.runicrealms.plugin.model.AchievementManager;
@@ -38,7 +40,9 @@ public final class RunicAchievements extends JavaPlugin implements Listener {
                 (
                         this,
                         new FishingAchievementListener(),
-                        new AchievementUnlockListener()
+                        new AchievementUnlockListener(),
+                        new AchievementGUIListener(),
+                        new PlayerMenuListener()
                 );
     }
 

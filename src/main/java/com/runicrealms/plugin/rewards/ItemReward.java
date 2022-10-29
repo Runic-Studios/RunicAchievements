@@ -15,7 +15,7 @@ public class ItemReward extends Reward {
         this.amount = amount;
         try {
             RunicItem runicItem = RunicItemsAPI.generateItemFromTemplate(runicItemId);
-            this.setRewardMessage(runicItem.getDisplayableItem().getDisplayName() + " x" + amount);
+            this.setRewardMessage(runicItem.getDisplayableItem().getDisplayName() + " [x" + amount + "]");
         } catch (Exception ex) {
             Bukkit.getLogger().warning("[ERROR]: There was a problem loading an item reward for an achievement!");
             ex.printStackTrace();
