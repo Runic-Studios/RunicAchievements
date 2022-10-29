@@ -130,5 +130,13 @@
             <scope>system</scope>
             <systemPath>${project.basedir}/../lib/RunicCore-1.16.5.jar</systemPath>
         </dependency>
+        <!-- RunicProfessions -->
+        <dependency>
+            <groupId>com.runicrealms.plugin</groupId>
+            <artifactId>RunicProfessions</artifactId>
+            <version>1.16.5</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/../lib/RunicProfessions-1.16.5.jar</systemPath>
+        </dependency>
     </dependencies>
 </project>

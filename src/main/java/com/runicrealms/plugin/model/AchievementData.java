@@ -3,18 +3,25 @@ package com.runicrealms.plugin.model;
 import com.runicrealms.plugin.AchievementStatus;
 import com.runicrealms.plugin.database.PlayerMongoData;
 
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
 public class AchievementData implements SessionData {
 
     private final UUID uuid;
-    private final List<AchievementStatus> achievementStatusList;
+    private final Map<String, AchievementStatus> achievementStatusList;
 
-    public AchievementData(UUID uuid, List<AchievementStatus> achievementStatusList) {
+    public AchievementData(UUID uuid, Map<String, AchievementStatus> achievementStatusList) {
         this.uuid = uuid;
         this.achievementStatusList = achievementStatusList;
+    }
+
+    public UUID getUuid() {
+        return uuid;
+    }
+
+    public Map<String, AchievementStatus> getAchievementStatusList() {
+        return achievementStatusList;
     }
 
     @Override

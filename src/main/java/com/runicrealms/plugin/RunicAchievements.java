@@ -1,17 +1,48 @@
 package com.runicrealms.plugin;
 
+import com.runicrealms.plugin.listeners.FishingAchievementListener;
+import com.runicrealms.plugin.model.AchievementManager;
+import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public final class RunicAchievements extends JavaPlugin {
+public final class RunicAchievements extends JavaPlugin implements Listener {
+
+    private static RunicAchievements plugin;
+    private static AchievementManager achievementManager;
+
+    public static RunicAchievements getInstance() {
+        return plugin;
+    }
+
+    public static AchievementManager getAchievementManager() {
+        return achievementManager;
+    }
 
     @Override
     public void onEnable() {
-        // Plugin startup logic
-
+        plugin = this;
+        achievementManager = new AchievementManager();
+        registerEvents();
     }
 
     @Override
     public void onDisable() {
-        // Plugin shutdown logic
+        plugin = null;
+        achievementManager = null;
+        registerEvents();
+    }
+
+    private void registerEvents() {
+        this.registerEvents
+                (
+                        this,
+                        new FishingAchievementListener()
+                );
+    }
+
+    private void registerEvents(Listener... listeners) {
+        for (Listener listener : listeners) {
+            this.getServer().getPluginManager().registerEvents(listener, this);
+        }
     }
 }
