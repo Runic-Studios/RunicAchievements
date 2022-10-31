@@ -2,7 +2,6 @@ package com.runicrealms.plugin;
 
 import com.runicrealms.plugin.api.Reward;
 import com.runicrealms.plugin.api.UnlockMethod;
-import com.runicrealms.plugin.reward.ExpReward;
 import com.runicrealms.plugin.reward.TitleReward;
 import com.runicrealms.plugin.unlock.LocationUnlock;
 import com.runicrealms.plugin.unlock.ProgressUnlock;
@@ -11,17 +10,20 @@ import org.bukkit.Material;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * IMPORTANT: only use titles for patch 2.0! We need character-specific achievements moving forward.
+ */
 public enum Achievement {
 
     FISH_10_COD
             (
                     "fish-cod-1",
                     "Go Fish!",
-                    "Obtained by fishing 500 cod!",
+                    "Obtained by fishing 1 cod!",
                     25,
                     Material.COD,
-                    new ProgressUnlock(500),
-                    Collections.singletonList(new TitleReward("Master Fisher", false)),
+                    new ProgressUnlock(1),
+                    Collections.singletonList(new TitleReward("Fishing Monarch", false)),
                     AchievementSet.MASTER_GATHERER,
                     true
             ),
@@ -33,7 +35,7 @@ public enum Achievement {
                     5,
                     Material.IRON_PICKAXE,
                     new LocationUnlock("koldore"),
-                    Collections.singletonList(new ExpReward(500)),
+                    Collections.singletonList(new TitleReward("Koldorian", false)),
                     AchievementSet.EXPLORER,
                     false
             );
@@ -108,5 +110,18 @@ public enum Achievement {
 
     public boolean shouldShootFirework() {
         return shootsFirework;
+    }
+
+    /**
+     * @param material
+     * @return
+     */
+    public static Achievement getFromMaterial(Material material) {
+        for (Achievement achievement : Achievement.values()) {
+            if (achievement.getGuiItem() == material) {
+                return achievement;
+            }
+        }
+        return null;
     }
 }

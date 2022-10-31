@@ -1,6 +1,15 @@
 package com.runicrealms.plugin.gui;
 
+import com.runicrealms.plugin.Achievement;
+import com.runicrealms.plugin.AchievementStatus;
+import com.runicrealms.plugin.RunicAchievements;
+import com.runicrealms.plugin.RunicCore;
+import com.runicrealms.plugin.api.Reward;
+import com.runicrealms.plugin.model.AchievementData;
+import com.runicrealms.plugin.model.TitleData;
+import com.runicrealms.plugin.reward.TitleReward;
 import com.runicrealms.plugin.utilities.GUIUtil;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -9,6 +18,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
+import redis.clients.jedis.Jedis;
 
 public class AchievementGUIListener implements Listener {
 
@@ -37,5 +47,31 @@ public class AchievementGUIListener implements Listener {
         e.setCancelled(true);
         if (material == GUIUtil.closeButton().getType())
             e.getWhoClicked().closeInventory();
+        else if (material != GUIUtil.borderItem().getType()) {
+            Achievement achievement = Achievement.getFromMaterial(e.getCurrentItem().getType());
+            if (achievement == null) return;
+            AchievementData achievementData = RunicAchievements.getAchievementManager().loadAchievementData(player.getUniqueId());
+            AchievementStatus achievementStatus = achievementData.getAchievementStatusList().get(achievement.getId());
+            if (achievementStatus == null) return;
+            if (!achievementStatus.isUnlocked()) return;
+            player.closeInventory();
+            try (Jedis jedis = RunicCore.getRedisManager().getJedisResource()) {
+                for (Reward reward : achievement.getRewards()) {
+                    if (!(reward instanceof TitleReward)) continue;
+                    TitleReward titleReward = (TitleReward) reward;
+                    TitleData titleData = RunicCore.getTitleManager().loadTitleData(player.getUniqueId());
+                    if (titleReward.isSuffix()) {
+                        titleData.setSuffix(titleReward.getTitle());
+                        titleData.writeTitleDataToJedis(jedis);
+                    } else {
+                        Bukkit.broadcastMessage("writing title");
+                        titleData.setPrefix(titleReward.getTitle()); // todo: bundle these 3 (add expiry) in a method
+                        // todo: don't think this is getting properly memoized on login
+                        titleData.writeTitleDataToJedis(jedis);
+                        Bukkit.broadcastMessage(titleData.getPrefix() + " is prefix");
+                    }
+                }
+            }
+        }
     }
 }

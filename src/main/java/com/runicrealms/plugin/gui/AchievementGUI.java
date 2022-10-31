@@ -131,10 +131,13 @@ public class AchievementGUI implements InventoryHolder {
         }
         lore.add("");
         lore.add(ChatColor.YELLOW + "Set: " + ChatColor.DARK_AQUA + achievement.getAchievementSet().getName());
-        if (achievement.getRewards().stream().anyMatch(r -> r instanceof TitleReward)) {
-            TitleReward titleReward = (TitleReward) achievement.getRewards().stream().filter(r -> r instanceof TitleReward).findFirst().get();
-            lore.add("");
-            lore.add(ChatColor.DARK_AQUA + "CLICK to enable title: " + titleReward.getTitle());
+        if (achievementStatus.isUnlocked()) {
+            if (achievement.getRewards().stream().anyMatch(r -> r instanceof TitleReward)) {
+                TitleReward titleReward = (TitleReward) achievement.getRewards().stream().filter(r -> r instanceof TitleReward).findFirst().get();
+                lore.add("");
+                lore.add(ChatColor.GOLD + "" + ChatColor.BOLD + "CLICK " + ChatColor.DARK_AQUA + "to enable title: ");
+                lore.add(ChatColor.DARK_AQUA + "[" + ChatColor.AQUA + titleReward.getTitle() + ChatColor.DARK_AQUA + "]");
+            }
         }
         meta.setLore(lore);
         ((Damageable) meta).setDamage(5);
