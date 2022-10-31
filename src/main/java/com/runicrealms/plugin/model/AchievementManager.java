@@ -43,6 +43,7 @@ public class AchievementManager implements Listener {
     public void onCharacterQuit(CharacterQuitEvent event) {
         AchievementData achievementData = loadAchievementData(event.getPlayer().getUniqueId());
         achievementData.writeToJedis(event.getJedis());
+        achievementDataMap.remove(event.getPlayer().getUniqueId());
     }
 
     /**
