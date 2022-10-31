@@ -3,6 +3,7 @@ package com.runicrealms.plugin.model;
 import com.runicrealms.plugin.Achievement;
 import com.runicrealms.plugin.AchievementStatus;
 import com.runicrealms.plugin.RunicAchievements;
+import com.runicrealms.plugin.character.api.CharacterQuitEvent;
 import com.runicrealms.plugin.character.api.CharacterSelectEvent;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -36,6 +37,12 @@ public class AchievementManager implements Listener {
         for (Achievement achievement : Achievement.values()) {
             achievementData.getAchievementStatusList().put(achievement.getId(), new AchievementStatus(uuid, achievement)); // todo: load this from redis
         }
+    }
+
+    @EventHandler
+    public void onCharacterQuit(CharacterQuitEvent event) {
+        AchievementData achievementData = loadAchievementData(event.getPlayer().getUniqueId());
+        achievementData.writeToJedis(event.getJedis());
     }
 
     /**

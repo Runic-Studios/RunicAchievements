@@ -14,10 +14,16 @@ import org.bukkit.event.Listener;
 
 import java.util.UUID;
 
-public class FishingAchievementListener implements Listener {
+/**
+ * Used to handle achievements based on gathering a material
+ *
+ * @author Skyfallin
+ */
+public class GathererSetListener implements Listener {
 
+    // todo: generify
     @EventHandler
-    public void onGatherFish(GatheringEvent event) {
+    public void onGather(GatheringEvent event) {
         if (event.getGatheringResource() != GatheringResource.COD) return;
         UUID uuid = event.getPlayer().getUniqueId();
         AchievementData achievementData = RunicAchievements.getAchievementManager().loadAchievementData(uuid);
