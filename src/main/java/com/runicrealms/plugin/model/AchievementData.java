@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class AchievementData implements SessionData {
+public class AchievementData implements SessionDataNested {
 
     private static final String DATA_SECTION_ACHIEVEMENTS = "achievements";
     private final UUID uuid;
@@ -27,16 +27,13 @@ public class AchievementData implements SessionData {
         return achievementStatusList;
     }
 
-    @Override
-    public Map<String, String> toMap() {
-        return null;
-    }
-
     /**
-     * @param achievementStatus
+     * @param nestedObject
      * @return
      */
-    private Map<String, String> toMap(AchievementStatus achievementStatus) {
+    @Override
+    public Map<String, String> toMap(Object nestedObject) {
+        AchievementStatus achievementStatus = (AchievementStatus) nestedObject;
         return new HashMap<String, String>() {{
             put("isUnlocked", String.valueOf(achievementStatus.isUnlocked()));
             put("progress", String.valueOf(achievementStatus.getProgress()));
