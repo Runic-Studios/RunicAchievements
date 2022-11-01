@@ -13,7 +13,7 @@ import java.util.*;
 
 public class AchievementData implements SessionDataNested {
     public static final String DATA_SECTION_ACHIEVEMENTS = "achievements";
-    static List<String> fields = new ArrayList<String>() {{
+    public static final List<String> FIELDS = new ArrayList<String>() {{
         add(AchievementField.PROGRESS.getField());
         add(AchievementField.IS_UNLOCKED.getField());
     }};
@@ -58,12 +58,12 @@ public class AchievementData implements SessionDataNested {
             achievementStatusMap.put(achievement.getId(), new AchievementStatus(uuid, achievement));
         }
 
-        for (String achievementIdKey : RedisUtil.getNestedKeys(key, jedis)) {
+        for (String achievementId : RedisUtil.getNestedKeys(key, jedis)) {
 
-            String[] split = achievementIdKey.split(":");
-            String achievementId = split[2];
+//            String[] split = achievementIdKey.split(":");
+//            String achievementId = split[2];
             Map<String, String> fieldsMap = new HashMap<>();
-            String[] fieldsToArray = AchievementData.fields.toArray(new String[0]);
+            String[] fieldsToArray = AchievementData.FIELDS.toArray(new String[0]);
             List<String> values = jedis.hmget(key + ":" + achievementId, fieldsToArray);
             for (int i = 0; i < fieldsToArray.length; i++) {
                 fieldsMap.put(fieldsToArray[i], values.get(i));
@@ -79,10 +79,6 @@ public class AchievementData implements SessionDataNested {
             achievementStatusMap.put(achievementId, achievementStatus);
         }
         RunicAchievements.getAchievementManager().getAchievementDataMap().put(uuid, this); // add to in-game memory
-    }
-
-    public static List<String> getFields() {
-        return fields;
     }
 
     /**
@@ -117,6 +113,11 @@ public class AchievementData implements SessionDataNested {
 
     public Map<String, AchievementStatus> getAchievementStatusMap() {
         return achievementStatusMap;
+    }
+
+    @Override
+    public List<String> getFields() {
+        return FIELDS;
     }
 
     /**
@@ -157,9 +158,8 @@ public class AchievementData implements SessionDataNested {
         for (String achievementId : RunicCoreAPI.getNestedJedisKeys(uuid + ":" + DATA_SECTION_ACHIEVEMENTS, jedis)) {
             achievementSection = (PlayerMongoDataSection) playerMongoData.getSection(DATA_SECTION_ACHIEVEMENTS + "." + achievementId);
             Map<String, String> dataMap = getDataMapFromJedis(jedis, achievementId);
-            for (String achievementDatum : dataMap.keySet()) {
-                achievementSection.set(achievementDatum, dataMap.get(achievementDatum));
-            }
+            achievementSection.set(AchievementField.PROGRESS.getField(), dataMap.get(AchievementField.PROGRESS.getField()));
+            achievementSection.set(AchievementField.IS_UNLOCKED.getField(), dataMap.get(AchievementField.IS_UNLOCKED.getField()));
         }
         return playerMongoData;
     }
