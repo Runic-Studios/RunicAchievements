@@ -9,6 +9,7 @@ import com.runicrealms.plugin.model.AchievementData;
 import com.runicrealms.plugin.model.TitleData;
 import com.runicrealms.plugin.reward.TitleReward;
 import com.runicrealms.plugin.utilities.GUIUtil;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -76,6 +77,8 @@ public class AchievementGUIListener implements Listener {
             } else {
                 titleData.setPrefix(titleReward.getTitle());
             }
+            player.sendMessage(ChatColor.DARK_AQUA + "You have enabled the title: " + ChatColor.AQUA + titleReward.getTitle() + ChatColor.DARK_AQUA + "!");
+            return;
         }
     }
 

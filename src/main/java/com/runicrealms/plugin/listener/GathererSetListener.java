@@ -6,7 +6,6 @@ import com.runicrealms.plugin.RunicAchievements;
 import com.runicrealms.plugin.api.event.AchievementUnlockEvent;
 import com.runicrealms.plugin.model.AchievementData;
 import com.runicrealms.plugin.professions.event.GatheringEvent;
-import com.runicrealms.plugin.professions.gathering.GatheringResource;
 import com.runicrealms.plugin.unlock.ProgressUnlock;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
@@ -21,18 +20,23 @@ import java.util.UUID;
  */
 public class GathererSetListener implements Listener {
 
-    // todo: generify
     @EventHandler
     public void onGather(GatheringEvent event) {
-        if (event.getGatheringResource() != GatheringResource.COD) return;
+
+        Achievement achievement = Achievement.getFromRunicItemId(event.getGatheringResource().getTemplateId());
+        if (achievement == null) return; // Ensure some achievement listens for this resource
+
         UUID uuid = event.getPlayer().getUniqueId();
         AchievementData achievementData = RunicAchievements.getAchievementManager().loadAchievementData(uuid);
-        if (achievementData.getAchievementStatusMap().get(Achievement.FISH_10_COD.getId()).isUnlocked()) return;
-        AchievementStatus achievementStatus = achievementData.getAchievementStatusMap().get(Achievement.FISH_10_COD.getId());
+        AchievementStatus achievementStatus = achievementData.getAchievementStatusMap().get(achievement.getId());
+        if (achievementStatus.isUnlocked()) return; // Ignore completed achievements
+
+        // Update the progress
         int progress = achievementStatus.getProgress();
         achievementStatus.setProgress(progress + 1);
         ProgressUnlock progressUnlock = (ProgressUnlock) achievementStatus.getAchievement().getUnlockMethod();
-        // if the player has unlocked achievement
+
+        // If the player has unlocked achievement
         if (achievementStatus.getProgress() == progressUnlock.getAmountToUnlock()) {
             achievementStatus.setUnlocked(true);
             AchievementUnlockEvent achievementUnlockEvent = new AchievementUnlockEvent(event.getPlayer(), achievementStatus.getAchievement());

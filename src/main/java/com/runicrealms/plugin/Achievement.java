@@ -15,7 +15,7 @@ import java.util.List;
  */
 public enum Achievement {
 
-    FISH_10_COD
+    GO_FISH
             (
                     "go-fish",
                     "Go Fish!",
@@ -25,7 +25,21 @@ public enum Achievement {
                     new ProgressUnlock(1),
                     Collections.singletonList(new TitleReward("Fishing Monarch", false)),
                     AchievementSet.MASTER_GATHERER,
-                    true
+                    true,
+                    "Cod"
+            ),
+    GATHER_WHEAT
+            (
+                    "gather-wheat",
+                    "It Ain't Much",
+                    "Obtained by farming 1 wheat!",
+                    25,
+                    Material.WHEAT,
+                    new ProgressUnlock(1),
+                    Collections.singletonList(new TitleReward("Humble Farmer", false)),
+                    AchievementSet.MASTER_GATHERER,
+                    true,
+                    "Wheat"
             ),
     DISCOVER_KOLDORE
             (
@@ -37,7 +51,8 @@ public enum Achievement {
                     new LocationUnlock("koldore"),
                     Collections.singletonList(new TitleReward("Koldorian", false)),
                     AchievementSet.EXPLORER,
-                    false
+                    false,
+                    ""
             );
 
     private final String id;
@@ -49,6 +64,7 @@ public enum Achievement {
     private final List<Reward> rewards;
     private final AchievementSet achievementSet;
     private final boolean shootsFirework;
+    private final String runicItemId;
 
     /**
      * An enumerated list of achievements
@@ -62,9 +78,11 @@ public enum Achievement {
      * @param rewards        a list of rewards
      * @param achievementSet some achievements belong to a greater 'set'
      * @param shootsFirework whether the achievement will shoot a firework
+     * @param runicItemId    an optional param to add a runic item for gathering achievements
      */
     Achievement(String id, String name, String description, int pointValue, Material guiItem,
-                UnlockMethod unlockMethod, List<Reward> rewards, AchievementSet achievementSet, boolean shootsFirework) {
+                UnlockMethod unlockMethod, List<Reward> rewards, AchievementSet achievementSet,
+                boolean shootsFirework, String runicItemId) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -74,6 +92,7 @@ public enum Achievement {
         this.rewards = rewards;
         this.achievementSet = achievementSet;
         this.shootsFirework = shootsFirework;
+        this.runicItemId = runicItemId;
     }
 
     public String getId() {
@@ -119,8 +138,27 @@ public enum Achievement {
      * @return the achievement or null if the id is not found
      */
     public static Achievement getFromId(String achievementId) {
+        try {
+            for (Achievement achievement : Achievement.values()) {
+                if (achievement.getId().equalsIgnoreCase(achievementId)) {
+                    return achievement;
+                }
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * Returns an achievement with a material matching parameter
+     *
+     * @param runicItemId of the item to gather
+     * @return the achievement or null if the runic item id is not found
+     */
+    public static Achievement getFromRunicItemId(String runicItemId) {
         for (Achievement achievement : Achievement.values()) {
-            if (achievement.getId().equals(achievementId)) {
+            if (achievement.getRunicItemId().equals(runicItemId)) {
                 return achievement;
             }
         }
@@ -140,5 +178,9 @@ public enum Achievement {
             }
         }
         return null;
+    }
+
+    public String getRunicItemId() {
+        return runicItemId;
     }
 }
