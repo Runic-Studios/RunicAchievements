@@ -44,7 +44,7 @@ public class AchievementManager implements Listener {
         for (UUID uuid : event.getPlayersToSave().keySet()) {
             PlayerMongoData playerMongoData = event.getPlayersToSave().get(uuid).getPlayerMongoData();
             AchievementData achievementData = loadAchievementData(uuid);
-            achievementData.writeToMongo(playerMongoData);
+            achievementData.writeToMongo(playerMongoData, event.getJedis());
         }
         event.markPluginSaved("achievements");
     }
