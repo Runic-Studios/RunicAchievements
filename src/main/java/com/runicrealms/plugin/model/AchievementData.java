@@ -59,9 +59,6 @@ public class AchievementData implements SessionDataNested {
         }
 
         for (String achievementId : RedisUtil.getNestedKeys(key, jedis)) {
-
-//            String[] split = achievementIdKey.split(":");
-//            String achievementId = split[2];
             Map<String, String> fieldsMap = new HashMap<>();
             String[] fieldsToArray = AchievementData.FIELDS.toArray(new String[0]);
             List<String> values = jedis.hmget(key + ":" + achievementId, fieldsToArray);
