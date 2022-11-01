@@ -45,24 +45,43 @@ public class AchievementGUIListener implements Listener {
         e.setCancelled(true);
         if (material == GUIUtil.closeButton().getType())
             e.getWhoClicked().closeInventory();
-        else if (material != GUIUtil.borderItem().getType()) {
-            Achievement achievement = Achievement.getFromMaterial(e.getCurrentItem().getType());
-            if (achievement == null) return;
-            AchievementData achievementData = RunicAchievements.getAchievementManager().loadAchievementData(player.getUniqueId());
-            AchievementStatus achievementStatus = achievementData.getAchievementStatusMap().get(achievement.getId());
-            if (achievementStatus == null) return;
-            if (!achievementStatus.isUnlocked()) return;
-            player.closeInventory();
-            for (Reward reward : achievement.getRewards()) {
-                if (!(reward instanceof TitleReward)) continue;
-                TitleReward titleReward = (TitleReward) reward;
-                TitleData titleData = RunicCore.getTitleManager().loadTitleData(player.getUniqueId());
-                if (titleReward.isSuffix()) {
-                    titleData.setSuffix(titleReward.getTitle());
-                } else {
-                    titleData.setPrefix(titleReward.getTitle());
-                }
+        else if (material == AchievementGUI.REMOVE_TITLE_ITEM.getType()) {
+            removeTitle(player);
+        } else if (material != GUIUtil.borderItem().getType()) {
+            attemptToSetTitle(player, material);
+        }
+    }
+
+    /**
+     * Attempts to set the achievement title for the given player, based on the material of the icon (must be unique)
+     * Fails if the player has not unlocked the title
+     *
+     * @param player   to check
+     * @param material of the achievement icon
+     */
+    private void attemptToSetTitle(Player player, Material material) {
+        Achievement achievement = Achievement.getFromMaterial(material);
+        if (achievement == null) return;
+        AchievementData achievementData = RunicAchievements.getAchievementManager().loadAchievementData(player.getUniqueId());
+        AchievementStatus achievementStatus = achievementData.getAchievementStatusMap().get(achievement.getId());
+        if (achievementStatus == null) return;
+        if (!achievementStatus.isUnlocked()) return;
+        player.closeInventory();
+        for (Reward reward : achievement.getRewards()) {
+            if (!(reward instanceof TitleReward)) continue;
+            TitleReward titleReward = (TitleReward) reward;
+            TitleData titleData = RunicCore.getTitleManager().loadTitleData(player.getUniqueId());
+            if (titleReward.isSuffix()) {
+                titleData.setSuffix(titleReward.getTitle());
+            } else {
+                titleData.setPrefix(titleReward.getTitle());
             }
         }
+    }
+
+    private void removeTitle(Player player) {
+        TitleData titleData = RunicCore.getTitleManager().loadTitleData(player.getUniqueId());
+        titleData.setPrefix("");
+        titleData.setSuffix("");
     }
 }

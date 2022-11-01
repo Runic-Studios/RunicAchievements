@@ -25,6 +25,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class AchievementGUI implements InventoryHolder {
@@ -85,20 +86,7 @@ public class AchievementGUI implements InventoryHolder {
                 ChatColor.GREEN + ChatColor.BOLD + progressRounded + "% ";
     }
 
-    /**
-     * Opens the inventory associated w/ this GUI, ordering perks
-     */
-    private void openMenu() {
-        AchievementData achievementData = RunicAchievements.getAchievementManager().loadAchievementData(player.getUniqueId());
-        this.inventory.clear();
-        GUIUtil.fillInventoryBorders(this.inventory);
-        this.inventory.setItem(0, GUIUtil.closeButton());
-        this.inventory.setItem(4, achievementInfoItem(achievementData));
-        for (Achievement achievement : Achievement.values()) {
-            AchievementStatus achievementStatus = achievementData.getAchievementStatusMap().get(achievement.getId());
-            this.inventory.setItem(inventory.firstEmpty(), achievementItem(achievementStatus, achievement));
-        }
-    }
+    public static final ItemStack REMOVE_TITLE_ITEM;
 
     /**
      * Creates an ItemStack which contains all visual information for an achievement in the UI
@@ -179,5 +167,30 @@ public class AchievementGUI implements InventoryHolder {
         meta.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
         menuItem.setItemMeta(meta);
         return menuItem;
+    }
+
+    static {
+        REMOVE_TITLE_ITEM = new ItemStack(Material.MILK_BUCKET);
+        ItemMeta meta = REMOVE_TITLE_ITEM.getItemMeta();
+        assert meta != null;
+        meta.setDisplayName(ChatColor.RED + "Clear Title");
+        meta.setLore(Arrays.asList("", ChatColor.GRAY + "Clear your current achievement title!"));
+        REMOVE_TITLE_ITEM.setItemMeta(meta);
+    }
+
+    /**
+     * Opens the inventory associated w/ this GUI, ordering perks
+     */
+    private void openMenu() {
+        AchievementData achievementData = RunicAchievements.getAchievementManager().loadAchievementData(player.getUniqueId());
+        this.inventory.clear();
+        GUIUtil.fillInventoryBorders(this.inventory);
+        this.inventory.setItem(0, GUIUtil.closeButton());
+        this.inventory.setItem(4, achievementInfoItem(achievementData));
+        this.inventory.setItem(5, REMOVE_TITLE_ITEM);
+        for (Achievement achievement : Achievement.values()) {
+            AchievementStatus achievementStatus = achievementData.getAchievementStatusMap().get(achievement.getId());
+            this.inventory.setItem(inventory.firstEmpty(), achievementItem(achievementStatus, achievement));
+        }
     }
 }
