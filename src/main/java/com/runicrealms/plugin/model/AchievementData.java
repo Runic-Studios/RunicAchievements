@@ -3,7 +3,6 @@ package com.runicrealms.plugin.model;
 import com.runicrealms.plugin.Achievement;
 import com.runicrealms.plugin.AchievementStatus;
 import com.runicrealms.plugin.RunicAchievements;
-import com.runicrealms.plugin.api.RunicCoreAPI;
 import com.runicrealms.plugin.database.PlayerMongoData;
 import com.runicrealms.plugin.database.PlayerMongoDataSection;
 import com.runicrealms.plugin.redis.RedisUtil;
@@ -150,13 +149,12 @@ public class AchievementData implements SessionDataNested {
     }
 
     @Override
-    public PlayerMongoData writeToMongo(PlayerMongoData playerMongoData, Jedis jedis, int... slot) { // don't need slot, achievements are acc-wide
+    public PlayerMongoData writeToMongo(PlayerMongoData playerMongoData, int... slot) { // don't need slot, achievements are acc-wide
         PlayerMongoDataSection achievementSection;
-        for (String achievementId : RunicCoreAPI.getNestedJedisKeys(uuid + ":" + DATA_SECTION_ACHIEVEMENTS, jedis)) {
+        for (String achievementId : this.achievementStatusMap.keySet()) {
             achievementSection = (PlayerMongoDataSection) playerMongoData.getSection(DATA_SECTION_ACHIEVEMENTS + "." + achievementId);
-            Map<String, String> dataMap = getDataMapFromJedis(jedis, achievementId);
-            achievementSection.set(AchievementField.PROGRESS.getField(), dataMap.get(AchievementField.PROGRESS.getField()));
-            achievementSection.set(AchievementField.IS_UNLOCKED.getField(), dataMap.get(AchievementField.IS_UNLOCKED.getField()));
+            achievementSection.set(AchievementField.PROGRESS.getField(), this.achievementStatusMap.get(achievementId).getProgress());
+            achievementSection.set(AchievementField.IS_UNLOCKED.getField(), this.achievementStatusMap.get(achievementId).isUnlocked());
         }
         return playerMongoData;
     }

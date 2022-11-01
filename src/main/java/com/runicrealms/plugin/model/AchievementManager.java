@@ -44,7 +44,7 @@ public class AchievementManager implements Listener {
         for (UUID uuid : event.getPlayersToSave().keySet()) {
             PlayerMongoData playerMongoData = event.getPlayersToSave().get(uuid).getPlayerMongoData();
             AchievementData achievementData = loadAchievementData(uuid);
-            achievementData.writeToMongo(playerMongoData, event.getJedis());
+            achievementData.writeToMongo(playerMongoData);
         }
         event.markPluginSaved("achievements");
     }
@@ -89,7 +89,7 @@ public class AchievementManager implements Listener {
      * @return a AchievementData object if it is found in redis
      */
     public AchievementData checkRedisForAchievementData(UUID uuid, Jedis jedis) {
-        if (RedisUtil.getNestedKeys(uuid + ":" + AchievementData.DATA_SECTION_ACHIEVEMENTS, jedis).size() > 0) {
+        if (!RedisUtil.getNestedKeys(uuid + ":" + AchievementData.DATA_SECTION_ACHIEVEMENTS, jedis).isEmpty()) {
             Bukkit.broadcastMessage(ChatColor.GREEN + "redis achievement data found, building data from redis");
             return new AchievementData(uuid, jedis);
         }
