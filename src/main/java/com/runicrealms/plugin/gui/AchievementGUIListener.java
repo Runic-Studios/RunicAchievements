@@ -83,5 +83,6 @@ public class AchievementGUIListener implements Listener {
         TitleData titleData = RunicCore.getTitleManager().loadTitleData(player.getUniqueId());
         titleData.setPrefix("");
         titleData.setSuffix("");
+        player.closeInventory();
     }
 }

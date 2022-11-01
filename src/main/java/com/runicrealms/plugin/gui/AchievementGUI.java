@@ -25,7 +25,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class AchievementGUI implements InventoryHolder {
@@ -173,8 +172,11 @@ public class AchievementGUI implements InventoryHolder {
         REMOVE_TITLE_ITEM = new ItemStack(Material.MILK_BUCKET);
         ItemMeta meta = REMOVE_TITLE_ITEM.getItemMeta();
         assert meta != null;
+        List<String> lore = new ArrayList<>();
+        lore.add("");
+        lore.addAll(ChatUtils.formattedText(ChatColor.GRAY + "Clear your current achievement title!"));
         meta.setDisplayName(ChatColor.RED + "Clear Title");
-        meta.setLore(Arrays.asList("", ChatColor.GRAY + "Clear your current achievement title!"));
+        meta.setLore(lore);
         REMOVE_TITLE_ITEM.setItemMeta(meta);
     }
 
