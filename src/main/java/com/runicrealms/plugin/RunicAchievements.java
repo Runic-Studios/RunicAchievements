@@ -1,5 +1,7 @@
 package com.runicrealms.plugin;
 
+import co.aikar.commands.PaperCommandManager;
+import com.runicrealms.plugin.api.command.admin.ResetAchievementsCMD;
 import com.runicrealms.plugin.gui.AchievementGUIListener;
 import com.runicrealms.plugin.gui.PlayerMenuListener;
 import com.runicrealms.plugin.listener.AchievementUnlockListener;
@@ -14,6 +16,7 @@ public final class RunicAchievements extends JavaPlugin implements Listener {
     private static RunicAchievements plugin;
     private static AchievementManager achievementManager;
     private static ExplorerSetManager explorerSetManager;
+    private static PaperCommandManager commandManager;
 
     public static RunicAchievements getInstance() {
         return plugin;
@@ -27,11 +30,17 @@ public final class RunicAchievements extends JavaPlugin implements Listener {
         return explorerSetManager;
     }
 
+    public static PaperCommandManager getCommandManager() {
+        return commandManager;
+    }
+
     @Override
     public void onEnable() {
         plugin = this;
         achievementManager = new AchievementManager();
         explorerSetManager = new ExplorerSetManager();
+        commandManager = new PaperCommandManager(this);
+        registerCommands();
         registerEvents();
     }
 
@@ -40,6 +49,11 @@ public final class RunicAchievements extends JavaPlugin implements Listener {
         plugin = null;
         achievementManager = null;
         explorerSetManager = null;
+        commandManager = null;
+    }
+
+    private void registerCommands() {
+        commandManager.registerCommand(new ResetAchievementsCMD());
     }
 
     private void registerEvents() {

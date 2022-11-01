@@ -7,8 +7,6 @@ import com.runicrealms.plugin.character.api.CharacterSelectEvent;
 import com.runicrealms.plugin.database.PlayerMongoData;
 import com.runicrealms.plugin.database.event.MongoSaveEvent;
 import com.runicrealms.plugin.redis.RedisUtil;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import redis.clients.jedis.Jedis;
@@ -90,10 +88,8 @@ public class AchievementManager implements Listener {
      */
     public AchievementData checkRedisForAchievementData(UUID uuid, Jedis jedis) {
         if (!RedisUtil.getNestedKeys(uuid + ":" + AchievementData.DATA_SECTION_ACHIEVEMENTS, jedis).isEmpty()) {
-            Bukkit.broadcastMessage(ChatColor.GREEN + "redis achievement data found, building data from redis");
             return new AchievementData(uuid, jedis);
         }
-        Bukkit.broadcastMessage(ChatColor.RED + "redis achievement data not found");
         return null;
     }
 
