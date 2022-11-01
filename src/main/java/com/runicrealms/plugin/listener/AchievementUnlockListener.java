@@ -1,9 +1,12 @@
 package com.runicrealms.plugin.listener;
 
 import com.runicrealms.plugin.Achievement;
+import com.runicrealms.plugin.RunicAchievements;
 import com.runicrealms.plugin.api.Reward;
+import com.runicrealms.plugin.api.RunicCoreAPI;
 import com.runicrealms.plugin.api.event.AchievementUnlockEvent;
 import com.runicrealms.plugin.events.RunicExpEvent;
+import com.runicrealms.plugin.model.AchievementData;
 import com.runicrealms.plugin.reward.ExpReward;
 import com.runicrealms.plugin.reward.ItemReward;
 import com.runicrealms.plugin.utilities.ChatUtils;
@@ -20,6 +23,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.meta.FireworkMeta;
+import redis.clients.jedis.Jedis;
 
 public class AchievementUnlockListener implements Listener {
 
@@ -55,10 +59,9 @@ public class AchievementUnlockListener implements Listener {
                 handleExpReward(player, ((ExpReward) reward).getExp());
             } else if (reward instanceof ItemReward) {
                 handleItemReward(player, (ItemReward) reward);
+            } else {
+                handleTitleReward(player);
             }
-//            } else {
-//                handleTitleReward(player, (TitleReward) reward);
-//            }
         }
     }
 
@@ -91,11 +94,15 @@ public class AchievementUnlockListener implements Listener {
         RunicItemsAPI.addItem(player.getInventory(), runicItem.generateItem());
     }
 
-//    private void handleTitleReward(Player player, TitleReward titleReward) { // todo: Title title
-//        // set redis value
-//        // todo: add 'current title' somewhere
-//        try (Jedis jedis = RunicCoreAPI.getNewJedisResource()) {
-//
-//        }
-//    }
+    /**
+     * Handles logic for giving player title rewards. Does an immediate jedis write
+     *
+     * @param player to award title to
+     */
+    private void handleTitleReward(Player player) {
+        try (Jedis jedis = RunicCoreAPI.getNewJedisResource()) {
+            AchievementData achievementData = RunicAchievements.getAchievementManager().loadAchievementData(player.getUniqueId());
+            achievementData.writeToJedis(jedis);
+        }
+    }
 }

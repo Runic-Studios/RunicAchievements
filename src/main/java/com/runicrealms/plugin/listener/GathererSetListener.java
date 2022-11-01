@@ -27,8 +27,8 @@ public class GathererSetListener implements Listener {
         if (event.getGatheringResource() != GatheringResource.COD) return;
         UUID uuid = event.getPlayer().getUniqueId();
         AchievementData achievementData = RunicAchievements.getAchievementManager().loadAchievementData(uuid);
-        if (achievementData.getAchievementStatusList().get(Achievement.FISH_10_COD.getId()).isUnlocked()) return;
-        AchievementStatus achievementStatus = achievementData.getAchievementStatusList().get(Achievement.FISH_10_COD.getId());
+        if (achievementData.getAchievementStatusMap().get(Achievement.FISH_10_COD.getId()).isUnlocked()) return;
+        AchievementStatus achievementStatus = achievementData.getAchievementStatusMap().get(Achievement.FISH_10_COD.getId());
         int progress = achievementStatus.getProgress();
         achievementStatus.setProgress(progress + 1);
         ProgressUnlock progressUnlock = (ProgressUnlock) achievementStatus.getAchievement().getUnlockMethod();

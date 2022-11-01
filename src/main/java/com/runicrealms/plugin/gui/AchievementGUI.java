@@ -46,7 +46,7 @@ public class AchievementGUI implements InventoryHolder {
      */
     private static int calculateTotalAchievementPoints(AchievementData achievementData) {
         int totalPoints = 0;
-        for (AchievementStatus achievementStatus : achievementData.getAchievementStatusList().values()) {
+        for (AchievementStatus achievementStatus : achievementData.getAchievementStatusMap().values()) {
             if (!achievementStatus.isUnlocked()) continue;
             totalPoints += achievementStatus.getAchievement().getPointValue();
         }
@@ -75,6 +75,9 @@ public class AchievementGUI implements InventoryHolder {
         ProgressUnlock progressUnlock = (ProgressUnlock) achievementStatus.getAchievement().getUnlockMethod();
         int max = progressUnlock.getAmountToUnlock();
         double progress = current / max;
+        if (current > max) {
+            progress = max;
+        }
         int progressRounded = (int) NumRounder.round(progress * 100);
         int percent = progressRounded / 10;
         return ChatColor.GREEN + bar.substring(0, percent) + ChatColor.WHITE + bar.substring(percent) +
@@ -92,7 +95,7 @@ public class AchievementGUI implements InventoryHolder {
         this.inventory.setItem(0, GUIUtil.closeButton());
         this.inventory.setItem(4, achievementInfoItem(achievementData));
         for (Achievement achievement : Achievement.values()) {
-            AchievementStatus achievementStatus = achievementData.getAchievementStatusList().get(achievement.getId());
+            AchievementStatus achievementStatus = achievementData.getAchievementStatusMap().get(achievement.getId());
             this.inventory.setItem(inventory.firstEmpty(), achievementItem(achievementStatus, achievement));
         }
     }
@@ -163,7 +166,7 @@ public class AchievementGUI implements InventoryHolder {
         for (AchievementSet achievementSet : AchievementSet.values()) {
             int total = AchievementSet.getTotalAchievementsInSet(achievementSet);
             int progress = 0;
-            for (AchievementStatus achievementStatus : achievementData.getAchievementStatusList().values()) {
+            for (AchievementStatus achievementStatus : achievementData.getAchievementStatusMap().values()) {
                 if (!achievementStatus.isUnlocked()) continue;
                 if (achievementStatus.getAchievement().getAchievementSet() != achievementSet) continue;
                 progress += 1;

@@ -49,7 +49,7 @@ public class AchievementGUIListener implements Listener {
             Achievement achievement = Achievement.getFromMaterial(e.getCurrentItem().getType());
             if (achievement == null) return;
             AchievementData achievementData = RunicAchievements.getAchievementManager().loadAchievementData(player.getUniqueId());
-            AchievementStatus achievementStatus = achievementData.getAchievementStatusList().get(achievement.getId());
+            AchievementStatus achievementStatus = achievementData.getAchievementStatusMap().get(achievement.getId());
             if (achievementStatus == null) return;
             if (!achievementStatus.isUnlocked()) return;
             player.closeInventory();

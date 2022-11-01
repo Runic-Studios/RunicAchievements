@@ -53,9 +53,9 @@ public class ExplorerSetManager {
         for (Achievement achievement : Achievement.values()) {
             if (achievement.getAchievementSet() != AchievementSet.EXPLORER) continue;
             if (!(achievement.getUnlockMethod() instanceof LocationUnlock)) continue;
-            if (achievementData.getAchievementStatusList().get(achievement.getId()) == null) continue;
-            if (achievementData.getAchievementStatusList().get(achievement.getId()).isUnlocked()) continue;
-            AchievementStatus achievementStatus = achievementData.getAchievementStatusList().get(achievement.getId());
+            if (achievementData.getAchievementStatusMap().get(achievement.getId()) == null) continue;
+            if (achievementData.getAchievementStatusMap().get(achievement.getId()).isUnlocked()) continue;
+            AchievementStatus achievementStatus = achievementData.getAchievementStatusMap().get(achievement.getId());
             String regionId = ((LocationUnlock) achievement.getUnlockMethod()).getRegionId();
             if (regionIds.contains(regionId)) {
                 Bukkit.getScheduler().runTask(RunicAchievements.getInstance(), () -> triggerUnlockSynchronously(achievementStatus, player));

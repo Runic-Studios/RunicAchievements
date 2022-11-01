@@ -17,7 +17,7 @@ public enum Achievement {
 
     FISH_10_COD
             (
-                    "fish-cod-1",
+                    "go-fish",
                     "Go Fish!",
                     "Obtained by fishing 1 cod!",
                     25,
@@ -113,8 +113,25 @@ public enum Achievement {
     }
 
     /**
-     * @param material
-     * @return
+     * Returns an achievement with an id matching parameter
+     *
+     * @param achievementId of the achievement
+     * @return the achievement or null if the id is not found
+     */
+    public static Achievement getFromId(String achievementId) {
+        for (Achievement achievement : Achievement.values()) {
+            if (achievement.getId().equals(achievementId)) {
+                return achievement;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Returns an achievement with a material matching parameter
+     *
+     * @param material of the achievement icon
+     * @return the achievement or null if the material is not found
      */
     public static Achievement getFromMaterial(Material material) {
         for (Achievement achievement : Achievement.values()) {
