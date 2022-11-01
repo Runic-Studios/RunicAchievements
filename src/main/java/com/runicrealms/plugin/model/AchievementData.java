@@ -20,9 +20,11 @@ public class AchievementData implements SessionDataNested {
     private final Map<String, AchievementStatus> achievementStatusMap;
 
     /**
-     * @param uuid
-     * @param playerMongoData
-     * @param jedis
+     * AchievementData binds player's uuid to a map of achievement id's to their current status, used to track their progress
+     *
+     * @param uuid            of the player
+     * @param playerMongoData of the login event
+     * @param jedis           the jedis resource
      */
     public AchievementData(UUID uuid, PlayerMongoData playerMongoData, Jedis jedis) {
         this.uuid = uuid;
@@ -44,8 +46,10 @@ public class AchievementData implements SessionDataNested {
     }
 
     /**
-     * @param uuid
-     * @param jedis
+     * AchievementData binds player's uuid to a map of achievement id's to their current status, used to track their progress
+     *
+     * @param uuid  of the player
+     * @param jedis the jedis resource
      */
     public AchievementData(UUID uuid, Jedis jedis) {
         this.uuid = uuid;
@@ -55,10 +59,6 @@ public class AchievementData implements SessionDataNested {
 
         for (String achievementId : RedisUtil.getNestedKeys(key, jedis)) {
             Map<String, String> fieldsMap = getDataMapFromJedis(jedis, achievementId);
-//            for (String fieldKey : fieldsMap.keySet()) {
-//                Bukkit.broadcastMessage(fieldKey + " is " + fieldsMap.get(fieldKey));
-//            }
-//            Bukkit.broadcastMessage("boolean would be: " + Boolean.parseBoolean(fieldsMap.get(AchievementField.IS_UNLOCKED.getField())));
             AchievementStatus achievementStatus = new AchievementStatus
                     (
                             uuid,
@@ -69,24 +69,20 @@ public class AchievementData implements SessionDataNested {
             achievementStatusMap.put(achievementId, achievementStatus);
         }
 
-
-        for (Achievement achievement : Achievement.values()) { // load blank values
+        for (Achievement achievement : Achievement.values()) { // load blank values for achievements w/ no data to prevent npe
             if (achievementStatusMap.get(achievement.getId()) != null) continue;
-            // Bukkit.broadcastMessage("here");
             achievementStatusMap.put(achievement.getId(), new AchievementStatus(uuid, achievement));
         }
-
-//        for (String achievementId : achievementStatusMap.keySet()) {
-//            Bukkit.broadcastMessage(achievementId + " is " + achievementStatusMap.get(achievementId).isUnlocked());
-//        }
 
         RunicAchievements.getAchievementManager().getAchievementDataMap().put(uuid, this); // add to in-game memory
     }
 
     /**
-     * @param achievementsSection
-     * @param achievementId
-     * @return
+     * Grabs the achievement progress matching id from the given achievement section of mongo
+     *
+     * @param achievementsSection the relevant section of the mongo data
+     * @param achievementId       id of the achievement
+     * @return the int progress value
      */
     private int getProgressFromDataSection(PlayerMongoDataSection achievementsSection, String achievementId) {
         if (achievementsSection.get(achievementId + "." + AchievementField.PROGRESS.getField(), Integer.class) != null) {
@@ -97,9 +93,11 @@ public class AchievementData implements SessionDataNested {
     }
 
     /**
-     * @param achievementsSection
-     * @param achievementId
-     * @return
+     * Grabs the achievement unlock boolean matching id from the given achievement section of mongo
+     *
+     * @param achievementsSection the relevant section of the mongo data
+     * @param achievementId       id of the achievement
+     * @return true if achievement is unlocked
      */
     private boolean getIsUnlockedFromDataSection(PlayerMongoDataSection achievementsSection, String achievementId) {
         if (achievementsSection.get(achievementId + "." + AchievementField.IS_UNLOCKED.getField(), Boolean.class) != null) {
