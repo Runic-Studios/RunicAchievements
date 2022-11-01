@@ -13,8 +13,10 @@ public class AchievementStatus {
     private boolean isUnlocked;
 
     /**
-     * @param uuid
-     * @param achievement
+     * A wrapper for an Achievement enum that also contains a player their progress
+     *
+     * @param uuid        of the player
+     * @param achievement from the enumerated list
      */
     public AchievementStatus(UUID uuid, Achievement achievement) {
         this.uuid = uuid;
@@ -24,10 +26,12 @@ public class AchievementStatus {
     }
 
     /**
-     * @param uuid
-     * @param achievement
-     * @param progress
-     * @param isUnlocked
+     * A wrapper for an Achievement enum that also contains a player their progress
+     *
+     * @param uuid        of the player
+     * @param achievement from the enumerated list
+     * @param progress    of the achievement (50 cod, etc.)
+     * @param isUnlocked  whether the achievement has been unlocked
      */
     public AchievementStatus(UUID uuid, Achievement achievement, int progress, boolean isUnlocked) {
         this.uuid = uuid;

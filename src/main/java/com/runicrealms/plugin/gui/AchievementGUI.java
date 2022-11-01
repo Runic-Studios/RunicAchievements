@@ -96,6 +96,7 @@ public class AchievementGUI implements InventoryHolder {
         this.inventory.setItem(4, achievementInfoItem(achievementData));
         for (Achievement achievement : Achievement.values()) {
             AchievementStatus achievementStatus = achievementData.getAchievementStatusMap().get(achievement.getId());
+            Bukkit.broadcastMessage("status for " + achievementStatus.getAchievement().getName() + " is " + achievementStatus.isUnlocked());
             this.inventory.setItem(inventory.firstEmpty(), achievementItem(achievementStatus, achievement));
         }
     }
