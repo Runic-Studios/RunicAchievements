@@ -8,6 +8,7 @@ import com.runicrealms.plugin.unlock.ProgressUnlock;
 import com.runicrealms.plugin.unlock.TriggerUnlock;
 import org.bukkit.Material;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -31,7 +32,7 @@ public enum Achievement {
                     AchievementSet.NONE,
                     true,
                     "",
-                    ""
+                    Collections.singletonList("")
             ),
     GUILDMASTER
             (
@@ -45,7 +46,7 @@ public enum Achievement {
                     AchievementSet.NONE,
                     true,
                     "",
-                    ""
+                    Collections.singletonList("")
             ),
     CAST_SPELLS
             (
@@ -59,21 +60,67 @@ public enum Achievement {
                     AchievementSet.NONE,
                     true,
                     "",
-                    ""
+                    Collections.singletonList("")
             ),
     THE_SILENT_CARRY
             (
                     "the-silent-carry",
                     "The Silent Carry",
-                    "Obtained by restoring 5,000,000 total health!",
+                    "Obtained by restoring✸ 5,000,000 total health!",
                     115,
                     Material.HEART_OF_THE_SEA,
                     new ProgressUnlock(5000000),
-                    Collections.singletonList(new TitleReward("The Faithful", false)),
+                    Collections.singletonList(new TitleReward("Faithful", false)),
                     AchievementSet.NONE,
                     true,
                     "",
-                    ""
+                    Collections.singletonList("")
+            ),
+    MAGIC_DAMAGE
+            (
+                    "magic-damage",
+                    "Abra Kadabra",
+                    "Obtained by dealing 10,000,000 total magicʔ damage!",
+                    115,
+                    Material.LAPIS_LAZULI,
+                    new ProgressUnlock(10000000),
+                    Collections.singletonList(new TitleReward("Wizard", false)),
+                    AchievementSet.NONE,
+                    true,
+                    "",
+                    Collections.singletonList("")
+            ),
+    PHYSICAL_DAMAGE
+            (
+                    "physical-damage",
+                    "Unsheathed Steel",
+                    "Obtained by dealing 10,000,000 total physical⚔ damage!",
+                    115,
+                    Material.REDSTONE,
+                    new ProgressUnlock(10000000),
+                    Collections.singletonList(new TitleReward("Brute", false)),
+                    AchievementSet.NONE,
+                    true,
+                    "",
+                    Collections.singletonList("")
+            ),
+
+    /*
+    Combatant Set
+     */
+    ARENA_MASTER
+            (
+                    "arena-master",
+                    "Battle Tested",
+                    "Obtained by winning 500 total arena matches!",
+                    135,
+                    Material.IRON_SWORD,
+                    new ProgressUnlock(500),
+                    Collections.singletonList(new TitleReward("Gladiator", false)),
+                    AchievementSet.COMBATANT,
+                    true,
+                    "",
+                    Collections.singletonList("")
             ),
 
     /*
@@ -91,7 +138,7 @@ public enum Achievement {
                     AchievementSet.MASTER_GATHERER,
                     true,
                     "Wheat",
-                    ""
+                    Collections.singletonList("")
             ),
     SMELL_ROSES
             (
@@ -105,9 +152,8 @@ public enum Achievement {
                     AchievementSet.MASTER_GATHERER,
                     true,
                     "Petunia",
-                    ""
+                    Collections.singletonList("")
             ),
-    // todo: NEEDS MULTIPLE MOBS. ADD ALL GOBLINS TO GOBLIN TOWN, ALL AZANA CITIZENS
     BOIL_EM_MASH_EM
             (
                     "boil-em-mash-em",
@@ -120,7 +166,7 @@ public enum Achievement {
                     AchievementSet.MASTER_GATHERER,
                     true,
                     "Potato",
-                    ""
+                    Collections.singletonList("")
             ),
     JUNGLE_LOG
             (
@@ -134,7 +180,7 @@ public enum Achievement {
                     AchievementSet.MASTER_GATHERER,
                     true,
                     "JungleWood",
-                    ""
+                    Collections.singletonList("")
             ),
     GO_FISH
             (
@@ -144,17 +190,17 @@ public enum Achievement {
                     100,
                     Material.COD,
                     new ProgressUnlock(10000),
-                    Collections.singletonList(new TitleReward("Fishing Regent", false)),
+                    Collections.singletonList(new TitleReward("Fishing Monarch", false)),
                     AchievementSet.MASTER_GATHERER,
                     true,
                     "Cod",
-                    ""
+                    Collections.singletonList("")
             ),
     ARE_YOU_INSANE
             (
                     "are-you-insane",
                     "Are You Insane?",
-                    "Obtained by fishing 10,000 pufferfish!",
+                    "Obtained by fishing 5,000 pufferfish!",
                     200,
                     Material.PUFFERFISH,
                     new ProgressUnlock(5000),
@@ -162,7 +208,7 @@ public enum Achievement {
                     AchievementSet.MASTER_GATHERER,
                     true,
                     "Pufferfish",
-                    ""
+                    Collections.singletonList("")
             ),
     THE_LUMBERJACK
             (
@@ -172,11 +218,11 @@ public enum Achievement {
                     100,
                     Material.OAK_LOG,
                     new ProgressUnlock(10000),
-                    Collections.singletonList(new TitleReward("The Lumberjack", false)),
+                    Collections.singletonList(new TitleReward("Lumberjack", false)),
                     AchievementSet.MASTER_GATHERER,
                     true,
                     "OakWood",
-                    ""
+                    Collections.singletonList("")
             ),
 
     /*
@@ -194,7 +240,7 @@ public enum Achievement {
                     AchievementSet.EXPLORER,
                     false,
                     "",
-                    ""
+                    Collections.singletonList("")
             ),
     DISCOVER_HILSTEAD
             (
@@ -208,7 +254,7 @@ public enum Achievement {
                     AchievementSet.EXPLORER,
                     false,
                     "",
-                    ""
+                    Collections.singletonList("")
             ),
     DISCOVER_MISTY_ALCOVE
             (
@@ -218,13 +264,12 @@ public enum Achievement {
                     15,
                     Material.WRITABLE_BOOK,
                     new LocationUnlock("misty_alcove"),
-                    Collections.singletonList(new TitleReward("?", false)),
+                    Collections.singletonList(new TitleReward("Vagabond", false)),
                     AchievementSet.EXPLORER,
                     false,
                     "",
-                    ""
+                    Collections.singletonList("")
             ),
-    // todo: finish misty alcove
     DISCOVER_WINTERVALE
             (
                     "discover-wintervale",
@@ -237,7 +282,7 @@ public enum Achievement {
                     AchievementSet.EXPLORER,
                     false,
                     "",
-                    ""
+                    Collections.singletonList("")
             ),
     DISCOVER_ISFODAR
             (
@@ -251,7 +296,7 @@ public enum Achievement {
                     AchievementSet.EXPLORER,
                     false,
                     "",
-                    ""
+                    Collections.singletonList("")
             ),
     DISCOVER_ZENYTH
             (
@@ -265,7 +310,7 @@ public enum Achievement {
                     AchievementSet.EXPLORER,
                     false,
                     "",
-                    ""
+                    Collections.singletonList("")
             ),
     DISCOVER_VALMYRA
             (
@@ -279,7 +324,7 @@ public enum Achievement {
                     AchievementSet.EXPLORER,
                     false,
                     "",
-                    ""
+                    Collections.singletonList("")
             ),
 
     /*
@@ -293,11 +338,11 @@ public enum Achievement {
                     25,
                     Material.BEE_SPAWN_EGG,
                     new ProgressUnlock(100),
-                    Collections.singletonList(new TitleReward("The Scarecrow", false)),
+                    Collections.singletonList(new TitleReward("Scarecrow", false)),
                     AchievementSet.SLAYER,
                     false,
                     "",
-                    "Scarecrow"
+                    Collections.singletonList("Scarecrow")
             ),
     SLAY_GOBLINS
             (
@@ -307,11 +352,21 @@ public enum Achievement {
                     50,
                     Material.ZOMBIE_SPAWN_EGG,
                     new ProgressUnlock(10000),
-                    Collections.singletonList(new TitleReward("The Goblin Cleaver", false)),
+                    Collections.singletonList(new TitleReward("Goblin Cleaver", false)),
                     AchievementSet.SLAYER,
                     false,
                     "",
-                    "azana_goblin"
+                    Arrays.asList
+                            (
+                                    "azana_goblin",
+                                    "GoblinArcher",
+                                    "GoblinCorpArcher",
+                                    "GoblinCorpFootSoldier",
+                                    "GoblinFootSoldier",
+                                    "GoblinRider",
+                                    "GoblinScout",
+                                    "GoblinThief"
+                            )
             ),
     SLAY_SEBATH
             (
@@ -321,11 +376,11 @@ public enum Achievement {
                     25,
                     Material.STRIDER_SPAWN_EGG,
                     new ProgressUnlock(1),
-                    Collections.singletonList(new TitleReward("The Headsman", false)),
+                    Collections.singletonList(new TitleReward("Headsman", false)),
                     AchievementSet.SLAYER,
                     false,
                     "",
-                    "sebath"
+                    Collections.singletonList("sebath")
             ),
     ILL_IN_PAIN
             (
@@ -339,7 +394,7 @@ public enum Achievement {
                     AchievementSet.SLAYER,
                     false,
                     "",
-                    "AzanaCitizen"
+                    Arrays.asList("AzanaCitizen", "AzanaCitizen2")
             ),
     GOT_MILK
             (
@@ -353,7 +408,7 @@ public enum Achievement {
                     AchievementSet.SLAYER,
                     false,
                     "",
-                    "CowMother"
+                    Collections.singletonList("CowMother")
             ),
     SLAY_INFERNAL_GRUNT
             (
@@ -367,7 +422,7 @@ public enum Achievement {
                     AchievementSet.SLAYER,
                     false,
                     "",
-                    "InfernalGrunt"
+                    Collections.singletonList("InfernalGrunt")
             ),
     SLAY_ELDRID
             (
@@ -377,11 +432,11 @@ public enum Achievement {
                     1000,
                     Material.DROWNED_SPAWN_EGG,
                     new ProgressUnlock(1),
-                    Collections.singletonList(new TitleReward("The Betrayer", false)),
+                    Collections.singletonList(new TitleReward("Betrayer", false)),
                     AchievementSet.SLAYER,
                     false,
                     "",
-                    "Eldrid"
+                    Collections.singletonList("Eldrid")
             );
 
     private final String id;
@@ -394,25 +449,26 @@ public enum Achievement {
     private final AchievementSet achievementSet;
     private final boolean shootsFirework;
     private final String runicItemId;
-    private final String internalMobName;
+    private final List<String> internalMobNames;
 
     /**
      * An enumerated list of achievements
      *
-     * @param id             of the achievement. MUST be unique. used for data storage
-     * @param name           of the achievement. for ui displays, chat
-     * @param description    of the achievement
-     * @param pointValue     the achievement points
-     * @param guiItem        the material of the achievement in the ui
-     * @param unlockMethod   how to unlock the achievement
-     * @param rewards        a list of rewards
-     * @param achievementSet some achievements belong to a greater 'set'
-     * @param shootsFirework whether the achievement will shoot a firework
-     * @param runicItemId    an optional param to add a runic item for gathering achievements
+     * @param id               of the achievement. MUST be unique. used for data storage
+     * @param name             of the achievement. for ui displays, chat
+     * @param description      of the achievement
+     * @param pointValue       the achievement points
+     * @param guiItem          the material of the achievement in the ui
+     * @param unlockMethod     how to unlock the achievement
+     * @param rewards          a list of rewards
+     * @param achievementSet   some achievements belong to a greater 'set'
+     * @param shootsFirework   whether the achievement will shoot a firework
+     * @param runicItemId      a param to add a runic item for gathering achievements
+     * @param internalMobNames a list of Strings of mobs to slay (if any)
      */
     Achievement(String id, String name, String description, int pointValue, Material guiItem,
                 UnlockMethod unlockMethod, List<Reward> rewards, AchievementSet achievementSet,
-                boolean shootsFirework, String runicItemId, String internalMobName) {
+                boolean shootsFirework, String runicItemId, List<String> internalMobNames) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -423,7 +479,7 @@ public enum Achievement {
         this.achievementSet = achievementSet;
         this.shootsFirework = shootsFirework;
         this.runicItemId = runicItemId;
-        this.internalMobName = internalMobName;
+        this.internalMobNames = internalMobNames;
     }
 
     public String getId() {
@@ -470,7 +526,7 @@ public enum Achievement {
      */
     public static Achievement getFromInternalMobName(String internalMobName) {
         for (Achievement achievement : Achievement.values()) {
-            if (achievement.getInternalMobName().equals(internalMobName)) {
+            if (achievement.getInternalMobNames().contains(internalMobName)) {
                 return achievement;
             }
         }
@@ -479,6 +535,10 @@ public enum Achievement {
 
     public String getRunicItemId() {
         return runicItemId;
+    }
+
+    public List<String> getInternalMobNames() {
+        return internalMobNames;
     }
 
     /**
@@ -528,9 +588,5 @@ public enum Achievement {
             }
         }
         return null;
-    }
-
-    public String getInternalMobName() {
-        return internalMobName;
     }
 }

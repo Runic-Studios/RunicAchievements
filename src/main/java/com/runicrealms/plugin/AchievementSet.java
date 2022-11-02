@@ -3,6 +3,7 @@ package com.runicrealms.plugin;
 public enum AchievementSet {
 
     NONE("None"),
+    COMBATANT("Combatant"),
     EXPLORER("Explorer"),
     MASTER_GATHERER("Master Gatherer"),
     SLAYER("Slayer");

@@ -74,7 +74,7 @@ public class AchievementGUI implements InventoryHolder {
         ProgressUnlock progressUnlock = (ProgressUnlock) achievementStatus.getAchievement().getUnlockMethod();
         int max = progressUnlock.getAmountToUnlock();
         double progress = current / max;
-        if (current > max) {
+        if (progress > max) {
             progress = max;
         }
         int progressRounded = (int) NumRounder.round(progress * 100);
