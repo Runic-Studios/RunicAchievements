@@ -578,12 +578,12 @@ public enum Achievement {
     /**
      * Returns an achievement with a material matching parameter
      *
-     * @param material of the achievement icon
+     * @param displayName of the achievement icon
      * @return the achievement or null if the material is not found
      */
-    public static Achievement getFromMaterial(Material material) {
+    public static Achievement getFromDisplayName(String displayName) {
         for (Achievement achievement : Achievement.values()) {
-            if (achievement.getGuiItem() == material) {
+            if (achievement.getName().equalsIgnoreCase(displayName)) {
                 return achievement;
             }
         }

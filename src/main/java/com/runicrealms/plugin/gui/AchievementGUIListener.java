@@ -49,7 +49,7 @@ public class AchievementGUIListener implements Listener {
         else if (material == AchievementGUI.REMOVE_TITLE_ITEM.getType()) {
             removeTitle(player);
         } else if (material != GUIUtil.borderItem().getType()) {
-            attemptToSetTitle(player, material);
+            attemptToSetTitle(player, ChatColor.stripColor(item.getItemMeta().getDisplayName()));
         }
     }
 
@@ -57,20 +57,17 @@ public class AchievementGUIListener implements Listener {
      * Attempts to set the achievement title for the given player, based on the material of the icon (must be unique)
      * Fails if the player has not unlocked the title
      *
-     * @param player   to check
-     * @param material of the achievement icon
+     * @param player      to check
+     * @param displayName of the achievement icon
      */
-    private void attemptToSetTitle(Player player, Material material) {
-        Achievement achievement = Achievement.getFromMaterial(material);
+    private void attemptToSetTitle(Player player, String displayName) {
+        Achievement achievement = Achievement.getFromDisplayName(displayName);
         if (achievement == null) return;
         AchievementData achievementData = RunicAchievements.getAchievementManager().loadAchievementData(player.getUniqueId());
         AchievementStatus achievementStatus = achievementData.getAchievementStatusMap().get(achievement.getId());
         if (achievementStatus == null) return;
         if (!achievementStatus.isUnlocked()) return;
         player.closeInventory();
-
-        // todo: too many achievements share materials. this needs to be changed
-
         
         for (Reward reward : achievement.getRewards()) {
             if (!(reward instanceof TitleReward)) continue;
