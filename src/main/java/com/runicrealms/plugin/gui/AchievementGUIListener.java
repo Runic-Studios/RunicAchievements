@@ -68,6 +68,10 @@ public class AchievementGUIListener implements Listener {
         if (achievementStatus == null) return;
         if (!achievementStatus.isUnlocked()) return;
         player.closeInventory();
+
+        // todo: too many achievements share materials. this needs to be changed
+
+        
         for (Reward reward : achievement.getRewards()) {
             if (!(reward instanceof TitleReward)) continue;
             TitleReward titleReward = (TitleReward) reward;
