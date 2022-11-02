@@ -3,6 +3,7 @@ package com.runicrealms.plugin;
 import co.aikar.commands.PaperCommandManager;
 import com.runicrealms.plugin.api.command.admin.ResetAchievementsCMD;
 import com.runicrealms.plugin.gui.AchievementGUIListener;
+import com.runicrealms.plugin.gui.NoneSetListener;
 import com.runicrealms.plugin.gui.PlayerMenuListener;
 import com.runicrealms.plugin.listener.AchievementUnlockListener;
 import com.runicrealms.plugin.listener.ExplorerSetManager;
@@ -65,7 +66,8 @@ public final class RunicAchievements extends JavaPlugin implements Listener {
                         new SlayerSetListener(),
                         new AchievementUnlockListener(),
                         new AchievementGUIListener(),
-                        new PlayerMenuListener()
+                        new PlayerMenuListener(),
+                        new NoneSetListener()
                 );
     }
 

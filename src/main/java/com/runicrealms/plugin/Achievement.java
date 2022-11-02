@@ -23,13 +23,55 @@ public enum Achievement {
             (
                     "so-it-begins",
                     "And So It Begins",
-                    "Obtained by slaying reaching level 60!",
+                    "Obtained by reaching level 60!",
                     25,
                     Material.EXPERIENCE_BOTTLE,
                     new TriggerUnlock(),
                     Collections.singletonList(new TitleReward("Neckbeard", false)),
                     AchievementSet.NONE,
-                    false,
+                    true,
+                    "",
+                    ""
+            ),
+    GUILDMASTER
+            (
+                    "guildmaster",
+                    "Making Your Mark",
+                    "Obtained by creating a guild!",
+                    25,
+                    Material.IRON_HORSE_ARMOR,
+                    new TriggerUnlock(),
+                    Collections.singletonList(new TitleReward("Guildmaster", false)),
+                    AchievementSet.NONE,
+                    true,
+                    "",
+                    ""
+            ),
+    CAST_SPELLS
+            (
+                    "cast-spells",
+                    "Runespeaker",
+                    "Obtained by casting 500,000 spells!",
+                    75,
+                    Material.NETHER_WART,
+                    new ProgressUnlock(500000),
+                    Collections.singletonList(new TitleReward("Arcanist", false)),
+                    AchievementSet.NONE,
+                    true,
+                    "",
+                    ""
+            ),
+    THE_SILENT_CARRY
+            (
+                    "the-silent-carry",
+                    "The Silent Carry",
+                    "Obtained by restoring 5,000,000 total health!",
+                    115,
+                    Material.HEART_OF_THE_SEA,
+                    new ProgressUnlock(5000000),
+                    Collections.singletonList(new TitleReward("The Faithful", false)),
+                    AchievementSet.NONE,
+                    true,
                     "",
                     ""
             ),
@@ -41,7 +83,7 @@ public enum Achievement {
             (
                     "gather-wheat",
                     "It Ain't Much",
-                    "Obtained by farming 7000 wheat!",
+                    "Obtained by farming 7,000 wheat!",
                     70,
                     Material.WHEAT,
                     new ProgressUnlock(7000),
@@ -51,11 +93,54 @@ public enum Achievement {
                     "Wheat",
                     ""
             ),
+    SMELL_ROSES
+            (
+                    "smell-roses",
+                    "Stop and Smell the Roses",
+                    "Obtained by harvesting 1,000 petunias!",
+                    70,
+                    Material.WHEAT,
+                    new ProgressUnlock(1000),
+                    Collections.singletonList(new TitleReward("Green Thumb", false)),
+                    AchievementSet.MASTER_GATHERER,
+                    true,
+                    "Petunia",
+                    ""
+            ),
+    // todo: NEEDS MULTIPLE MOBS. ADD ALL GOBLINS TO GOBLIN TOWN, ALL AZANA CITIZENS
+    BOIL_EM_MASH_EM
+            (
+                    "boil-em-mash-em",
+                    "Boil 'em Mash 'em",
+                    "Obtained by farming 1,000 potatoes!",
+                    35,
+                    Material.POTATO,
+                    new ProgressUnlock(1000),
+                    Collections.singletonList(new TitleReward("Tater Tot", false)),
+                    AchievementSet.MASTER_GATHERER,
+                    true,
+                    "Potato",
+                    ""
+            ),
+    JUNGLE_LOG
+            (
+                    "jungle-log",
+                    "George of the Jungle",
+                    "Obtained by felling 5,000 jungle trees!",
+                    60,
+                    Material.JUNGLE_LOG,
+                    new ProgressUnlock(5000),
+                    Collections.singletonList(new TitleReward("Harambe", false)),
+                    AchievementSet.MASTER_GATHERER,
+                    true,
+                    "JungleWood",
+                    ""
+            ),
     GO_FISH
             (
                     "go-fish",
                     "Go Fish!",
-                    "Obtained by fishing 10000 cod!",
+                    "Obtained by fishing 10,000 cod!",
                     100,
                     Material.COD,
                     new ProgressUnlock(10000),
@@ -69,8 +154,8 @@ public enum Achievement {
             (
                     "are-you-insane",
                     "Are You Insane?",
-                    "Obtained by fishing 10000 cod!",
-                    100,
+                    "Obtained by fishing 10,000 pufferfish!",
+                    200,
                     Material.PUFFERFISH,
                     new ProgressUnlock(5000),
                     Collections.singletonList(new TitleReward("Touch Grass", false)),
@@ -83,9 +168,9 @@ public enum Achievement {
             (
                     "the-lumberjack",
                     "Fires of Isengard",
-                    "Obtained by felling 10000 oak trees!",
+                    "Obtained by felling 10,000 oak trees!",
                     100,
-                    Material.OAK_WOOD,
+                    Material.OAK_LOG,
                     new ProgressUnlock(10000),
                     Collections.singletonList(new TitleReward("The Lumberjack", false)),
                     AchievementSet.MASTER_GATHERER,
@@ -125,6 +210,21 @@ public enum Achievement {
                     "",
                     ""
             ),
+    DISCOVER_MISTY_ALCOVE
+            (
+                    "discover-misty-alcove",
+                    "The Black Market",
+                    "Obtained by discovering the Misty Alcove!",
+                    15,
+                    Material.WRITABLE_BOOK,
+                    new LocationUnlock("misty_alcove"),
+                    Collections.singletonList(new TitleReward("?", false)),
+                    AchievementSet.EXPLORER,
+                    false,
+                    "",
+                    ""
+            ),
+    // todo: finish misty alcove
     DISCOVER_WINTERVALE
             (
                     "discover-wintervale",
@@ -156,7 +256,7 @@ public enum Achievement {
     DISCOVER_ZENYTH
             (
                     "discover-zenyth",
-                    "The Eastern Kingdoms",
+                    "The Eastern Kingdom",
                     "Obtained by discovering Zenyth!",
                     5,
                     Material.WRITABLE_BOOK,
@@ -190,7 +290,7 @@ public enum Achievement {
                     "the-scarecrow",
                     "Only Had a Brain",
                     "Obtained by defeating the Scarecrow 100 times!",
-                    10,
+                    25,
                     Material.BEE_SPAWN_EGG,
                     new ProgressUnlock(100),
                     Collections.singletonList(new TitleReward("The Scarecrow", false)),
@@ -203,8 +303,8 @@ public enum Achievement {
             (
                     "down-in-goblin-town",
                     "Down in Goblin Town!",
-                    "Obtained by slaying 10000 goblins!",
-                    5,
+                    "Obtained by slaying 10,000 goblins!",
+                    50,
                     Material.ZOMBIE_SPAWN_EGG,
                     new ProgressUnlock(10000),
                     Collections.singletonList(new TitleReward("The Goblin Cleaver", false)),
@@ -218,7 +318,7 @@ public enum Achievement {
                     "slay-sebath",
                     "Silkwood Hero",
                     "Obtained by slaying the orc Sebath!",
-                    5,
+                    25,
                     Material.STRIDER_SPAWN_EGG,
                     new ProgressUnlock(1),
                     Collections.singletonList(new TitleReward("The Headsman", false)),
@@ -231,7 +331,7 @@ public enum Achievement {
             (
                     "ill-in-pain",
                     "Ill in Pain",
-                    "Obtained by slaying 10000 Azanian Citizen!",
+                    "Obtained by slaying 10,000 Azanian Citizen!",
                     5,
                     Material.VILLAGER_SPAWN_EGG,
                     new ProgressUnlock(10000),
@@ -246,10 +346,10 @@ public enum Achievement {
                     "got-milk",
                     "Got Milk?",
                     "Obtained by slaying the Cow Mother 15 times!",
-                    5,
+                    25,
                     Material.COW_SPAWN_EGG,
                     new ProgressUnlock(15),
-                    Collections.singletonList(new TitleReward("Executioner", false)),
+                    Collections.singletonList(new TitleReward("Carnivore", false)),
                     AchievementSet.SLAYER,
                     false,
                     "",
@@ -259,8 +359,8 @@ public enum Achievement {
             (
                     "slay-infernal-grunt",
                     "Forged of Fire",
-                    "Obtained by slaying 1000 Infernal Grunts!",
-                    5,
+                    "Obtained by slaying 1,000 Infernal Grunts!",
+                    100,
                     Material.BLAZE_SPAWN_EGG,
                     new ProgressUnlock(1000),
                     Collections.singletonList(new TitleReward("Hellknight", false)),
@@ -274,7 +374,7 @@ public enum Achievement {
                     "slay-eldrid",
                     "The Frost Lords",
                     "Obtained by defeating The Frozen Fortress dungeon and slaying Eldrid the Betrayer!",
-                    5,
+                    1000,
                     Material.DROWNED_SPAWN_EGG,
                     new ProgressUnlock(1),
                     Collections.singletonList(new TitleReward("The Betrayer", false)),
