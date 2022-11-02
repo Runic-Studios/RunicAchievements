@@ -185,9 +185,9 @@ public class AchievementGUI implements InventoryHolder {
         AchievementData achievementData = RunicAchievements.getAchievementManager().loadAchievementData(player.getUniqueId());
         this.inventory.clear();
         GUIUtil.fillInventoryBorders(this.inventory);
-        this.inventory.setItem(0, GUIUtil.closeButton());
         this.inventory.setItem(4, achievementInfoItem(achievementData));
         this.inventory.setItem(5, REMOVE_TITLE_ITEM);
+        this.inventory.setItem(8, GUIUtil.closeButton());
         for (Achievement achievement : Achievement.values()) {
             AchievementStatus achievementStatus = achievementData.getAchievementStatusMap().get(achievement.getId());
             this.inventory.setItem(inventory.firstEmpty(), achievementItem(achievementStatus, achievement));
