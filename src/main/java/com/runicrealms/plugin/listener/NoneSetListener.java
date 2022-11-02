@@ -10,7 +10,7 @@ import com.runicrealms.plugin.events.SpellCastEvent;
 import com.runicrealms.plugin.events.SpellHealEvent;
 import com.runicrealms.plugin.model.AchievementData;
 import com.runicrealms.plugin.unlock.ProgressUnlock;
-import com.runicrealms.runicguilds.event.GuildCreationEvent;
+import com.runicrealms.runicguilds.api.event.GuildCreationEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
