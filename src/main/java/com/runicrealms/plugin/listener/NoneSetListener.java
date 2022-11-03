@@ -52,12 +52,12 @@ public class NoneSetListener implements Listener {
         if (achievementStatus.isUnlocked()) return;
 
         // Update the progress
-        int progress = achievementStatus.getProgress();
-        achievementStatus.setProgress(progress + event.getAmount());
         ProgressUnlock progressUnlock = (ProgressUnlock) achievementStatus.getAchievement().getUnlockMethod();
+        int progress = achievementStatus.getProgress();
+        achievementStatus.setProgress(Math.min(progress + event.getAmount(), progressUnlock.getAmountToUnlock()));
 
         // If the player has unlocked achievement
-        if (achievementStatus.getProgress() == progressUnlock.getAmountToUnlock()) {
+        if (achievementStatus.getProgress() >= progressUnlock.getAmountToUnlock()) {
             unlockAchievement(event.getPlayer(), achievementStatus);
         }
     }
@@ -72,11 +72,11 @@ public class NoneSetListener implements Listener {
 
         // Update the progress
         int progress = achievementStatus.getProgress();
-        achievementStatus.setProgress(progress + event.getAmount());
         ProgressUnlock progressUnlock = (ProgressUnlock) achievementStatus.getAchievement().getUnlockMethod();
+        achievementStatus.setProgress(Math.min(progress + event.getAmount(), progressUnlock.getAmountToUnlock()));
 
         // If the player has unlocked achievement
-        if (achievementStatus.getProgress() == progressUnlock.getAmountToUnlock()) {
+        if (achievementStatus.getProgress() >= progressUnlock.getAmountToUnlock()) {
             unlockAchievement(event.getPlayer(), achievementStatus);
         }
     }
@@ -91,11 +91,11 @@ public class NoneSetListener implements Listener {
 
         // Update the progress
         int progress = achievementStatus.getProgress();
-        achievementStatus.setProgress(progress + event.getAmount());
         ProgressUnlock progressUnlock = (ProgressUnlock) achievementStatus.getAchievement().getUnlockMethod();
+        achievementStatus.setProgress(Math.min(progress + event.getAmount(), progressUnlock.getAmountToUnlock()));
 
         // If the player has unlocked achievement
-        if (achievementStatus.getProgress() == progressUnlock.getAmountToUnlock()) {
+        if (achievementStatus.getProgress() >= progressUnlock.getAmountToUnlock()) {
             unlockAchievement(event.getPlayer(), achievementStatus);
         }
     }

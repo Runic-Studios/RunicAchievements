@@ -79,6 +79,8 @@ public class AchievementGUI implements InventoryHolder {
         }
         int progressRounded = (int) NumRounder.round(progress * 100);
         int percent = progressRounded / 10;
+        if (percent > bar.length())
+            percent = bar.length();
         return ChatColor.GREEN + bar.substring(0, percent) + ChatColor.WHITE + bar.substring(percent) +
                 " (" + ((int) current) + "/" + (max) + ") " +
                 ChatColor.GREEN + ChatColor.BOLD + progressRounded + "% ";
