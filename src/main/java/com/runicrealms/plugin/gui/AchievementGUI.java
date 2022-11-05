@@ -27,14 +27,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AchievementGUI implements InventoryHolder {
+    public static final int INVENTORY_SIZE = 28;
+    private static final int MAX_PAGES = 2;
 
     private final Inventory inventory;
     private final Player player;
+    private int currentPage;
 
     public AchievementGUI(Player player) {
         this.inventory = Bukkit.createInventory(this, 54, ColorUtil.format("&eYour Achievements"));
         this.player = player;
-        openMenu();
+        this.currentPage = 1;
+        updateMenu();
     }
 
     /**
@@ -60,6 +64,33 @@ public class AchievementGUI implements InventoryHolder {
 
     public Player getPlayer() {
         return this.player;
+    }
+
+    public int getCurrentPage() {
+        return currentPage;
+    }
+
+    private void setCurrentPage(int page) {
+        this.currentPage = page;
+    }
+
+    /**
+     *
+     */
+    public void openFirstPage() {
+        this.setCurrentPage(1);
+        this.updateMenu();
+        player.openInventory(inventory);
+    }
+
+    /**
+     *
+     */
+    public void openNextPage() {
+        if ((currentPage + 1) > MAX_PAGES) return;
+        this.setCurrentPage(currentPage + 1);
+        this.updateMenu();
+        player.openInventory(inventory);
     }
 
     /**
@@ -183,15 +214,31 @@ public class AchievementGUI implements InventoryHolder {
     /**
      * Opens the inventory associated w/ this GUI, ordering perks
      */
-    private void openMenu() {
+    public void updateMenu() {
         AchievementData achievementData = RunicAchievements.getAchievementManager().loadAchievementData(player.getUniqueId());
         this.inventory.clear();
         GUIUtil.fillInventoryBorders(this.inventory);
+        if (currentPage == 1)
+            this.inventory.setItem(0, GUIUtil.CLOSE_BUTTON);
+        else
+            this.inventory.setItem(0, GUIUtil.BACK_BUTTON);
         this.inventory.setItem(4, achievementInfoItem(achievementData));
         this.inventory.setItem(5, REMOVE_TITLE_ITEM);
-        this.inventory.setItem(8, GUIUtil.closeButton());
-        for (Achievement achievement : Achievement.values()) {
+        this.inventory.setItem(8, GUIUtil.FORWARD_BUTTON);
+        fillAchievementsForPage(achievementData);
+    }
+
+    /**
+     * @param achievementData
+     */
+    private void fillAchievementsForPage(AchievementData achievementData) {
+        int location = (currentPage - 1) * INVENTORY_SIZE; // holds our place in the list of pages
+        Achievement[] achievements = Achievement.values();
+
+        for (int i = location; i < achievements.length; i++) {
+            Achievement achievement = achievements[i];
             AchievementStatus achievementStatus = achievementData.getAchievementStatusMap().get(achievement.getId());
+            if (this.getInventory().firstEmpty() == -1) return; // inventory is filled
             this.inventory.setItem(inventory.firstEmpty(), achievementItem(achievementStatus, achievement));
         }
     }

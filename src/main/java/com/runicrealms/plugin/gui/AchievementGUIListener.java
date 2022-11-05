@@ -44,11 +44,15 @@ public class AchievementGUIListener implements Listener {
         Material material = item.getType();
         player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.5f, 1.0f);
         e.setCancelled(true);
-        if (material == GUIUtil.closeButton().getType())
+        if (material == GUIUtil.CLOSE_BUTTON.getType())
             e.getWhoClicked().closeInventory();
-        else if (material == AchievementGUI.REMOVE_TITLE_ITEM.getType()) {
+        else if (material == GUIUtil.BACK_BUTTON.getType())
+            achievementGUI.openFirstPage();
+        else if (material == AchievementGUI.REMOVE_TITLE_ITEM.getType())
             removeTitle(player);
-        } else if (material != GUIUtil.borderItem().getType()) {
+        else if (material == GUIUtil.FORWARD_BUTTON.getType())
+            achievementGUI.openNextPage();
+        else if (material != GUIUtil.BORDER_ITEM.getType()) {
             attemptToSetTitle(player, ChatColor.stripColor(item.getItemMeta().getDisplayName()));
         }
     }
@@ -68,7 +72,7 @@ public class AchievementGUIListener implements Listener {
         if (achievementStatus == null) return;
         if (!achievementStatus.isUnlocked()) return;
         player.closeInventory();
-        
+
         for (Reward reward : achievement.getRewards()) {
             if (!(reward instanceof TitleReward)) continue;
             TitleReward titleReward = (TitleReward) reward;

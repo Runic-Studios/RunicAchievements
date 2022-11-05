@@ -242,6 +242,20 @@ public enum Achievement {
                     "",
                     Collections.singletonList("")
             ),
+    DISCOVER_WHALETOWN
+            (
+                    "discover-whaletown",
+                    "Land Lubber",
+                    "Obtained by discovering Whaletown!",
+                    5,
+                    Material.WRITABLE_BOOK,
+                    new LocationUnlock("whaletown"),
+                    Collections.singletonList(new TitleReward("Sailor", false)),
+                    AchievementSet.EXPLORER,
+                    false,
+                    "",
+                    Collections.singletonList("")
+            ),
     DISCOVER_HILSTEAD
             (
                     "discover-hilstead",
@@ -264,7 +278,7 @@ public enum Achievement {
                     15,
                     Material.WRITABLE_BOOK,
                     new LocationUnlock("misty_alcove"),
-                    Collections.singletonList(new TitleReward("Vagabond", false)),
+                    Collections.singletonList(new TitleReward("Merchant", false)),
                     AchievementSet.EXPLORER,
                     false,
                     "",
@@ -279,6 +293,20 @@ public enum Achievement {
                     Material.WRITABLE_BOOK,
                     new LocationUnlock("wintervale"),
                     Collections.singletonList(new TitleReward("White Mage", false)),
+                    AchievementSet.EXPLORER,
+                    false,
+                    "",
+                    Collections.singletonList("")
+            ),
+    DISCOVER_DEAD_MANS_REST
+            (
+                    "discover-dead-mans-rest",
+                    "Ghost Town",
+                    "Obtained by discovering Dead Man's Rest!",
+                    5,
+                    Material.WRITABLE_BOOK,
+                    new LocationUnlock("dead_mans_rest"),
+                    Collections.singletonList(new TitleReward("Vagabond", false)),
                     AchievementSet.EXPLORER,
                     false,
                     "",
