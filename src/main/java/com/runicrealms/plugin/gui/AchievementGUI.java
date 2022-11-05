@@ -75,7 +75,7 @@ public class AchievementGUI implements InventoryHolder {
     }
 
     /**
-     *
+     * Sets the internal current page to 1, updates the inventory, and opens it
      */
     public void openFirstPage() {
         this.setCurrentPage(1);
@@ -84,7 +84,7 @@ public class AchievementGUI implements InventoryHolder {
     }
 
     /**
-     *
+     * Sets the internal current page to 1 + current, updates the inventory, and opens it
      */
     public void openNextPage() {
         if ((currentPage + 1) > MAX_PAGES) return;

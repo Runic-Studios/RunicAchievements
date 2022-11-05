@@ -315,12 +315,26 @@ public enum Achievement {
     DISCOVER_ISFODAR
             (
                     "discover-isfodar",
-                    "The Hidden Kingdom",
+                    "Kingdom of the Elves",
                     "Obtained by discovering Isfodar!",
                     5,
                     Material.WRITABLE_BOOK,
                     new LocationUnlock("isfodar"),
                     Collections.singletonList(new TitleReward("Elven", false)),
+                    AchievementSet.EXPLORER,
+                    false,
+                    "",
+                    Collections.singletonList("")
+            ),
+    DISCOVER_TIRENEAS
+            (
+                    "discover-tireneas",
+                    "Taking Refuge",
+                    "Obtained by discovering Tireneas!",
+                    5,
+                    Material.WRITABLE_BOOK,
+                    new LocationUnlock("tireneas"),
+                    Collections.singletonList(new TitleReward("Traveler", false)),
                     AchievementSet.EXPLORER,
                     false,
                     "",
@@ -340,6 +354,34 @@ public enum Achievement {
                     "",
                     Collections.singletonList("")
             ),
+    DISCOVER_NAHEEN
+            (
+                    "discover-naheen",
+                    "Diamond in the Rough",
+                    "Obtained by discovering Naheen!",
+                    5,
+                    Material.WRITABLE_BOOK,
+                    new LocationUnlock("naheen"),
+                    Collections.singletonList(new TitleReward("Ruffian", false)),
+                    AchievementSet.EXPLORER,
+                    false,
+                    "",
+                    Collections.singletonList("")
+            ),
+    DISCOVER_NAZMORA
+            (
+                    "discover-nazmora",
+                    "Lok'tar Ogar",
+                    "Obtained by discovering Nazmora!",
+                    5,
+                    Material.WRITABLE_BOOK,
+                    new LocationUnlock("nazmora"),
+                    Collections.singletonList(new TitleReward("Orc", false)),
+                    AchievementSet.EXPLORER,
+                    false,
+                    "",
+                    Collections.singletonList("")
+            ),
     DISCOVER_VALMYRA
             (
                     "discover-valmyra",
@@ -349,6 +391,20 @@ public enum Achievement {
                     Material.WRITABLE_BOOK,
                     new LocationUnlock("valmyra"),
                     Collections.singletonList(new TitleReward("Flamebringer", false)),
+                    AchievementSet.EXPLORER,
+                    false,
+                    "",
+                    Collections.singletonList("")
+            ),
+    DISCOVER_FROSTS_END
+            (
+                    "discover-frosts-end",
+                    "The Frost Lords",
+                    "Obtained by discovering Frost's End!",
+                    5,
+                    Material.WRITABLE_BOOK,
+                    new LocationUnlock("frosts_end"),
+                    Collections.singletonList(new TitleReward("Frost Lord", false)),
                     AchievementSet.EXPLORER,
                     false,
                     "",
@@ -455,7 +511,7 @@ public enum Achievement {
     SLAY_ELDRID
             (
                     "slay-eldrid",
-                    "The Frost Lords",
+                    "Realm's Champion",
                     "Obtained by defeating The Frozen Fortress dungeon and slaying Eldrid the Betrayer!",
                     1000,
                     Material.DROWNED_SPAWN_EGG,
