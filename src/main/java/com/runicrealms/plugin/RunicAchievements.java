@@ -6,6 +6,7 @@ import com.runicrealms.plugin.gui.AchievementGUIListener;
 import com.runicrealms.plugin.gui.PlayerMenuListener;
 import com.runicrealms.plugin.listener.*;
 import com.runicrealms.plugin.model.AchievementManager;
+import com.runicrealms.plugin.shop.FastTravelShopInitializer;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -38,6 +39,10 @@ public final class RunicAchievements extends JavaPlugin implements Listener {
         achievementManager = new AchievementManager();
         explorerSetManager = new ExplorerSetManager();
         commandManager = new PaperCommandManager(this);
+        /*
+        Shops
+         */
+        new FastTravelShopInitializer();
         registerCommands();
         registerEvents();
     }
