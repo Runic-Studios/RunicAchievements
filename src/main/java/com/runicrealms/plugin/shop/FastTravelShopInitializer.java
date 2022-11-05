@@ -27,8 +27,9 @@ public class FastTravelShopInitializer {
         meta.setDisplayName(ChatColor.GREEN + "Fast Travel: " + travelLocation.getDisplay());
         meta.setLore(Arrays.asList
                 (
+                        "",
                         ChatColor.GRAY + "Required Achievement: ",
-                        ChatColor.DARK_AQUA + " -" + requiredAchievement,
+                        ChatColor.DARK_AQUA + "- [" + ChatColor.AQUA + requiredAchievement + ChatColor.DARK_AQUA + "]",
                         "",
                         ChatColor.GRAY + "Fast travel to this destination!"
                 ));
