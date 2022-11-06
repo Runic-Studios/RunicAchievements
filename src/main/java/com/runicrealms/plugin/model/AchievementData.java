@@ -3,6 +3,7 @@ package com.runicrealms.plugin.model;
 import com.runicrealms.plugin.Achievement;
 import com.runicrealms.plugin.AchievementStatus;
 import com.runicrealms.plugin.RunicAchievements;
+import com.runicrealms.plugin.database.MongoData;
 import com.runicrealms.plugin.database.PlayerMongoData;
 import com.runicrealms.plugin.database.PlayerMongoDataSection;
 import com.runicrealms.plugin.redis.RedisUtil;
@@ -153,7 +154,8 @@ public class AchievementData implements SessionDataNested {
     }
 
     @Override
-    public PlayerMongoData writeToMongo(PlayerMongoData playerMongoData, int... slot) { // don't need slot, achievements are acc-wide
+    public MongoData writeToMongo(MongoData mongoData, int... slot) { // don't need slot, achievements are acc-wide
+        PlayerMongoData playerMongoData = (PlayerMongoData) mongoData;
         PlayerMongoDataSection achievementSection;
         for (String achievementId : this.achievementStatusMap.keySet()) {
             achievementSection = (PlayerMongoDataSection) playerMongoData.getSection(DATA_SECTION_ACHIEVEMENTS + "." + achievementId);
