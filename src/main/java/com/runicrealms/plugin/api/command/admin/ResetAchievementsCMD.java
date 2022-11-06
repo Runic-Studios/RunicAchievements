@@ -30,7 +30,7 @@ public class ResetAchievementsCMD extends BaseCommand {
         }
         try (Jedis jedis = RunicCoreAPI.getNewJedisResource()) {
             UUID uuid = player.getUniqueId();
-            AchievementData achievementData = RunicAchievements.getAchievementManager().loadAchievementData(uuid);
+            AchievementData achievementData = (AchievementData) RunicAchievements.getAchievementManager().loadSessionData(uuid);
             for (String achievementId : achievementData.getAchievementStatusMap().keySet()) {
                 Achievement achievement = Achievement.getFromId(achievementId);
                 achievementData.getAchievementStatusMap().put(achievementId, new AchievementStatus(uuid, achievement));

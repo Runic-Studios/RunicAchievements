@@ -101,7 +101,7 @@ public class AchievementUnlockListener implements Listener {
      */
     private void handleTitleReward(Player player) {
         try (Jedis jedis = RunicCoreAPI.getNewJedisResource()) {
-            AchievementData achievementData = RunicAchievements.getAchievementManager().loadAchievementData(player.getUniqueId());
+            AchievementData achievementData = (AchievementData) RunicAchievements.getAchievementManager().loadSessionData(player.getUniqueId());
             achievementData.writeToJedis(jedis);
         }
     }

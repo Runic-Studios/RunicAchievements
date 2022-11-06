@@ -43,7 +43,7 @@ public class AchievementData implements SessionDataNested {
         }
 
         this.writeToJedis(jedis);
-        RunicAchievements.getAchievementManager().getAchievementDataMap().put(uuid, this); // add to in-game memory
+        RunicAchievements.getAchievementManager().getSessionDataMap().put(uuid, this); // add to in-game memory
     }
 
     /**
@@ -75,7 +75,7 @@ public class AchievementData implements SessionDataNested {
             achievementStatusMap.put(achievement.getId(), new AchievementStatus(uuid, achievement));
         }
 
-        RunicAchievements.getAchievementManager().getAchievementDataMap().put(uuid, this); // add to in-game memory
+        RunicAchievements.getAchievementManager().getSessionDataMap().put(uuid, this); // add to in-game memory
     }
 
     /**

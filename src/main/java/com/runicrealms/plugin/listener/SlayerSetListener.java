@@ -30,7 +30,7 @@ public class SlayerSetListener implements Listener {
         if (achievement == null) return; // Ensure some achievement listens for this mob
 
         UUID uuid = event.getKiller().getUniqueId();
-        AchievementData achievementData = RunicAchievements.getAchievementManager().loadAchievementData(uuid);
+        AchievementData achievementData = (AchievementData) RunicAchievements.getAchievementManager().loadSessionData(uuid);
         AchievementStatus achievementStatus = achievementData.getAchievementStatusMap().get(achievement.getId());
         if (achievementStatus.isUnlocked()) return; // Ignore completed achievements
 

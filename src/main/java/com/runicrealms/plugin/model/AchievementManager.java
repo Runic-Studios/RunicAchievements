@@ -15,67 +15,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class AchievementManager implements Listener {
+public class AchievementManager implements Listener, SessionDataNestedManager {
 
-    private final Map<UUID, AchievementData> achievementDataMap;
+    private final Map<UUID, SessionDataNested> achievementDataMap;
 
     public AchievementManager() {
         achievementDataMap = new HashMap<>();
         RunicAchievements.getInstance().getServer().getPluginManager().registerEvents(this, RunicAchievements.getInstance());
-    }
-
-    @EventHandler
-    public void onCharacterSelect(CharacterSelectEvent event) {
-        UUID uuid = event.getPlayer().getUniqueId();
-        loadAchievementData(uuid);
-    }
-
-    @EventHandler
-    public void onCharacterQuit(CharacterQuitEvent event) {
-        AchievementData achievementData = loadAchievementData(event.getPlayer().getUniqueId());
-        achievementData.writeToJedis(event.getJedis());
-        achievementDataMap.remove(event.getPlayer().getUniqueId());
-    }
-
-    @EventHandler
-    public void onMongoSave(MongoSaveEvent event) {
-        for (UUID uuid : event.getPlayersToSave().keySet()) {
-            PlayerMongoData playerMongoData = event.getPlayersToSave().get(uuid).getPlayerMongoData();
-            AchievementData achievementData = loadAchievementData(uuid);
-            achievementData.writeToMongo(playerMongoData);
-        }
-        event.markPluginSaved("achievements");
-    }
-
-    /**
-     * Tries to retrieve an AchievementData object from server memory, otherwise falls back to redis / mongo
-     *
-     * @param uuid of the player
-     * @return an AchievementData object
-     */
-    public AchievementData loadAchievementData(UUID uuid) {
-        // Step 1: check if achievement data is memoized
-        AchievementData achievementData = achievementDataMap.get(uuid);
-        if (achievementData != null) return achievementData;
-        // Step 2: check if achievement data is cached in redis
-        try (Jedis jedis = RunicCoreAPI.getNewJedisResource()) {
-            return loadAchievementData(uuid, jedis);
-        }
-    }
-
-    /**
-     * Creates an AchievementData object. Tries to build it from session storage (Redis) first,
-     * then falls back to Mongo
-     *
-     * @param uuid of player who is attempting to load their data
-     */
-    public AchievementData loadAchievementData(UUID uuid, Jedis jedis) {
-        // Step 2: check if achievement data is cached in redis
-        AchievementData achievementData = checkRedisForAchievementData(uuid, jedis);
-        if (achievementData != null) return achievementData;
-        // Step 2: check mongo documents
-        PlayerMongoData playerMongoData = new PlayerMongoData(uuid.toString());
-        return new AchievementData(uuid, playerMongoData, jedis);
     }
 
     /**
@@ -86,14 +32,72 @@ public class AchievementManager implements Listener {
      * @param jedis the jedis resource
      * @return a AchievementData object if it is found in redis
      */
-    public AchievementData checkRedisForAchievementData(UUID uuid, Jedis jedis) {
+    @Override
+    public SessionDataNested checkJedisForSessionData(UUID uuid, Jedis jedis) {
         if (!RedisUtil.getNestedKeys(uuid + ":" + AchievementData.DATA_SECTION_ACHIEVEMENTS, jedis).isEmpty()) {
             return new AchievementData(uuid, jedis);
         }
         return null;
     }
 
-    public Map<UUID, AchievementData> getAchievementDataMap() {
-        return achievementDataMap;
+    @Override
+    public Map<UUID, SessionDataNested> getSessionDataMap() {
+        return this.achievementDataMap;
+    }
+
+    /**
+     * Tries to retrieve an AchievementData object from server memory, otherwise falls back to redis / mongo
+     *
+     * @param uuid of the player
+     * @return an AchievementData object
+     */
+    @Override
+    public SessionDataNested loadSessionData(UUID uuid) {
+        // Step 1: check if achievement data is memoized
+        AchievementData achievementData = (AchievementData) achievementDataMap.get(uuid);
+        if (achievementData != null) return achievementData;
+        // Step 2: check if achievement data is cached in redis
+        try (Jedis jedis = RunicCoreAPI.getNewJedisResource()) {
+            return loadSessionData(uuid, jedis);
+        }
+    }
+
+    /**
+     * Creates an AchievementData object. Tries to build it from session storage (Redis) first,
+     * then falls back to Mongo
+     *
+     * @param uuid of player who is attempting to load their data
+     */
+    @Override
+    public SessionDataNested loadSessionData(UUID uuid, Jedis jedis) {
+        // Step 2: check if achievement data is cached in redis
+        AchievementData achievementData = (AchievementData) checkJedisForSessionData(uuid, jedis);
+        if (achievementData != null) return achievementData;
+        // Step 2: check mongo documents
+        PlayerMongoData playerMongoData = new PlayerMongoData(uuid.toString());
+        return new AchievementData(uuid, playerMongoData, jedis);
+    }
+
+    @EventHandler
+    public void onCharacterQuit(CharacterQuitEvent event) {
+        AchievementData achievementData = (AchievementData) loadSessionData(event.getPlayer().getUniqueId());
+        achievementData.writeToJedis(event.getJedis());
+        achievementDataMap.remove(event.getPlayer().getUniqueId());
+    }
+
+    @EventHandler
+    public void onCharacterSelect(CharacterSelectEvent event) {
+        UUID uuid = event.getPlayer().getUniqueId();
+        loadSessionData(uuid);
+    }
+
+    @EventHandler
+    public void onMongoSave(MongoSaveEvent event) {
+        for (UUID uuid : event.getPlayersToSave().keySet()) {
+            PlayerMongoData playerMongoData = event.getPlayersToSave().get(uuid).getPlayerMongoData();
+            AchievementData achievementData = (AchievementData) loadSessionData(uuid);
+            achievementData.writeToMongo(playerMongoData);
+        }
+        event.markPluginSaved("achievements");
     }
 }

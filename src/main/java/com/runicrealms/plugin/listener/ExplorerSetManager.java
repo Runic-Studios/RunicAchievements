@@ -49,7 +49,7 @@ public class ExplorerSetManager {
     private void checkForAchievementUnlock(Player player) {
         List<String> regionIds = RunicCoreAPI.getRegionIds(player.getLocation());
         if (regionIds.isEmpty()) return;
-        AchievementData achievementData = RunicAchievements.getAchievementManager().loadAchievementData(player.getUniqueId());
+        AchievementData achievementData = (AchievementData) RunicAchievements.getAchievementManager().loadSessionData(player.getUniqueId());
         for (Achievement achievement : Achievement.values()) {
             if (achievement.getAchievementSet() != AchievementSet.EXPLORER) continue;
             if (!(achievement.getUnlockMethod() instanceof LocationUnlock)) continue;

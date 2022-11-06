@@ -67,7 +67,7 @@ public class AchievementGUIListener implements Listener {
     private void attemptToSetTitle(Player player, String displayName) {
         Achievement achievement = Achievement.getFromDisplayName(displayName);
         if (achievement == null) return;
-        AchievementData achievementData = RunicAchievements.getAchievementManager().loadAchievementData(player.getUniqueId());
+        AchievementData achievementData = (AchievementData) RunicAchievements.getAchievementManager().loadSessionData(player.getUniqueId());
         AchievementStatus achievementStatus = achievementData.getAchievementStatusMap().get(achievement.getId());
         if (achievementStatus == null) return;
         if (!achievementStatus.isUnlocked()) return;

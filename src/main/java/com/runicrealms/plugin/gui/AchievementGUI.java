@@ -215,7 +215,7 @@ public class AchievementGUI implements InventoryHolder {
      * Opens the inventory associated w/ this GUI, ordering perks
      */
     public void updateMenu() {
-        AchievementData achievementData = RunicAchievements.getAchievementManager().loadAchievementData(player.getUniqueId());
+        AchievementData achievementData = (AchievementData) RunicAchievements.getAchievementManager().loadSessionData(player.getUniqueId());
         this.inventory.clear();
         GUIUtil.fillInventoryBorders(this.inventory);
         if (currentPage == 1)

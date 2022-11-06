@@ -148,7 +148,7 @@ public class FastTravelShopInitializer {
      */
     private RunicItemRunnable runWagonBuy(TravelLocation travelLocation, String achievementId) {
         return player -> {
-            AchievementData achievementData = RunicAchievements.getAchievementManager().loadAchievementData(player.getUniqueId());
+            AchievementData achievementData = (AchievementData) RunicAchievements.getAchievementManager().loadSessionData(player.getUniqueId());
             AchievementStatus achievementStatus = achievementData.getAchievementStatusMap().get(achievementId);
             if (!achievementId.equals("") && !achievementStatus.isUnlocked()) {
                 player.playSound(player.getLocation(), Sound.ENTITY_GENERIC_EXTINGUISH_FIRE, 0.5f, 1.0f);
