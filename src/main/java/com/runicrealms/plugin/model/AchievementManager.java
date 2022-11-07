@@ -17,7 +17,7 @@ import java.util.UUID;
 
 public class AchievementManager implements Listener, SessionDataNestedManager {
 
-    private final Map<UUID, SessionDataNested> achievementDataMap;
+    private final Map<Object, SessionDataNested> achievementDataMap; // keyed by uuid
 
     public AchievementManager() {
         achievementDataMap = new HashMap<>();
@@ -28,12 +28,13 @@ public class AchievementManager implements Listener, SessionDataNestedManager {
      * Checks redis to see if the currently selected character's achievement data is cached.
      * And if it is, returns the AchievementData object
      *
-     * @param uuid  of player to check
-     * @param jedis the jedis resource
+     * @param object uuid of player to check
+     * @param jedis  the jedis resource
      * @return a AchievementData object if it is found in redis
      */
     @Override
-    public SessionDataNested checkJedisForSessionData(UUID uuid, Jedis jedis) {
+    public SessionDataNested checkJedisForSessionData(Object object, Jedis jedis) {
+        UUID uuid = (UUID) object;
         if (!RedisUtil.getNestedKeys(uuid + ":" + AchievementData.DATA_SECTION_ACHIEVEMENTS, jedis).isEmpty()) {
             return new AchievementData(uuid, jedis);
         }
@@ -41,18 +42,19 @@ public class AchievementManager implements Listener, SessionDataNestedManager {
     }
 
     @Override
-    public Map<UUID, SessionDataNested> getSessionDataMap() {
+    public Map<Object, SessionDataNested> getSessionDataMap() {
         return this.achievementDataMap;
     }
 
     /**
      * Tries to retrieve an AchievementData object from server memory, otherwise falls back to redis / mongo
      *
-     * @param uuid of the player
+     * @param object uuid of the player
      * @return an AchievementData object
      */
     @Override
-    public SessionDataNested loadSessionData(UUID uuid) {
+    public SessionDataNested loadSessionData(Object object) {
+        UUID uuid = (UUID) object;
         // Step 1: check if achievement data is memoized
         AchievementData achievementData = (AchievementData) achievementDataMap.get(uuid);
         if (achievementData != null) return achievementData;
@@ -66,10 +68,11 @@ public class AchievementManager implements Listener, SessionDataNestedManager {
      * Creates an AchievementData object. Tries to build it from session storage (Redis) first,
      * then falls back to Mongo
      *
-     * @param uuid of player who is attempting to load their data
+     * @param object uuid of player who is attempting to load their data
      */
     @Override
-    public SessionDataNested loadSessionData(UUID uuid, Jedis jedis) {
+    public SessionDataNested loadSessionData(Object object, Jedis jedis) {
+        UUID uuid = (UUID) object;
         // Step 2: check if achievement data is cached in redis
         AchievementData achievementData = (AchievementData) checkJedisForSessionData(uuid, jedis);
         if (achievementData != null) return achievementData;
