@@ -33,7 +33,7 @@ public class AchievementManager implements Listener, SessionDataNestedManager {
      * @return a AchievementData object if it is found in redis
      */
     @Override
-    public SessionDataNested checkJedisForSessionData(Object object, Jedis jedis) {
+    public SessionDataNested checkJedisForSessionData(Object object, Jedis jedis, int... slot) {
         UUID uuid = (UUID) object;
         if (!RedisUtil.getNestedKeys(uuid + ":" + AchievementData.DATA_SECTION_ACHIEVEMENTS, jedis).isEmpty()) {
             return new AchievementData(uuid, jedis);
@@ -53,7 +53,7 @@ public class AchievementManager implements Listener, SessionDataNestedManager {
      * @return an AchievementData object
      */
     @Override
-    public SessionDataNested loadSessionData(Object object) {
+    public SessionDataNested loadSessionData(Object object, int... slot) {
         UUID uuid = (UUID) object;
         // Step 1: check if achievement data is memoized
         AchievementData achievementData = (AchievementData) achievementDataMap.get(uuid);
@@ -71,7 +71,7 @@ public class AchievementManager implements Listener, SessionDataNestedManager {
      * @param object uuid of player who is attempting to load their data
      */
     @Override
-    public SessionDataNested loadSessionData(Object object, Jedis jedis) {
+    public SessionDataNested loadSessionData(Object object, Jedis jedis, int... slot) {
         UUID uuid = (UUID) object;
         // Step 2: check if achievement data is cached in redis
         AchievementData achievementData = (AchievementData) checkJedisForSessionData(uuid, jedis);
