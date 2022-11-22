@@ -8,6 +8,7 @@ import com.runicrealms.plugin.database.PlayerMongoData;
 import com.runicrealms.plugin.database.event.MongoSaveEvent;
 import com.runicrealms.plugin.redis.RedisUtil;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import redis.clients.jedis.Jedis;
 
@@ -73,7 +74,7 @@ public class AchievementManager implements Listener, SessionDataNestedManager {
     @Override
     public SessionDataNested loadSessionData(Object object, Jedis jedis, int... slot) {
         UUID uuid = (UUID) object;
-        // Step 2: check if achievement data is cached in redis
+        // Step 1: check if achievement data is cached in redis
         AchievementData achievementData = (AchievementData) checkJedisForSessionData(uuid, jedis);
         if (achievementData != null) return achievementData;
         // Step 2: check mongo documents
@@ -94,7 +95,7 @@ public class AchievementManager implements Listener, SessionDataNestedManager {
         loadSessionData(uuid);
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOW) // early
     public void onMongoSave(MongoSaveEvent event) {
         for (UUID uuid : event.getPlayersToSave().keySet()) {
             PlayerMongoData playerMongoData = event.getPlayersToSave().get(uuid).getPlayerMongoData();
