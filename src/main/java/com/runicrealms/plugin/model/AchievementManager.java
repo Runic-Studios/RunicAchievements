@@ -1,12 +1,14 @@
 package com.runicrealms.plugin.model;
 
 import com.runicrealms.plugin.RunicAchievements;
-import com.runicrealms.plugin.api.RunicCoreAPI;
+import com.runicrealms.plugin.RunicCore;
 import com.runicrealms.plugin.character.api.CharacterQuitEvent;
 import com.runicrealms.plugin.character.api.CharacterSelectEvent;
 import com.runicrealms.plugin.database.PlayerMongoData;
 import com.runicrealms.plugin.database.event.MongoSaveEvent;
+import com.runicrealms.plugin.model.callbacks.ReadCallbackNested;
 import com.runicrealms.plugin.redis.RedisUtil;
+import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -57,12 +59,7 @@ public class AchievementManager implements Listener, SessionDataNestedManager {
     public SessionDataNested loadSessionData(Object object, int... slot) {
         UUID uuid = (UUID) object;
         // Step 1: check if achievement data is memoized
-        AchievementData achievementData = (AchievementData) achievementDataMap.get(uuid);
-        if (achievementData != null) return achievementData;
-        // Step 2: check if achievement data is cached in redis
-        try (Jedis jedis = RunicCoreAPI.getNewJedisResource()) {
-            return loadSessionData(uuid, jedis);
-        }
+        return achievementDataMap.get(uuid);
     }
 
     /**
@@ -72,14 +69,20 @@ public class AchievementManager implements Listener, SessionDataNestedManager {
      * @param object uuid of player who is attempting to load their data
      */
     @Override
-    public SessionDataNested loadSessionData(Object object, Jedis jedis, int... slot) {
-        UUID uuid = (UUID) object;
-        // Step 1: check if achievement data is cached in redis
-        AchievementData achievementData = (AchievementData) checkJedisForSessionData(uuid, jedis);
-        if (achievementData != null) return achievementData;
-        // Step 2: check mongo documents
-        PlayerMongoData playerMongoData = new PlayerMongoData(uuid.toString());
-        return new AchievementData(uuid, playerMongoData, jedis);
+    public void loadSessionData(Object object, Jedis jedis, ReadCallbackNested callback, int... slot) {
+        Bukkit.getScheduler().runTaskAsynchronously(RunicAchievements.getInstance(), () -> {
+            UUID uuid = (UUID) object;
+            // Step 1: check if achievement data is cached in redis
+            AchievementData achievementDataRedis = (AchievementData) checkJedisForSessionData(uuid, jedis);
+            if (achievementDataRedis != null) {
+                Bukkit.getScheduler().runTask(RunicCore.getInstance(), () -> callback.onQueryComplete(achievementDataRedis));
+            }
+            // Step 2: check mongo documents
+            else {
+                AchievementData achievementDataMongo = new AchievementData(uuid, new PlayerMongoData(uuid.toString()), jedis);
+                Bukkit.getScheduler().runTask(RunicCore.getInstance(), () -> callback.onQueryComplete(achievementDataMongo));
+            }
+        });
     }
 
     @EventHandler
@@ -92,16 +95,21 @@ public class AchievementManager implements Listener, SessionDataNestedManager {
     @EventHandler
     public void onCharacterSelect(CharacterSelectEvent event) {
         UUID uuid = event.getPlayer().getUniqueId();
-        loadSessionData(uuid);
+        loadSessionData(uuid, event.getJedis(), sessionDataNested -> {
+        });
     }
 
     @EventHandler(priority = EventPriority.LOW) // early
     public void onMongoSave(MongoSaveEvent event) {
+        UUID lastKey = event.getPlayersToSave().lastKey();
         for (UUID uuid : event.getPlayersToSave().keySet()) {
             PlayerMongoData playerMongoData = event.getPlayersToSave().get(uuid).getPlayerMongoData();
-            AchievementData achievementData = (AchievementData) loadSessionData(uuid);
-            achievementData.writeToMongo(playerMongoData);
+            loadSessionData(uuid, event.getJedis(), sessionDataNested -> {
+                sessionDataNested.writeToMongo(playerMongoData);
+                if (uuid.equals(lastKey)) {
+                    event.markPluginSaved("achievements");
+                }
+            });
         }
-        event.markPluginSaved("achievements");
     }
 }
