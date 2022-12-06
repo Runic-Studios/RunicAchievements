@@ -53,6 +53,7 @@ public class NoneSetListener implements Listener {
 
     @EventHandler
     public void onLevelChange(PlayerLevelChangeEvent event) {
+        if (event.getOldLevel() == 0) return; // max level players logging in
         if (event.getNewLevel() != 60) return;
         UUID uuid = event.getPlayer().getUniqueId();
         AchievementData achievementData = (AchievementData) RunicAchievements.getAchievementManager().loadSessionData(uuid);
