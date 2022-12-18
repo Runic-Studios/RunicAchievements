@@ -1,7 +1,6 @@
 package com.runicrealms.plugin.shop;
 
 import com.runicrealms.plugin.*;
-import com.runicrealms.plugin.api.RunicCoreAPI;
 import com.runicrealms.plugin.item.shops.RunicItemRunnable;
 import com.runicrealms.plugin.item.shops.RunicShopGeneric;
 import com.runicrealms.plugin.item.shops.RunicShopItem;
@@ -17,7 +16,7 @@ import java.util.LinkedHashSet;
 public class FastTravelShopInitializer {
 
     public FastTravelShopInitializer() {
-        RunicCoreAPI.registerRunicItemShop(fastTravelShop());
+        RunicCore.getShopAPI().registerRunicItemShop(fastTravelShop());
     }
 
     private ItemStack wagonItem(TravelLocation travelLocation, String requiredAchievement) {

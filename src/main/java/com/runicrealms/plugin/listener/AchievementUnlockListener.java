@@ -2,8 +2,8 @@ package com.runicrealms.plugin.listener;
 
 import com.runicrealms.plugin.Achievement;
 import com.runicrealms.plugin.RunicAchievements;
+import com.runicrealms.plugin.RunicCore;
 import com.runicrealms.plugin.api.Reward;
-import com.runicrealms.plugin.api.RunicCoreAPI;
 import com.runicrealms.plugin.api.event.AchievementUnlockEvent;
 import com.runicrealms.plugin.events.RunicExpEvent;
 import com.runicrealms.plugin.model.AchievementData;
@@ -100,7 +100,7 @@ public class AchievementUnlockListener implements Listener {
      * @param player to award title to
      */
     private void handleTitleReward(Player player) {
-        try (Jedis jedis = RunicCoreAPI.getNewJedisResource()) {
+        try (Jedis jedis = RunicCore.getRedisAPI().getNewJedisResource()) {
             AchievementData achievementData = (AchievementData) RunicAchievements.getAchievementManager().loadSessionData(player.getUniqueId());
             achievementData.writeToJedis(jedis);
         }

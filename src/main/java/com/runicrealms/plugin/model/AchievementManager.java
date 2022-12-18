@@ -1,12 +1,11 @@
 package com.runicrealms.plugin.model;
 
 import com.runicrealms.plugin.RunicAchievements;
-import com.runicrealms.plugin.api.RunicCoreAPI;
+import com.runicrealms.plugin.RunicCore;
 import com.runicrealms.plugin.character.api.CharacterQuitEvent;
 import com.runicrealms.plugin.character.api.CharacterSelectEvent;
 import com.runicrealms.plugin.database.PlayerMongoData;
 import com.runicrealms.plugin.database.event.MongoSaveEvent;
-import com.runicrealms.plugin.redis.RedisUtil;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -36,7 +35,7 @@ public class AchievementManager implements Listener, SessionDataNestedManager {
     @Override
     public SessionDataNested checkJedisForSessionData(Object object, Jedis jedis, int... slot) {
         UUID uuid = (UUID) object;
-        if (!RedisUtil.getNestedKeys(uuid + ":" + AchievementData.DATA_SECTION_ACHIEVEMENTS, jedis).isEmpty()) {
+        if (!RunicCore.getRedisAPI().getNestedKeys(uuid + ":" + AchievementData.DATA_SECTION_ACHIEVEMENTS, jedis).isEmpty()) {
             return new AchievementData(uuid, jedis);
         }
         return null;
@@ -60,7 +59,7 @@ public class AchievementManager implements Listener, SessionDataNestedManager {
         AchievementData achievementData = (AchievementData) achievementDataMap.get(uuid);
         if (achievementData != null) return achievementData;
         // Step 2: check if achievement data is cached in redis
-        try (Jedis jedis = RunicCoreAPI.getNewJedisResource()) {
+        try (Jedis jedis = RunicCore.getRedisAPI().getNewJedisResource()) {
             return loadSessionData(uuid, jedis);
         }
     }

@@ -1,10 +1,6 @@
 package com.runicrealms.plugin.listener;
 
-import com.runicrealms.plugin.Achievement;
-import com.runicrealms.plugin.AchievementSet;
-import com.runicrealms.plugin.AchievementStatus;
-import com.runicrealms.plugin.RunicAchievements;
-import com.runicrealms.plugin.api.RunicCoreAPI;
+import com.runicrealms.plugin.*;
 import com.runicrealms.plugin.api.event.AchievementUnlockEvent;
 import com.runicrealms.plugin.model.AchievementData;
 import com.runicrealms.plugin.unlock.LocationUnlock;
@@ -32,14 +28,6 @@ public class ExplorerSetManager {
                 );
     }
 
-    private void checkForLocationAchievements() {
-        for (UUID loaded : RunicCoreAPI.getLoadedCharacters()) {
-            Player player = Bukkit.getPlayer(loaded);
-            if (player == null) continue;
-            checkForAchievementUnlock(player);
-        }
-    }
-
     /**
      * Checks all regions the current player is standing in.
      * If the region ID matches one for an achievement,
@@ -47,7 +35,7 @@ public class ExplorerSetManager {
      * @param player to check
      */
     private void checkForAchievementUnlock(Player player) {
-        List<String> regionIds = RunicCoreAPI.getRegionIds(player.getLocation());
+        List<String> regionIds = RunicCore.getRegionAPI().getRegionIds(player.getLocation());
         if (regionIds.isEmpty()) return;
         AchievementData achievementData = (AchievementData) RunicAchievements.getAchievementManager().loadSessionData(player.getUniqueId());
         for (Achievement achievement : Achievement.values()) {
@@ -61,6 +49,14 @@ public class ExplorerSetManager {
                 Bukkit.getScheduler().runTask(RunicAchievements.getInstance(), () -> triggerUnlockSynchronously(achievementStatus, player));
                 return;
             }
+        }
+    }
+
+    private void checkForLocationAchievements() {
+        for (UUID loaded : RunicCore.getCharacterAPI().getLoadedCharacters()) {
+            Player player = Bukkit.getPlayer(loaded);
+            if (player == null) continue;
+            checkForAchievementUnlock(player);
         }
     }
 

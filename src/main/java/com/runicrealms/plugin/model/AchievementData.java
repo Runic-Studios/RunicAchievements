@@ -3,10 +3,10 @@ package com.runicrealms.plugin.model;
 import com.runicrealms.plugin.Achievement;
 import com.runicrealms.plugin.AchievementStatus;
 import com.runicrealms.plugin.RunicAchievements;
+import com.runicrealms.plugin.RunicCore;
 import com.runicrealms.plugin.database.MongoData;
 import com.runicrealms.plugin.database.PlayerMongoData;
 import com.runicrealms.plugin.database.PlayerMongoDataSection;
-import com.runicrealms.plugin.redis.RedisUtil;
 import redis.clients.jedis.Jedis;
 
 import java.util.*;
@@ -58,7 +58,7 @@ public class AchievementData implements SessionDataNested {
 
         this.achievementStatusMap = new HashMap<>();
 
-        for (String achievementId : RedisUtil.getNestedKeys(key, jedis)) {
+        for (String achievementId : RunicCore.getRedisAPI().getNestedKeys(key, jedis)) {
             Map<String, String> fieldsMap = getDataMapFromJedis(jedis, achievementId);
             AchievementStatus achievementStatus = new AchievementStatus
                     (
@@ -149,7 +149,7 @@ public class AchievementData implements SessionDataNested {
         String key = uuid + ":" + DATA_SECTION_ACHIEVEMENTS;
         for (String achievementId : achievementStatusMap.keySet()) {
             jedis.hmset(key + ":" + achievementId, this.toMap(achievementStatusMap.get(achievementId)));
-            jedis.expire(key + ":" + achievementId, RedisUtil.EXPIRE_TIME);
+            jedis.expire(key + ":" + achievementId, RunicCore.getRedisAPI().getExpireTime());
         }
     }
 
