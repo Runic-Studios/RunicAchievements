@@ -84,7 +84,9 @@ public class AchievementManager implements Listener, SessionDataNestedManager {
     @EventHandler
     public void onCharacterQuit(CharacterQuitEvent event) {
         AchievementData achievementData = (AchievementData) loadSessionData(event.getPlayer().getUniqueId());
-        achievementData.writeToJedis(event.getJedis());
+        try (Jedis jedis = RunicCore.getRedisAPI().getNewJedisResource()) {
+            achievementData.writeToJedis(jedis);
+        }
         achievementDataMap.remove(event.getPlayer().getUniqueId());
     }
 
