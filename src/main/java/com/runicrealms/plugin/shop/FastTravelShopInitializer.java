@@ -11,7 +11,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedHashSet;
+import java.util.Map;
 
 public class FastTravelShopInitializer {
 
@@ -36,19 +38,22 @@ public class FastTravelShopInitializer {
         return wagonItem;
     }
 
+    private static final Map<String, Integer> REQUIRED_ITEMS = new HashMap<String, Integer>() {{
+        put("Coin", 0);
+    }};
+
     public RunicShopGeneric fastTravelShop() {
         LinkedHashSet<RunicShopItem> shopItems = new LinkedHashSet<>();
         shopItems.add
                 (
-                        new RunicShopItem(0, "Coin",
+                        new RunicShopItem(REQUIRED_ITEMS,
                                 wagonItem(TravelLocation.AZANA, "None"),
-                                "FREE",
                                 runWagonBuy(TravelLocation.AZANA, "")
                         )
                 );
         shopItems.add
                 (
-                        new RunicAchievementItem(0, "Coin",
+                        new RunicAchievementItem(REQUIRED_ITEMS,
                                 wagonItem(TravelLocation.KOLDORE, Achievement.DISCOVER_KOLDORE.getName()),
                                 runWagonBuy(TravelLocation.KOLDORE, Achievement.DISCOVER_KOLDORE.getId()),
                                 Achievement.DISCOVER_KOLDORE
@@ -56,7 +61,7 @@ public class FastTravelShopInitializer {
                 );
         shopItems.add
                 (
-                        new RunicAchievementItem(0, "Coin",
+                        new RunicAchievementItem(REQUIRED_ITEMS,
                                 wagonItem(TravelLocation.WHALETOWN, Achievement.DISCOVER_WHALETOWN.getName()),
                                 runWagonBuy(TravelLocation.WHALETOWN, Achievement.DISCOVER_WHALETOWN.getId()),
                                 Achievement.DISCOVER_WHALETOWN
@@ -64,7 +69,7 @@ public class FastTravelShopInitializer {
                 );
         shopItems.add
                 (
-                        new RunicAchievementItem(0, "Coin",
+                        new RunicAchievementItem(REQUIRED_ITEMS,
                                 wagonItem(TravelLocation.HILSTEAD, Achievement.DISCOVER_HILSTEAD.getName()),
                                 runWagonBuy(TravelLocation.HILSTEAD, Achievement.DISCOVER_HILSTEAD.getId()),
                                 Achievement.DISCOVER_HILSTEAD
@@ -72,7 +77,7 @@ public class FastTravelShopInitializer {
                 );
         shopItems.add
                 (
-                        new RunicAchievementItem(0, "Coin",
+                        new RunicAchievementItem(REQUIRED_ITEMS,
                                 wagonItem(TravelLocation.WINTERVALE, Achievement.DISCOVER_WINTERVALE.getName()),
                                 runWagonBuy(TravelLocation.WINTERVALE, Achievement.DISCOVER_WINTERVALE.getId()),
                                 Achievement.DISCOVER_WINTERVALE
@@ -80,7 +85,7 @@ public class FastTravelShopInitializer {
                 );
         shopItems.add
                 (
-                        new RunicAchievementItem(0, "Coin",
+                        new RunicAchievementItem(REQUIRED_ITEMS,
                                 wagonItem(TravelLocation.DEAD_MANS_REST, Achievement.DISCOVER_DEAD_MANS_REST.getName()),
                                 runWagonBuy(TravelLocation.DEAD_MANS_REST, Achievement.DISCOVER_DEAD_MANS_REST.getId()),
                                 Achievement.DISCOVER_DEAD_MANS_REST
@@ -88,7 +93,7 @@ public class FastTravelShopInitializer {
                 );
         shopItems.add
                 (
-                        new RunicAchievementItem(0, "Coin",
+                        new RunicAchievementItem(REQUIRED_ITEMS,
                                 wagonItem(TravelLocation.ISFODAR, Achievement.DISCOVER_ISFODAR.getName()),
                                 runWagonBuy(TravelLocation.ISFODAR, Achievement.DISCOVER_ISFODAR.getId()),
                                 Achievement.DISCOVER_ISFODAR
@@ -96,7 +101,7 @@ public class FastTravelShopInitializer {
                 );
         shopItems.add
                 (
-                        new RunicAchievementItem(0, "Coin",
+                        new RunicAchievementItem(REQUIRED_ITEMS,
                                 wagonItem(TravelLocation.TIRNEAS, Achievement.DISCOVER_TIRENEAS.getName()),
                                 runWagonBuy(TravelLocation.TIRNEAS, Achievement.DISCOVER_TIRENEAS.getId()),
                                 Achievement.DISCOVER_TIRENEAS
@@ -104,7 +109,7 @@ public class FastTravelShopInitializer {
                 );
         shopItems.add
                 (
-                        new RunicAchievementItem(0, "Coin",
+                        new RunicAchievementItem(REQUIRED_ITEMS,
                                 wagonItem(TravelLocation.ZENYTH, Achievement.DISCOVER_ZENYTH.getName()),
                                 runWagonBuy(TravelLocation.ZENYTH, Achievement.DISCOVER_ZENYTH.getId()),
                                 Achievement.DISCOVER_ZENYTH
@@ -112,7 +117,7 @@ public class FastTravelShopInitializer {
                 );
         shopItems.add
                 (
-                        new RunicAchievementItem(0, "Coin",
+                        new RunicAchievementItem(REQUIRED_ITEMS,
                                 wagonItem(TravelLocation.NAHEEN, Achievement.DISCOVER_NAHEEN.getName()),
                                 runWagonBuy(TravelLocation.NAHEEN, Achievement.DISCOVER_NAHEEN.getId()),
                                 Achievement.DISCOVER_NAHEEN
@@ -120,7 +125,7 @@ public class FastTravelShopInitializer {
                 );
         shopItems.add
                 (
-                        new RunicAchievementItem(0, "Coin",
+                        new RunicAchievementItem(REQUIRED_ITEMS,
                                 wagonItem(TravelLocation.NAZMORA, Achievement.DISCOVER_NAZMORA.getName()),
                                 runWagonBuy(TravelLocation.NAZMORA, Achievement.DISCOVER_NAZMORA.getId()),
                                 Achievement.DISCOVER_NAZMORA
@@ -128,7 +133,7 @@ public class FastTravelShopInitializer {
                 );
         shopItems.add
                 (
-                        new RunicAchievementItem(0, "Coin",
+                        new RunicAchievementItem(REQUIRED_ITEMS,
                                 wagonItem(TravelLocation.FROSTS_END, Achievement.DISCOVER_FROSTS_END.getName()),
                                 runWagonBuy(TravelLocation.FROSTS_END, Achievement.DISCOVER_FROSTS_END.getId()),
                                 Achievement.DISCOVER_FROSTS_END
