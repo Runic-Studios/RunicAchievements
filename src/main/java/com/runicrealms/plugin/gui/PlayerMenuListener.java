@@ -26,7 +26,7 @@ public class PlayerMenuListener implements Listener {
         Player player = (Player) event.getWhoClicked();
         if (event.getClickedInventory() == null) return;
         if (event.getClickedInventory().getType() != InventoryType.CRAFTING) return;
-        if (player.getGameMode() != GameMode.SURVIVAL) return;
+        if (player.getGameMode() == GameMode.CREATIVE) return;
         if (event.getClickedInventory().equals(event.getView().getBottomInventory())) return;
         if (!PLAYER_CRAFTING_SLOTS.contains(event.getSlot())) return;
         event.setCancelled(true);
