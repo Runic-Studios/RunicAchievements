@@ -10,7 +10,6 @@ import org.bukkit.event.HandlerList;
  * This custom event is called when a player unlocks an achievement
  */
 public class AchievementUnlockEvent extends Event implements Cancellable {
-
     private static final HandlerList handlers = new HandlerList();
     private final Player player;
     private final Achievement achievement;
@@ -31,12 +30,18 @@ public class AchievementUnlockEvent extends Event implements Cancellable {
         return handlers;
     }
 
-    public Player getPlayer() {
-        return player;
-    }
-
     public Achievement getAchievement() {
         return achievement;
+    }
+
+    @SuppressWarnings("NullableProblems")
+    @Override
+    public HandlerList getHandlers() {
+        return handlers;
+    }
+
+    public Player getPlayer() {
+        return player;
     }
 
     @Override
@@ -47,11 +52,5 @@ public class AchievementUnlockEvent extends Event implements Cancellable {
     @Override
     public void setCancelled(boolean arg0) {
         this.isCancelled = arg0;
-    }
-
-    @SuppressWarnings("NullableProblems")
-    @Override
-    public HandlerList getHandlers() {
-        return handlers;
     }
 }

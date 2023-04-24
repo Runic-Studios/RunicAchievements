@@ -3,14 +3,18 @@ package com.runicrealms.plugin;
 import java.util.UUID;
 
 /**
- *
+ * A wrapper for an Achievement enum that also contains a player their progress
  */
 public class AchievementStatus {
-
-    private final UUID uuid;
-    private final Achievement achievement;
+    private UUID uuid;
+    private Achievement achievement;
     private int progress;
     private boolean isUnlocked;
+
+    @SuppressWarnings("unused")
+    public AchievementStatus() {
+        // Default constructor for Spring
+    }
 
     /**
      * A wrapper for an Achievement enum that also contains a player their progress
@@ -40,12 +44,12 @@ public class AchievementStatus {
         this.isUnlocked = isUnlocked;
     }
 
-    public UUID getUuid() {
-        return uuid;
-    }
-
     public Achievement getAchievement() {
         return achievement;
+    }
+
+    public void setAchievement(Achievement achievement) {
+        this.achievement = achievement;
     }
 
     public int getProgress() {
@@ -54,6 +58,14 @@ public class AchievementStatus {
 
     public void setProgress(int progress) {
         this.progress = progress;
+    }
+
+    public UUID getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(UUID uuid) {
+        this.uuid = uuid;
     }
 
     public boolean isUnlocked() {
