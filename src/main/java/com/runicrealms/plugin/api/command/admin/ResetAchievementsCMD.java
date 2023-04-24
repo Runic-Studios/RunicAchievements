@@ -1,7 +1,7 @@
 package com.runicrealms.plugin.api.command.admin;
 
-import co.aikar.commands.BaseCommand;
-import co.aikar.commands.annotation.*;
+import com.runicrealms.libs.acf.BaseCommand;
+import com.runicrealms.libs.acf.annotation.*;
 import com.runicrealms.plugin.Achievement;
 import com.runicrealms.plugin.AchievementStatus;
 import com.runicrealms.plugin.RunicAchievements;
@@ -30,7 +30,7 @@ public class ResetAchievementsCMD extends BaseCommand {
         }
         try (Jedis jedis = RunicCore.getRedisAPI().getNewJedisResource()) {
             UUID uuid = player.getUniqueId();
-            AchievementData achievementData = (AchievementData) RunicAchievements.getAchievementManager().loadSessionData(uuid);
+            AchievementData achievementData = (AchievementData) RunicAchievements.getAPI().getSessionData(uuid);
             for (String achievementId : achievementData.getAchievementStatusMap().keySet()) {
                 Achievement achievement = Achievement.getFromId(achievementId);
                 achievementData.getAchievementStatusMap().put(achievementId, new AchievementStatus(uuid, achievement));

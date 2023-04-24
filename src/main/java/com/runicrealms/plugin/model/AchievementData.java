@@ -2,48 +2,44 @@ package com.runicrealms.plugin.model;
 
 import com.runicrealms.plugin.Achievement;
 import com.runicrealms.plugin.AchievementStatus;
-import com.runicrealms.plugin.RunicAchievements;
 import com.runicrealms.plugin.RunicCore;
-import com.runicrealms.plugin.database.MongoData;
-import com.runicrealms.plugin.database.PlayerMongoData;
-import com.runicrealms.plugin.database.PlayerMongoDataSection;
+import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 import redis.clients.jedis.Jedis;
 
 import java.util.*;
 
-public class AchievementData implements SessionDataNested {
+@Document(collection = "achievements")
+public class AchievementData implements SessionDataMongo, SessionDataNested {
     public static final String DATA_SECTION_ACHIEVEMENTS = "achievements";
     public static final List<String> FIELDS = new ArrayList<String>() {{
         add(AchievementField.PROGRESS.getField());
         add(AchievementField.IS_UNLOCKED.getField());
     }};
-    private final UUID uuid;
-    private final Map<String, AchievementStatus> achievementStatusMap;
+    @Id
+    private ObjectId id;
+    @Field("playerUuid")
+    private UUID uuid;
+    private Map<String, AchievementStatus> achievementStatusMap;
+
+    @SuppressWarnings("unused")
+    public AchievementData() {
+        // Default constructor for Spring
+    }
 
     /**
-     * AchievementData binds player's uuid to a map of achievement id's to their current status, used to track their progress
-     *
-     * @param uuid            of the player
-     * @param playerMongoData of the login event
-     * @param jedis           the jedis resource
+     * Constructor for new players
      */
-    public AchievementData(UUID uuid, PlayerMongoData playerMongoData, Jedis jedis) {
+    public AchievementData(ObjectId id, UUID uuid) {
+        this.id = id;
         this.uuid = uuid;
         this.achievementStatusMap = new HashMap<>();
-        for (Achievement achievement : Achievement.values()) {
-
-            if (playerMongoData.get(DATA_SECTION_ACHIEVEMENTS + "." + achievement.getId()) != null) {
-                PlayerMongoDataSection achievementsSection = (PlayerMongoDataSection) playerMongoData.getSection(DATA_SECTION_ACHIEVEMENTS);
-                int progress = getProgressFromDataSection(achievementsSection, achievement.getId());
-                boolean isUnlocked = getIsUnlockedFromDataSection(achievementsSection, achievement.getId());
-                achievementStatusMap.put(achievement.getId(), new AchievementStatus(uuid, achievement, progress, isUnlocked));
-            } else {
-                achievementStatusMap.put(achievement.getId(), new AchievementStatus(uuid, achievement));
-            }
+        for (Achievement achievement : Achievement.values()) { // Load blank values for achievements w/ no data to prevent npe
+            achievementStatusMap.put(achievement.getId(), new AchievementStatus(uuid, achievement));
         }
-
-        this.writeToJedis(jedis);
-        RunicAchievements.getAchievementManager().getSessionDataMap().put(uuid, this); // add to in-game memory
     }
 
     /**
@@ -54,11 +50,14 @@ public class AchievementData implements SessionDataNested {
      */
     public AchievementData(UUID uuid, Jedis jedis) {
         this.uuid = uuid;
-        String key = uuid + ":" + DATA_SECTION_ACHIEVEMENTS;
+        String database = RunicCore.getDataAPI().getMongoDatabase().getName();
+        String rootKey = database + ":" + uuid + ":" + DATA_SECTION_ACHIEVEMENTS;
 
         this.achievementStatusMap = new HashMap<>();
 
-        for (String achievementId : RunicCore.getRedisAPI().getNestedKeys(key, jedis)) {
+        for (String key : RunicCore.getRedisAPI().getNewJedisResource().keys(rootKey + ":*")) {
+            int lastIndex = key.lastIndexOf(':');
+            String achievementId = lastIndex != -1 ? key.substring(lastIndex + 1) : key;
             Map<String, String> fieldsMap = getDataMapFromJedis(jedis, achievementId);
             AchievementStatus achievementStatus = new AchievementStatus
                     (
@@ -70,55 +69,43 @@ public class AchievementData implements SessionDataNested {
             achievementStatusMap.put(achievementId, achievementStatus);
         }
 
-        for (Achievement achievement : Achievement.values()) { // load blank values for achievements w/ no data to prevent npe
-            if (achievementStatusMap.get(achievement.getId()) != null) continue;
+        for (Achievement achievement : Achievement.values()) { // Load blank values for achievements w/ no data to prevent npe
+            if (achievementStatusMap.get(achievement.getId()) != null)
+                continue; // Ignore where there is data
             achievementStatusMap.put(achievement.getId(), new AchievementStatus(uuid, achievement));
         }
-
-        RunicAchievements.getAchievementManager().getSessionDataMap().put(uuid, this); // add to in-game memory
     }
 
-    /**
-     * Grabs the achievement progress matching id from the given achievement section of mongo
-     *
-     * @param achievementsSection the relevant section of the mongo data
-     * @param achievementId       id of the achievement
-     * @return the int progress value
-     */
-    private int getProgressFromDataSection(PlayerMongoDataSection achievementsSection, String achievementId) {
-        if (achievementsSection.get(achievementId + "." + AchievementField.PROGRESS.getField(), Integer.class) != null) {
-            return achievementsSection.get(achievementId + "." + AchievementField.PROGRESS.getField(), Integer.class);
-        } else {
-            return 0;
-        }
-    }
-
-    /**
-     * Grabs the achievement unlock boolean matching id from the given achievement section of mongo
-     *
-     * @param achievementsSection the relevant section of the mongo data
-     * @param achievementId       id of the achievement
-     * @return true if achievement is unlocked
-     */
-    private boolean getIsUnlockedFromDataSection(PlayerMongoDataSection achievementsSection, String achievementId) {
-        if (achievementsSection.get(achievementId + "." + AchievementField.IS_UNLOCKED.getField(), Boolean.class) != null) {
-            return achievementsSection.get(achievementId + "." + AchievementField.IS_UNLOCKED.getField(), Boolean.class);
-        } else {
-            return false;
-        }
-    }
-
-    public UUID getUuid() {
-        return uuid;
+    @SuppressWarnings("unchecked")
+    @Override
+    public AchievementData addDocumentToMongo() {
+        MongoTemplate mongoTemplate = RunicCore.getDataAPI().getMongoTemplate();
+        return mongoTemplate.save(this);
     }
 
     public Map<String, AchievementStatus> getAchievementStatusMap() {
         return achievementStatusMap;
     }
 
+    public void setAchievementStatusMap(Map<String, AchievementStatus> achievementStatusMap) {
+        this.achievementStatusMap = achievementStatusMap;
+    }
+
+    @Override
+    public Map<String, String> getDataMapFromJedis(Jedis jedis, Object nestedObject, int... slot) { // don't need slot, achievements are acc-wide
+        String achievementId = (String) nestedObject;
+        String database = RunicCore.getDataAPI().getMongoDatabase().getName();
+        String achievementKey = database + ":" + this.uuid + ":" + DATA_SECTION_ACHIEVEMENTS + ":" + achievementId;
+        return jedis.hgetAll(achievementKey);
+    }
+
     @Override
     public List<String> getFields() {
         return FIELDS;
+    }
+
+    public UUID getUuid() {
+        return uuid;
     }
 
     /**
@@ -137,31 +124,37 @@ public class AchievementData implements SessionDataNested {
     }
 
     @Override
-    public Map<String, String> getDataMapFromJedis(Jedis jedis, Object nestedObject, int... slot) { // don't need slot, achievements are acc-wide
-        String achievementId = (String) nestedObject;
-        String achievementKey = this.uuid + ":" + DATA_SECTION_ACHIEVEMENTS + ":" + achievementId;
-        return jedis.hgetAll(achievementKey);
-    }
-
-    @Override
-    public void writeToJedis(Jedis jedis, int... slot) { // don't need slot, achievements are acc-wide
+    public void writeToJedis(Jedis jedis, int... ignored) {
+        String database = RunicCore.getDataAPI().getMongoDatabase().getName();
+        // Inform the server that this player should be saved to mongo on next task (jedis data is refreshed)
+        jedis.sadd(database + ":" + "markedForSave:achievements", this.uuid.toString());
+        // Ensure the system knows that there is data in redis
+        boolean hasAchievementData = false;
         String uuid = String.valueOf(this.uuid);
         String key = uuid + ":" + DATA_SECTION_ACHIEVEMENTS;
         for (String achievementId : achievementStatusMap.keySet()) {
-            jedis.hmset(key + ":" + achievementId, this.toMap(achievementStatusMap.get(achievementId)));
-            jedis.expire(key + ":" + achievementId, RunicCore.getRedisAPI().getExpireTime());
+            AchievementStatus status = achievementStatusMap.get(achievementId);
+            if (!status.isUnlocked() && status.getProgress() == 0)
+                continue; // Ignore achievements w/ no data
+            hasAchievementData = true;
+            jedis.hmset(database + ":" + key + ":" + achievementId, this.toMap(achievementStatusMap.get(achievementId)));
+            jedis.expire(database + ":" + key + ":" + achievementId, RunicCore.getRedisAPI().getExpireTime());
+        }
+        if (hasAchievementData) {
+            jedis.set(database + ":" + this.uuid + ":hasAchievementData", "true");
+            jedis.expire(database + ":" + this.uuid + ":hasAchievementData", RunicCore.getRedisAPI().getExpireTime());
         }
     }
 
-    @Override
-    public MongoData writeToMongo(MongoData mongoData, int... slot) { // don't need slot, achievements are acc-wide
-        PlayerMongoData playerMongoData = (PlayerMongoData) mongoData;
-        PlayerMongoDataSection achievementSection;
-        for (String achievementId : this.achievementStatusMap.keySet()) {
-            achievementSection = (PlayerMongoDataSection) playerMongoData.getSection(DATA_SECTION_ACHIEVEMENTS + "." + achievementId);
-            achievementSection.set(AchievementField.PROGRESS.getField(), this.achievementStatusMap.get(achievementId).getProgress());
-            achievementSection.set(AchievementField.IS_UNLOCKED.getField(), this.achievementStatusMap.get(achievementId).isUnlocked());
-        }
-        return playerMongoData;
+    public void setUuid(UUID uuid) {
+        this.uuid = uuid;
+    }
+
+    public ObjectId getId() {
+        return id;
+    }
+
+    public void setId(ObjectId id) {
+        this.id = id;
     }
 }

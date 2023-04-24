@@ -1,32 +1,24 @@
 package com.runicrealms.plugin.listener;
 
-import com.runicrealms.plugin.*;
+import com.runicrealms.plugin.Achievement;
+import com.runicrealms.plugin.AchievementSet;
+import com.runicrealms.plugin.AchievementStatus;
+import com.runicrealms.plugin.RunicAchievements;
 import com.runicrealms.plugin.api.event.AchievementUnlockEvent;
+import com.runicrealms.plugin.api.event.RegionEnteredEvent;
 import com.runicrealms.plugin.model.AchievementData;
 import com.runicrealms.plugin.unlock.LocationUnlock;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-
-import java.util.List;
-import java.util.UUID;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 
 /**
  * Used to handle achievements based on reaching a location.
- * Uses a running async task instead of PlayerMoveEvent to conserve resources
  *
  * @author Skyfallin
  */
-public class ExplorerSetManager {
-
-    public ExplorerSetManager() {
-        Bukkit.getScheduler().runTaskTimerAsynchronously
-                (
-                        RunicAchievements.getInstance(),
-                        this::checkForLocationAchievements,
-                        0L,
-                        20L
-                );
-    }
+public class ExplorerSetListener implements Listener {
 
     /**
      * Checks all regions the current player is standing in.
@@ -34,30 +26,29 @@ public class ExplorerSetManager {
      *
      * @param player to check
      */
-    private void checkForAchievementUnlock(Player player) {
-        List<String> regionIds = RunicCore.getRegionAPI().getRegionIds(player.getLocation());
-        if (regionIds.isEmpty()) return;
-        AchievementData achievementData = (AchievementData) RunicAchievements.getAchievementManager().loadSessionData(player.getUniqueId());
+    private void checkForAchievementUnlock(Player player, String regionName) {
+        AchievementData achievementData = (AchievementData) RunicAchievements.getAPI().getSessionData(player.getUniqueId());
+        if (achievementData == null) return; // Player not fully loaded yet
         for (Achievement achievement : Achievement.values()) {
             if (achievement.getAchievementSet() != AchievementSet.EXPLORER) continue;
             if (!(achievement.getUnlockMethod() instanceof LocationUnlock)) continue;
-            if (achievementData.getAchievementStatusMap().get(achievement.getId()) == null) continue;
-            if (achievementData.getAchievementStatusMap().get(achievement.getId()).isUnlocked()) continue;
+            if (achievementData.getAchievementStatusMap().get(achievement.getId()) == null)
+                continue;
+            if (achievementData.getAchievementStatusMap().get(achievement.getId()).isUnlocked())
+                continue;
             AchievementStatus achievementStatus = achievementData.getAchievementStatusMap().get(achievement.getId());
             String regionId = ((LocationUnlock) achievement.getUnlockMethod()).getRegionId();
-            if (regionIds.contains(regionId)) {
+            if (regionName.equalsIgnoreCase(regionId)) {
                 Bukkit.getScheduler().runTask(RunicAchievements.getInstance(), () -> triggerUnlockSynchronously(achievementStatus, player));
                 return;
             }
         }
     }
 
-    private void checkForLocationAchievements() {
-        for (UUID loaded : RunicCore.getCharacterAPI().getLoadedCharacters()) {
-            Player player = Bukkit.getPlayer(loaded);
-            if (player == null) continue;
-            checkForAchievementUnlock(player);
-        }
+    @EventHandler
+    public void onRegionEntered(RegionEnteredEvent event) {
+        if (event.getPlayer() == null) return;
+        checkForAchievementUnlock(event.getPlayer(), event.getRegionName());
     }
 
     /**
@@ -71,4 +62,5 @@ public class ExplorerSetManager {
         AchievementUnlockEvent achievementUnlockEvent = new AchievementUnlockEvent(player, achievementStatus.getAchievement());
         Bukkit.getPluginManager().callEvent(achievementUnlockEvent);
     }
+
 }

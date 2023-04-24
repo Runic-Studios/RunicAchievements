@@ -12,10 +12,7 @@ import com.runicrealms.plugin.reward.ItemReward;
 import com.runicrealms.plugin.utilities.ChatUtils;
 import com.runicrealms.runicitems.RunicItemsAPI;
 import com.runicrealms.runicitems.item.RunicItem;
-import org.bukkit.Bukkit;
-import org.bukkit.Color;
-import org.bukkit.FireworkEffect;
-import org.bukkit.Sound;
+import org.bukkit.*;
 import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -39,36 +36,6 @@ public class AchievementUnlockListener implements Listener {
         meta.setPower(0);
         meta.addEffect(FireworkEffect.builder().with(FireworkEffect.Type.BALL_LARGE).withColor(color).build());
         firework.setFireworkMeta(meta);
-    }
-
-    @EventHandler
-    public void onAchievementUnlock(AchievementUnlockEvent event) {
-        Player player = event.getPlayer();
-        Achievement achievement = event.getAchievement();
-        if (achievement.shouldShootFirework())
-            launchFirework(player, Color.AQUA);
-        player.getWorld().playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 0.5f, 2.0f);
-        ChatUtils.sendCenteredMessage(player, "");
-        ChatUtils.sendCenteredMessage(player, "&2&lACHIEVEMENT COMPLETE: &e&l" + achievement.getName());
-        for (Reward reward : achievement.getRewards()) {
-            ChatUtils.sendCenteredMessage(player, "&aYou have earned: " + reward.getRewardMessage());
-        }
-        ChatUtils.sendCenteredMessage(player, "");
-        for (Reward reward : achievement.getRewards()) {
-            if (reward instanceof ExpReward) {
-                handleExpReward(player, ((ExpReward) reward).getExp());
-            } else if (reward instanceof ItemReward) {
-                handleItemReward(player, (ItemReward) reward);
-            } else {
-                handleTitleReward(player);
-            }
-        }
-    }
-
-    @EventHandler(priority = EventPriority.LOWEST) // early
-    public void onEntityDamage(EntityDamageByEntityEvent event) {
-        if (event.getDamager() instanceof Firework)
-            event.setCancelled(true);
     }
 
     /**
@@ -100,9 +67,43 @@ public class AchievementUnlockListener implements Listener {
      * @param player to award title to
      */
     private void handleTitleReward(Player player) {
-        try (Jedis jedis = RunicCore.getRedisAPI().getNewJedisResource()) {
-            AchievementData achievementData = (AchievementData) RunicAchievements.getAchievementManager().loadSessionData(player.getUniqueId());
-            achievementData.writeToJedis(jedis);
+        Bukkit.getScheduler().runTaskAsynchronously(RunicAchievements.getInstance(), () -> {
+            try (Jedis jedis = RunicCore.getRedisAPI().getNewJedisResource()) {
+                AchievementData achievementData = (AchievementData) RunicAchievements.getAPI().getSessionData(player.getUniqueId());
+                achievementData.writeToJedis(jedis);
+            }
+        });
+    }
+
+    @EventHandler
+    public void onAchievementUnlock(AchievementUnlockEvent event) {
+        Player player = event.getPlayer();
+        Achievement achievement = event.getAchievement();
+        if (achievement.shouldShootFirework())
+            launchFirework(player, Color.AQUA);
+        player.getWorld().playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 0.5f, 1.0f);
+        ChatUtils.sendCenteredMessage(player, "");
+        ChatUtils.sendCenteredMessage(player,
+                ChatColor.translateAlternateColorCodes('&', "&2&lACHIEVEMENT COMPLETE: &e&l" + achievement.getName()));
+        for (Reward reward : achievement.getRewards()) {
+            ChatUtils.sendCenteredMessage(player,
+                    ChatColor.translateAlternateColorCodes('&', "&aYou have earned: " + reward.getRewardMessage()));
         }
+        ChatUtils.sendCenteredMessage(player, "");
+        for (Reward reward : achievement.getRewards()) {
+            if (reward instanceof ExpReward) {
+                handleExpReward(player, ((ExpReward) reward).getExp());
+            } else if (reward instanceof ItemReward) {
+                handleItemReward(player, (ItemReward) reward);
+            } else {
+                handleTitleReward(player);
+            }
+        }
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST) // early
+    public void onEntityDamage(EntityDamageByEntityEvent event) {
+        if (event.getDamager() instanceof Firework)
+            event.setCancelled(true);
     }
 }

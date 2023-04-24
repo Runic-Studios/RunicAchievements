@@ -1,4 +1,4 @@
-package com.runicrealms.plugin.gui;
+package com.runicrealms.plugin.ui;
 
 import org.bukkit.GameMode;
 import org.bukkit.Material;
@@ -32,10 +32,11 @@ public class PlayerMenuListener implements Listener {
         event.setCancelled(true);
         player.updateInventory();
         if (event.getCursor() == null) return;
-        if (event.getCursor().getType() != Material.AIR) return; // prevents clicking with items on cursor
+        if (event.getCursor().getType() != Material.AIR)
+            return; // prevents clicking with items on cursor
         if (event.getSlot() == 1) {
             player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.5f, 1.0f);
-            player.openInventory((new AchievementGUI(player)).getInventory());
+            player.openInventory((new AchievementUI(player)).getInventory());
         }
     }
 }
