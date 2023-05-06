@@ -34,6 +34,7 @@ public class NoneSetListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST) // last
     public void onHeal(SpellHealEvent event) {
+        if (event.getSpell() == null) return; // Ignore potions, duel healing, etc.
         UUID uuid = event.getPlayer().getUniqueId();
         AchievementData achievementData = (AchievementData) RunicAchievements.getAPI().getSessionData(uuid);
         Achievement achievement = Achievement.THE_SILENT_CARRY;
