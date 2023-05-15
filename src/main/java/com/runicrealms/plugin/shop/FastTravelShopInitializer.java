@@ -122,6 +122,14 @@ public class FastTravelShopInitializer {
         shopItems.add
                 (
                         new RunicShopItem(highLevelReq,
+                                wagonItem(TravelLocation.STONEHAVEN, Achievement.DISCOVER_STONEHAVEN.getName()),
+                                runWagonBuy(TravelLocation.STONEHAVEN),
+                                Collections.singletonList(player -> hasAchievementRequirement(player, Achievement.DISCOVER_STONEHAVEN.getId()))
+                        )
+                );
+        shopItems.add
+                (
+                        new RunicShopItem(highLevelReq,
                                 wagonItem(TravelLocation.FROSTS_END, Achievement.DISCOVER_FROSTS_END.getName()),
                                 runWagonBuy(TravelLocation.FROSTS_END),
                                 Collections.singletonList(player -> hasAchievementRequirement(player, Achievement.DISCOVER_FROSTS_END.getId()))

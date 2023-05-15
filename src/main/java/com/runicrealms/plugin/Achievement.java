@@ -382,6 +382,20 @@ public enum Achievement {
                     "",
                     Collections.singletonList("")
             ),
+    DISCOVER_STONEHAVEN
+            (
+                    "discover-stonehaven",
+                    "Heart of the Mountain",
+                    "Obtained by discovering Stonehaven!",
+                    5,
+                    Material.WRITABLE_BOOK,
+                    new LocationUnlock("stonehaven"),
+                    Collections.singletonList(new TitleReward("Dwarven", false)),
+                    AchievementSet.EXPLORER,
+                    false,
+                    "",
+                    Collections.singletonList("")
+            ),
     DISCOVER_VALMYRA
             (
                     "discover-valmyra",
@@ -566,42 +580,6 @@ public enum Achievement {
         this.internalMobNames = internalMobNames;
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public int getPointValue() {
-        return pointValue;
-    }
-
-    public Material getGuiItem() {
-        return guiItem;
-    }
-
-    public UnlockMethod getUnlockMethod() {
-        return unlockMethod;
-    }
-
-    public List<Reward> getRewards() {
-        return rewards;
-    }
-
-    public AchievementSet getAchievementSet() {
-        return achievementSet;
-    }
-
-    public boolean shouldShootFirework() {
-        return shootsFirework;
-    }
-
     /**
      * Returns an achievement with a material matching parameter
      *
@@ -615,14 +593,6 @@ public enum Achievement {
             }
         }
         return null;
-    }
-
-    public String getRunicItemId() {
-        return runicItemId;
-    }
-
-    public List<String> getInternalMobNames() {
-        return internalMobNames;
     }
 
     /**
@@ -672,5 +642,49 @@ public enum Achievement {
             }
         }
         return null;
+    }
+
+    public AchievementSet getAchievementSet() {
+        return achievementSet;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public Material getGuiItem() {
+        return guiItem;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public List<String> getInternalMobNames() {
+        return internalMobNames;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getPointValue() {
+        return pointValue;
+    }
+
+    public List<Reward> getRewards() {
+        return rewards;
+    }
+
+    public String getRunicItemId() {
+        return runicItemId;
+    }
+
+    public UnlockMethod getUnlockMethod() {
+        return unlockMethod;
+    }
+
+    public boolean shouldShootFirework() {
+        return shootsFirework;
     }
 }
