@@ -86,6 +86,13 @@
         </repository>
     </repositories>
     <dependencies>
+        <!-- WorldGuard Events -->
+        <dependency>
+            <groupId>net.raidstone</groupId>
+            <artifactId>WorldGuardEvents</artifactId>
+            <version>1.18.1</version>
+            <scope>provided</scope>
+        </dependency>
         <!-- Spigot API -->
         <dependency>
             <groupId>org.spigotmc</groupId>
