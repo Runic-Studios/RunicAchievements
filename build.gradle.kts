@@ -16,6 +16,8 @@ dependencies {
     compileOnly(commonLibs.acf)
     compileOnly(commonLibs.taskchain)
     compileOnly(commonLibs.springdatamongodb)
+    compileOnly(commonLibs.mongodbdrivercore)
+    compileOnly(commonLibs.mongodbdriversync)
     compileOnly(project(":Projects:Core"))
     compileOnly(project(":Projects:Guilds"))
     compileOnly(project(":Projects:Items"))
