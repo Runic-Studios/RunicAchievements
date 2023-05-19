@@ -1,7 +1,6 @@
 plugins {
     `java-library`
     `maven-publish`
-    id("com.github.johnrengelman.shadow") version "7.1.2"
 }
 
 group = "com.runicrealms.plugin"
@@ -14,6 +13,9 @@ dependencies {
     compileOnly(commonLibs.mythicmobs)
     compileOnly(commonLibs.craftbukkit)
     compileOnly(commonLibs.worldguardevents)
+    compileOnly(commonLibs.acf)
+    compileOnly(commonLibs.taskchain)
+    compileOnly(commonLibs.springdatamongodb)
     compileOnly(project(":Projects:Core"))
     compileOnly(project(":Projects:Guilds"))
     compileOnly(project(":Projects:Items"))

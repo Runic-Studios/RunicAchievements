@@ -1,6 +1,6 @@
 package com.runicrealms.plugin.ui;
 
-import com.runicrealms.libs.taskchain.TaskChain;
+import co.aikar.taskchain.TaskChain;
 import com.runicrealms.plugin.Achievement;
 import com.runicrealms.plugin.AchievementStatus;
 import com.runicrealms.plugin.RunicAchievements;

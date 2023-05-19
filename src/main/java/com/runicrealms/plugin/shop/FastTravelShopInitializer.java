@@ -1,6 +1,11 @@
 package com.runicrealms.plugin.shop;
 
-import com.runicrealms.plugin.*;
+import com.runicrealms.plugin.Achievement;
+import com.runicrealms.plugin.AchievementStatus;
+import com.runicrealms.plugin.RunicAchievements;
+import com.runicrealms.plugin.RunicCore;
+import com.runicrealms.plugin.TravelLocation;
+import com.runicrealms.plugin.TravelType;
 import com.runicrealms.plugin.item.shops.RunicItemRunnable;
 import com.runicrealms.plugin.item.shops.RunicShopGeneric;
 import com.runicrealms.plugin.item.shops.RunicShopItem;
@@ -11,7 +16,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedHashSet;
+import java.util.Map;
 
 public class FastTravelShopInitializer {
 
