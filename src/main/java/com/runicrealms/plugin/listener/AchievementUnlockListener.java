@@ -2,14 +2,14 @@ package com.runicrealms.plugin.listener;
 
 import com.runicrealms.plugin.Achievement;
 import com.runicrealms.plugin.RunicAchievements;
-import com.runicrealms.plugin.RunicCore;
 import com.runicrealms.plugin.api.Reward;
 import com.runicrealms.plugin.api.event.AchievementUnlockEvent;
+import com.runicrealms.plugin.common.util.ChatUtils;
 import com.runicrealms.plugin.events.RunicExpEvent;
 import com.runicrealms.plugin.model.AchievementData;
+import com.runicrealms.plugin.rdb.RunicDatabase;
 import com.runicrealms.plugin.reward.ExpReward;
 import com.runicrealms.plugin.reward.ItemReward;
-import com.runicrealms.plugin.utilities.ChatUtils;
 import com.runicrealms.runicitems.RunicItemsAPI;
 import com.runicrealms.runicitems.item.RunicItem;
 import org.bukkit.Bukkit;
@@ -72,7 +72,7 @@ public class AchievementUnlockListener implements Listener {
      */
     private void handleTitleReward(Player player) {
         Bukkit.getScheduler().runTaskAsynchronously(RunicAchievements.getInstance(), () -> {
-            try (Jedis jedis = RunicCore.getRedisAPI().getNewJedisResource()) {
+            try (Jedis jedis = RunicDatabase.getAPI().getRedisAPI().getNewJedisResource()) {
                 AchievementData achievementData = (AchievementData) RunicAchievements.getAPI().getSessionData(player.getUniqueId());
                 achievementData.writeToJedis(jedis);
             }

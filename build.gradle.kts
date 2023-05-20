@@ -22,6 +22,8 @@ dependencies {
     compileOnly(project(":Projects:Guilds"))
     compileOnly(project(":Projects:Items"))
     compileOnly(project(":Projects:Professions"))
+    compileOnly(project(":Projects:Database"))
+    compileOnly(project(":Projects:Common"))
 }
 
 java {
