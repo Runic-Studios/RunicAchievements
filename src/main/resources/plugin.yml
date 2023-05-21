@@ -2,6 +2,13 @@ name: RunicAchievements
 version: '${project.version}'
 main: com.runicrealms.plugin.RunicAchievements
 api-version: 1.16
-depend: [ RunicCore, RunicDatabase, RunicCommon ]
-softdepend: [ RunicGuilds, RunicItems, RunicProfessions ]
+depend:
+  - RunicCore
+  - RunicDatabase
+  - RunicCommon
+  - RunicGuilds
+  - RunicItems
+  - RunicProfessions
+  - MythicMobs
+  - WorldGuard
 authors: [ Skyfallin ]
