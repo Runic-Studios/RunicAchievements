@@ -1,11 +1,14 @@
+val artifactName = "achievements"
+val rrGroup: String by rootProject.extra
+val rrVersion: String by rootProject.extra
+
 plugins {
     `java-library`
     `maven-publish`
 }
 
-group = "com.runicrealms.plugin"
-version = "1.0-SNAPSHOT"
-val artifactName = "achievements"
+version = rrVersion
+group = rrGroup
 
 dependencies {
     compileOnly(commonLibs.paper)
@@ -34,9 +37,9 @@ java {
 publishing {
     publications {
         create<MavenPublication>("maven") {
-            groupId = "com.runicrealms.plugin"
+            groupId = rrGroup
             artifactId = artifactName
-            version = "1.0-SNAPSHOT"
+            version = rrVersion
             from(components["java"])
         }
     }
