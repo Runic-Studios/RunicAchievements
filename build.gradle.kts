@@ -1,10 +1,14 @@
+val artifactName = "achievements"
+val rrGroup: String by rootProject.extra
+val rrVersion: String by rootProject.extra
+
 plugins {
     `java-library`
     `maven-publish`
 }
 
-group = "com.runicrealms.plugin"
-version = "1.0-SNAPSHOT"
+version = rrVersion
+group = rrGroup
 
 dependencies {
     compileOnly(commonLibs.paper)
@@ -22,6 +26,8 @@ dependencies {
     compileOnly(project(":Projects:Guilds"))
     compileOnly(project(":Projects:Items"))
     compileOnly(project(":Projects:Professions"))
+    compileOnly(project(":Projects:Database"))
+    compileOnly(project(":Projects:Common"))
 }
 
 java {
@@ -31,13 +37,10 @@ java {
 publishing {
     publications {
         create<MavenPublication>("maven") {
-            groupId = "com.runicrealms.plugin"
-            artifactId = "achievements"
-            version = "1.0-SNAPSHOT"
+            groupId = rrGroup
+            artifactId = artifactName
+            version = rrVersion
             from(components["java"])
         }
     }
 }
-
-tasks.register("wrapper")
-tasks.register("prepareKotlinBuildScriptModel")

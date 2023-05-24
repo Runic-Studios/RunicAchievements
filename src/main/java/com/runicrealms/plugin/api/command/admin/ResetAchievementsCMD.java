@@ -9,8 +9,8 @@ import co.aikar.commands.annotation.Syntax;
 import com.runicrealms.plugin.Achievement;
 import com.runicrealms.plugin.AchievementStatus;
 import com.runicrealms.plugin.RunicAchievements;
-import com.runicrealms.plugin.RunicCore;
 import com.runicrealms.plugin.model.AchievementData;
+import com.runicrealms.plugin.rdb.RunicDatabase;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -32,7 +32,7 @@ public class ResetAchievementsCMD extends BaseCommand {
         if (player == null) {
             player = commandSender;
         }
-        try (Jedis jedis = RunicCore.getRedisAPI().getNewJedisResource()) {
+        try (Jedis jedis = RunicDatabase.getAPI().getRedisAPI().getNewJedisResource()) {
             UUID uuid = player.getUniqueId();
             AchievementData achievementData = (AchievementData) RunicAchievements.getAPI().getSessionData(uuid);
             for (String achievementId : achievementData.getAchievementStatusMap().keySet()) {

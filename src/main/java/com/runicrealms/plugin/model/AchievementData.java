@@ -2,7 +2,9 @@ package com.runicrealms.plugin.model;
 
 import com.runicrealms.plugin.Achievement;
 import com.runicrealms.plugin.AchievementStatus;
-import com.runicrealms.plugin.RunicCore;
+import com.runicrealms.plugin.rdb.RunicDatabase;
+import com.runicrealms.plugin.rdb.model.SessionDataMongo;
+import com.runicrealms.plugin.rdb.model.SessionDataNested;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -54,12 +56,12 @@ public class AchievementData implements SessionDataMongo, SessionDataNested {
      */
     public AchievementData(UUID uuid, Jedis jedis) {
         this.uuid = uuid;
-        String database = RunicCore.getDataAPI().getMongoDatabase().getName();
+        String database = RunicDatabase.getAPI().getDataAPI().getMongoDatabase().getName();
         String rootKey = database + ":" + uuid + ":" + DATA_SECTION_ACHIEVEMENTS;
 
         this.achievementStatusMap = new HashMap<>();
 
-        for (String key : RunicCore.getRedisAPI().getNewJedisResource().keys(rootKey + ":*")) {
+        for (String key : RunicDatabase.getAPI().getRedisAPI().getNewJedisResource().keys(rootKey + ":*")) {
             int lastIndex = key.lastIndexOf(':');
             String achievementId = lastIndex != -1 ? key.substring(lastIndex + 1) : key;
             Map<String, String> fieldsMap = getDataMapFromJedis(jedis, achievementId);
@@ -83,7 +85,7 @@ public class AchievementData implements SessionDataMongo, SessionDataNested {
     @SuppressWarnings("unchecked")
     @Override
     public AchievementData addDocumentToMongo() {
-        MongoTemplate mongoTemplate = RunicCore.getDataAPI().getMongoTemplate();
+        MongoTemplate mongoTemplate = RunicDatabase.getAPI().getDataAPI().getMongoTemplate();
         return mongoTemplate.save(this);
     }
 
@@ -98,7 +100,7 @@ public class AchievementData implements SessionDataMongo, SessionDataNested {
     @Override
     public Map<String, String> getDataMapFromJedis(Jedis jedis, Object nestedObject, int... slot) { // don't need slot, achievements are acc-wide
         String achievementId = (String) nestedObject;
-        String database = RunicCore.getDataAPI().getMongoDatabase().getName();
+        String database = RunicDatabase.getAPI().getDataAPI().getMongoDatabase().getName();
         String achievementKey = database + ":" + this.uuid + ":" + DATA_SECTION_ACHIEVEMENTS + ":" + achievementId;
         return jedis.hgetAll(achievementKey);
     }
@@ -110,6 +112,10 @@ public class AchievementData implements SessionDataMongo, SessionDataNested {
 
     public UUID getUuid() {
         return uuid;
+    }
+
+    public void setUuid(UUID uuid) {
+        this.uuid = uuid;
     }
 
     /**
@@ -129,7 +135,7 @@ public class AchievementData implements SessionDataMongo, SessionDataNested {
 
     @Override
     public void writeToJedis(Jedis jedis, int... ignored) {
-        String database = RunicCore.getDataAPI().getMongoDatabase().getName();
+        String database = RunicDatabase.getAPI().getDataAPI().getMongoDatabase().getName();
         // Inform the server that this player should be saved to mongo on next task (jedis data is refreshed)
         jedis.sadd(database + ":" + "markedForSave:achievements", this.uuid.toString());
         // Ensure the system knows that there is data in redis
@@ -142,16 +148,12 @@ public class AchievementData implements SessionDataMongo, SessionDataNested {
                 continue; // Ignore achievements w/ no data
             hasAchievementData = true;
             jedis.hmset(database + ":" + key + ":" + achievementId, this.toMap(achievementStatusMap.get(achievementId)));
-            jedis.expire(database + ":" + key + ":" + achievementId, RunicCore.getRedisAPI().getExpireTime());
+            jedis.expire(database + ":" + key + ":" + achievementId, RunicDatabase.getAPI().getRedisAPI().getExpireTime());
         }
         if (hasAchievementData) {
             jedis.set(database + ":" + this.uuid + ":hasAchievementData", "true");
-            jedis.expire(database + ":" + this.uuid + ":hasAchievementData", RunicCore.getRedisAPI().getExpireTime());
+            jedis.expire(database + ":" + this.uuid + ":hasAchievementData", RunicDatabase.getAPI().getRedisAPI().getExpireTime());
         }
-    }
-
-    public void setUuid(UUID uuid) {
-        this.uuid = uuid;
     }
 
     public ObjectId getId() {

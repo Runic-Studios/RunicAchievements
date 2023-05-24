@@ -3,11 +3,14 @@ package com.runicrealms.plugin.model;
 import co.aikar.taskchain.TaskChain;
 import co.aikar.taskchain.TaskChainAbortAction;
 import com.runicrealms.plugin.RunicAchievements;
-import com.runicrealms.plugin.RunicCore;
 import com.runicrealms.plugin.api.AchievementsAPI;
-import com.runicrealms.plugin.character.api.CharacterQuitEvent;
-import com.runicrealms.plugin.character.api.CharacterSelectEvent;
-import com.runicrealms.plugin.database.event.MongoSaveEvent;
+import com.runicrealms.plugin.rdb.RunicDatabase;
+import com.runicrealms.plugin.rdb.event.CharacterQuitEvent;
+import com.runicrealms.plugin.rdb.event.CharacterSelectEvent;
+import com.runicrealms.plugin.rdb.event.MongoSaveEvent;
+import com.runicrealms.plugin.rdb.model.CharacterField;
+import com.runicrealms.plugin.rdb.model.SessionDataNested;
+import com.runicrealms.plugin.rdb.model.SessionDataNestedManager;
 import org.bson.types.ObjectId;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -49,7 +52,7 @@ public class AchievementManager implements AchievementsAPI, Listener, SessionDat
      */
     @Override
     public SessionDataNested checkJedisForSessionData(Object object, Jedis jedis, int... slot) {
-        String database = RunicCore.getDataAPI().getMongoDatabase().getName();
+        String database = RunicDatabase.getAPI().getDataAPI().getMongoDatabase().getName();
         UUID uuid = (UUID) object;
         if (jedis.exists(database + ":" + uuid + ":hasAchievementData")) {
             return new AchievementData(uuid, jedis);
@@ -72,14 +75,14 @@ public class AchievementManager implements AchievementsAPI, Listener, SessionDat
     @Override
     public SessionDataNested loadSessionData(Object object, int... ignored) {
         UUID uuid = (UUID) object;
-        try (Jedis jedis = RunicCore.getRedisAPI().getNewJedisResource()) {
+        try (Jedis jedis = RunicDatabase.getAPI().getRedisAPI().getNewJedisResource()) {
             // Step 1: Check if achievement data is cached in redis
             AchievementData achievementData = (AchievementData) checkJedisForSessionData(uuid, jedis);
             if (achievementData != null) return achievementData;
             // Step 2: Check the mongo database
             Query query = new Query();
             query.addCriteria(Criteria.where(CharacterField.PLAYER_UUID.getField()).is(uuid));
-            MongoTemplate mongoTemplate = RunicCore.getDataAPI().getMongoTemplate();
+            MongoTemplate mongoTemplate = RunicDatabase.getAPI().getDataAPI().getMongoTemplate();
             List<AchievementData> results = mongoTemplate.find(query, AchievementData.class);
             if (results.size() > 0) {
                 AchievementData result = results.get(0);
@@ -100,7 +103,7 @@ public class AchievementManager implements AchievementsAPI, Listener, SessionDat
         TaskChain<?> chain = RunicAchievements.newChain();
         chain
                 .asyncFirst(() -> {
-                    try (Jedis jedis = RunicCore.getRedisAPI().getNewJedisResource()) {
+                    try (Jedis jedis = RunicDatabase.getAPI().getRedisAPI().getNewJedisResource()) {
                         achievementData.writeToJedis(jedis);
                     }
                     return achievementData;

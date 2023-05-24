@@ -9,6 +9,7 @@ import com.runicrealms.plugin.api.Reward;
 import com.runicrealms.plugin.model.AchievementData;
 import com.runicrealms.plugin.model.AchievementManager;
 import com.runicrealms.plugin.model.TitleData;
+import com.runicrealms.plugin.rdb.RunicDatabase;
 import com.runicrealms.plugin.reward.TitleReward;
 import com.runicrealms.plugin.utilities.GUIUtil;
 import org.bukkit.ChatColor;
@@ -54,7 +55,7 @@ public class AchievementUIListener implements Listener {
         TitleReward finalTitleReward = titleReward;
         chain
                 .asyncFirst(() -> {
-                    try (Jedis jedis = RunicCore.getRedisAPI().getNewJedisResource()) {
+                    try (Jedis jedis = RunicDatabase.getAPI().getRedisAPI().getNewJedisResource()) {
                         TitleData titleData = RunicCore.getTitleAPI().loadTitleData(player.getUniqueId(), jedis);
                         if (finalTitleReward.isSuffix()) {
                             titleData.setSuffix(finalTitleReward.getTitle());

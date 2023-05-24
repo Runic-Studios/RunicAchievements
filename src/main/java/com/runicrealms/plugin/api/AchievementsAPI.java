@@ -1,6 +1,6 @@
 package com.runicrealms.plugin.api;
 
-import com.runicrealms.plugin.model.SessionDataNested;
+import com.runicrealms.plugin.rdb.model.SessionDataNested;
 
 import java.util.Map;
 
