@@ -16,11 +16,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedHashSet;
-import java.util.Map;
 
 public class FastTravelShopInitializer {
 
@@ -29,20 +27,11 @@ public class FastTravelShopInitializer {
     }
 
     public RunicShopGeneric fastTravelShop() {
-        Map<String, Integer> lowLevelReq = new HashMap<String, Integer>() {{
-            put("coin", 5);
-        }};
-        Map<String, Integer> medLevelReq = new HashMap<String, Integer>() {{
-            put("coin", 10);
-        }};
-        Map<String, Integer> highLevelReq = new HashMap<String, Integer>() {{
-            put("coin", 15);
-        }};
-        LinkedHashSet<RunicShopItem> shopItems = new LinkedHashSet<>();
+        ArrayList<RunicShopItem> shopItems = new ArrayList<>();
 
         shopItems.add
                 (
-                        new RunicShopItem(lowLevelReq,
+                        new RunicShopItem(5,
                                 wagonItem(TravelLocation.AZANA, "None"),
                                 runWagonBuy(TravelLocation.AZANA),
                                 Collections.singletonList(player -> hasAchievementRequirement(player, ""))
@@ -50,7 +39,7 @@ public class FastTravelShopInitializer {
                 );
         shopItems.add
                 (
-                        new RunicShopItem(lowLevelReq,
+                        new RunicShopItem(5,
                                 wagonItem(TravelLocation.KOLDORE, Achievement.DISCOVER_KOLDORE.getName()),
                                 runWagonBuy(TravelLocation.KOLDORE),
                                 Collections.singletonList(player -> hasAchievementRequirement(player, Achievement.DISCOVER_KOLDORE.getId()))
@@ -58,7 +47,7 @@ public class FastTravelShopInitializer {
                 );
         shopItems.add
                 (
-                        new RunicShopItem(lowLevelReq,
+                        new RunicShopItem(5,
                                 wagonItem(TravelLocation.WHALETOWN, Achievement.DISCOVER_WHALETOWN.getName()),
                                 runWagonBuy(TravelLocation.WHALETOWN),
                                 Collections.singletonList(player -> hasAchievementRequirement(player, Achievement.DISCOVER_WHALETOWN.getId()))
@@ -66,7 +55,7 @@ public class FastTravelShopInitializer {
                 );
         shopItems.add
                 (
-                        new RunicShopItem(lowLevelReq,
+                        new RunicShopItem(5,
                                 wagonItem(TravelLocation.HILSTEAD, Achievement.DISCOVER_HILSTEAD.getName()),
                                 runWagonBuy(TravelLocation.HILSTEAD),
                                 Collections.singletonList(player -> hasAchievementRequirement(player, Achievement.DISCOVER_HILSTEAD.getId()))
@@ -74,7 +63,7 @@ public class FastTravelShopInitializer {
                 );
         shopItems.add
                 (
-                        new RunicShopItem(medLevelReq,
+                        new RunicShopItem(10,
                                 wagonItem(TravelLocation.WINTERVALE, Achievement.DISCOVER_WINTERVALE.getName()),
                                 runWagonBuy(TravelLocation.WINTERVALE),
                                 Collections.singletonList(player -> hasAchievementRequirement(player, Achievement.DISCOVER_WINTERVALE.getId()))
@@ -82,7 +71,7 @@ public class FastTravelShopInitializer {
                 );
         shopItems.add
                 (
-                        new RunicShopItem(medLevelReq,
+                        new RunicShopItem(10,
                                 wagonItem(TravelLocation.DEAD_MANS_REST, Achievement.DISCOVER_DEAD_MANS_REST.getName()),
                                 runWagonBuy(TravelLocation.DEAD_MANS_REST),
                                 Collections.singletonList(player -> hasAchievementRequirement(player, Achievement.DISCOVER_DEAD_MANS_REST.getId()))
@@ -90,7 +79,7 @@ public class FastTravelShopInitializer {
                 );
         shopItems.add
                 (
-                        new RunicShopItem(medLevelReq,
+                        new RunicShopItem(10,
                                 wagonItem(TravelLocation.ISFODAR, Achievement.DISCOVER_ISFODAR.getName()),
                                 runWagonBuy(TravelLocation.ISFODAR),
                                 Collections.singletonList(player -> hasAchievementRequirement(player, Achievement.DISCOVER_ISFODAR.getId()))
@@ -98,7 +87,7 @@ public class FastTravelShopInitializer {
                 );
         shopItems.add
                 (
-                        new RunicShopItem(medLevelReq,
+                        new RunicShopItem(10,
                                 wagonItem(TravelLocation.TIRNEAS, Achievement.DISCOVER_TIRENEAS.getName()),
                                 runWagonBuy(TravelLocation.TIRNEAS),
                                 Collections.singletonList(player -> hasAchievementRequirement(player, Achievement.DISCOVER_TIRENEAS.getId()))
@@ -106,7 +95,7 @@ public class FastTravelShopInitializer {
                 );
         shopItems.add
                 (
-                        new RunicShopItem(highLevelReq,
+                        new RunicShopItem(15,
                                 wagonItem(TravelLocation.ZENYTH, Achievement.DISCOVER_ZENYTH.getName()),
                                 runWagonBuy(TravelLocation.ZENYTH),
                                 Collections.singletonList(player -> hasAchievementRequirement(player, Achievement.DISCOVER_ZENYTH.getId()))
@@ -114,7 +103,7 @@ public class FastTravelShopInitializer {
                 );
         shopItems.add
                 (
-                        new RunicShopItem(highLevelReq,
+                        new RunicShopItem(15,
                                 wagonItem(TravelLocation.NAHEEN, Achievement.DISCOVER_NAHEEN.getName()),
                                 runWagonBuy(TravelLocation.NAHEEN),
                                 Collections.singletonList(player -> hasAchievementRequirement(player, Achievement.DISCOVER_NAHEEN.getId()))
@@ -122,7 +111,7 @@ public class FastTravelShopInitializer {
                 );
         shopItems.add
                 (
-                        new RunicShopItem(highLevelReq,
+                        new RunicShopItem(15,
                                 wagonItem(TravelLocation.NAZMORA, Achievement.DISCOVER_NAZMORA.getName()),
                                 runWagonBuy(TravelLocation.NAZMORA),
                                 Collections.singletonList(player -> hasAchievementRequirement(player, Achievement.DISCOVER_NAZMORA.getId()))
@@ -130,7 +119,7 @@ public class FastTravelShopInitializer {
                 );
         shopItems.add
                 (
-                        new RunicShopItem(highLevelReq,
+                        new RunicShopItem(15,
                                 wagonItem(TravelLocation.STONEHAVEN, Achievement.DISCOVER_STONEHAVEN.getName()),
                                 runWagonBuy(TravelLocation.STONEHAVEN),
                                 Collections.singletonList(player -> hasAchievementRequirement(player, Achievement.DISCOVER_STONEHAVEN.getId()))
@@ -138,7 +127,7 @@ public class FastTravelShopInitializer {
                 );
         shopItems.add
                 (
-                        new RunicShopItem(highLevelReq,
+                        new RunicShopItem(15,
                                 wagonItem(TravelLocation.FROSTS_END, Achievement.DISCOVER_FROSTS_END.getName()),
                                 runWagonBuy(TravelLocation.FROSTS_END),
                                 Collections.singletonList(player -> hasAchievementRequirement(player, Achievement.DISCOVER_FROSTS_END.getId()))
