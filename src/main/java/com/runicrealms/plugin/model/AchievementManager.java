@@ -2,6 +2,7 @@ package com.runicrealms.plugin.model;
 
 import co.aikar.taskchain.TaskChain;
 import co.aikar.taskchain.TaskChainAbortAction;
+import com.runicrealms.plugin.AchievementStatus;
 import com.runicrealms.plugin.RunicAchievements;
 import com.runicrealms.plugin.api.AchievementsAPI;
 import com.runicrealms.plugin.rdb.RunicDatabase;
@@ -14,6 +15,7 @@ import com.runicrealms.plugin.rdb.model.SessionDataNestedManager;
 import org.bson.types.ObjectId;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -65,6 +67,18 @@ public class AchievementManager implements AchievementsAPI, Listener, SessionDat
         UUID uuid = (UUID) object;
         // Check if achievement data is memoized
         return achievementDataMap.get(uuid);
+    }
+
+    @Override
+    public boolean hasAchievement(Player player, String achievementId) {
+        AchievementData achievementData = (AchievementData) RunicAchievements.getAPI().getSessionData(player.getUniqueId());
+        AchievementStatus achievementStatus = achievementData.getAchievementStatusMap().get(achievementId);
+        if (!achievementId.equals("") && !achievementStatus.isUnlocked()) {
+            player.playSound(player.getLocation(), Sound.ENTITY_GENERIC_EXTINGUISH_FIRE, 0.5f, 1.0f);
+            player.sendMessage(ChatColor.RED + "You must visit this location to unlock this fast travel!");
+            return false;
+        }
+        return true;
     }
 
     @Override
