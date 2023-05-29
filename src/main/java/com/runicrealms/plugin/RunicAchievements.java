@@ -24,7 +24,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 public final class RunicAchievements extends JavaPlugin implements Listener {
     private static RunicAchievements plugin;
     private static TaskChainFactory taskChainFactory;
-    private static AchievementsDataAPI api;
+    private static AchievementsDataAPI dataAPI;
     private static PaperCommandManager commandManager;
     private static MongoTask mongoTask;
 
@@ -33,21 +33,15 @@ public final class RunicAchievements extends JavaPlugin implements Listener {
     }
 
     public static AchievementsDataAPI getDataAPI() {
-        return api;
+        return dataAPI;
     }
 
     public static AchievementsAPI getAchievementsAPI() {
         return RunicCommon.getAchievementsAPI();
     }
 
-
     public static <T> TaskChain<T> newChain() {
         return taskChainFactory.newChain();
-    }
-
-
-    public static <T> TaskChain<T> newSharedChain(String name) {
-        return taskChainFactory.newSharedChain(name);
     }
 
     public static PaperCommandManager getCommandManager() {
@@ -61,7 +55,7 @@ public final class RunicAchievements extends JavaPlugin implements Listener {
     @Override
     public void onDisable() {
         plugin = null;
-        api = null;
+        dataAPI = null;
         commandManager = null;
         mongoTask = null;
         taskChainFactory = null;
@@ -73,7 +67,7 @@ public final class RunicAchievements extends JavaPlugin implements Listener {
         taskChainFactory = BukkitTaskChainFactory.create(this);
 
         AchievementManager apiImplementation = new AchievementManager();
-        api = apiImplementation;
+        dataAPI = apiImplementation;
         RunicCommon.registerAchievementsAPI(apiImplementation);
 
         commandManager = new PaperCommandManager(this);
