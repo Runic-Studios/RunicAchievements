@@ -25,7 +25,7 @@ public class NoneSetListener implements Listener {
     @EventHandler
     public void onGuildCreate(GuildCreationEvent event) {
         UUID uuid = event.getUuid();
-        AchievementData achievementData = (AchievementData) RunicAchievements.getAPI().getSessionData(uuid);
+        AchievementData achievementData = (AchievementData) RunicAchievements.getDataAPI().getSessionData(uuid);
         Achievement achievement = Achievement.GUILDMASTER;
         AchievementStatus achievementStatus = achievementData.getAchievementStatusMap().get(achievement.getId());
         if (achievementStatus.isUnlocked()) return;
@@ -36,7 +36,7 @@ public class NoneSetListener implements Listener {
     public void onHeal(SpellHealEvent event) {
         if (event.getSpell() == null) return; // Ignore potions, duel healing, etc.
         UUID uuid = event.getPlayer().getUniqueId();
-        AchievementData achievementData = (AchievementData) RunicAchievements.getAPI().getSessionData(uuid);
+        AchievementData achievementData = (AchievementData) RunicAchievements.getDataAPI().getSessionData(uuid);
         Achievement achievement = Achievement.THE_SILENT_CARRY;
         AchievementStatus achievementStatus = achievementData.getAchievementStatusMap().get(achievement.getId());
         if (achievementStatus.isUnlocked()) return;
@@ -57,7 +57,7 @@ public class NoneSetListener implements Listener {
         if (event.getOldLevel() == 0) return; // max level players logging in
         if (event.getNewLevel() != 60) return;
         UUID uuid = event.getPlayer().getUniqueId();
-        AchievementData achievementData = (AchievementData) RunicAchievements.getAPI().getSessionData(uuid);
+        AchievementData achievementData = (AchievementData) RunicAchievements.getDataAPI().getSessionData(uuid);
         Achievement achievement = Achievement.SO_IT_BEGINS;
         AchievementStatus achievementStatus = achievementData.getAchievementStatusMap().get(achievement.getId());
         if (achievementStatus.isUnlocked()) return;
@@ -67,7 +67,7 @@ public class NoneSetListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST) // last
     public void onMagicDamage(MagicDamageEvent event) {
         UUID uuid = event.getPlayer().getUniqueId();
-        AchievementData achievementData = (AchievementData) RunicAchievements.getAPI().getSessionData(uuid);
+        AchievementData achievementData = (AchievementData) RunicAchievements.getDataAPI().getSessionData(uuid);
         Achievement achievement = Achievement.MAGIC_DAMAGE;
         AchievementStatus achievementStatus = achievementData.getAchievementStatusMap().get(achievement.getId());
         if (achievementStatus.isUnlocked()) return;
@@ -86,7 +86,7 @@ public class NoneSetListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST) // last
     public void onPhysicalDamage(PhysicalDamageEvent event) {
         UUID uuid = event.getPlayer().getUniqueId();
-        AchievementData achievementData = (AchievementData) RunicAchievements.getAPI().getSessionData(uuid);
+        AchievementData achievementData = (AchievementData) RunicAchievements.getDataAPI().getSessionData(uuid);
         Achievement achievement = Achievement.PHYSICAL_DAMAGE;
         AchievementStatus achievementStatus = achievementData.getAchievementStatusMap().get(achievement.getId());
         if (achievementStatus.isUnlocked()) return;
@@ -106,7 +106,7 @@ public class NoneSetListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST) // last
     public void onSpellCast(SpellCastEvent event) {
         UUID uuid = event.getCaster().getUniqueId();
-        AchievementData achievementData = (AchievementData) RunicAchievements.getAPI().getSessionData(uuid);
+        AchievementData achievementData = (AchievementData) RunicAchievements.getDataAPI().getSessionData(uuid);
         Achievement achievement = Achievement.CAST_SPELLS;
         AchievementStatus achievementStatus = achievementData.getAchievementStatusMap().get(achievement.getId());
         if (achievementStatus.isUnlocked()) return;

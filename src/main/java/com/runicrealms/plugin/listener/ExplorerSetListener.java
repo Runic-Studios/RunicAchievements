@@ -27,7 +27,7 @@ public class ExplorerSetListener implements Listener {
      * @param player to check
      */
     private void checkForAchievementUnlock(Player player, String regionName) {
-        AchievementData achievementData = (AchievementData) RunicAchievements.getAPI().getSessionData(player.getUniqueId());
+        AchievementData achievementData = (AchievementData) RunicAchievements.getDataAPI().getSessionData(player.getUniqueId());
         if (achievementData == null) return; // Player not fully loaded yet
         for (Achievement achievement : Achievement.values()) {
             if (achievement.getAchievementSet() != AchievementSet.EXPLORER) continue;

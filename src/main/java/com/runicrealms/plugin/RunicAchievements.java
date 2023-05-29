@@ -4,8 +4,10 @@ import co.aikar.commands.PaperCommandManager;
 import co.aikar.taskchain.BukkitTaskChainFactory;
 import co.aikar.taskchain.TaskChain;
 import co.aikar.taskchain.TaskChainFactory;
-import com.runicrealms.plugin.api.AchievementsAPI;
+import com.runicrealms.plugin.api.AchievementsDataAPI;
 import com.runicrealms.plugin.api.command.admin.ResetAchievementsCMD;
+import com.runicrealms.plugin.common.RunicCommon;
+import com.runicrealms.plugin.common.api.AchievementsAPI;
 import com.runicrealms.plugin.listener.AchievementUnlockListener;
 import com.runicrealms.plugin.listener.ExplorerSetListener;
 import com.runicrealms.plugin.listener.GathererSetListener;
@@ -22,7 +24,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 public final class RunicAchievements extends JavaPlugin implements Listener {
     private static RunicAchievements plugin;
     private static TaskChainFactory taskChainFactory;
-    private static AchievementsAPI api;
+    private static AchievementsDataAPI api;
     private static PaperCommandManager commandManager;
     private static MongoTask mongoTask;
 
@@ -30,8 +32,12 @@ public final class RunicAchievements extends JavaPlugin implements Listener {
         return plugin;
     }
 
-    public static AchievementsAPI getAPI() {
+    public static AchievementsDataAPI getDataAPI() {
         return api;
+    }
+
+    public static AchievementsAPI getAchievementsAPI() {
+        return RunicCommon.getAchievementsAPI();
     }
 
 
@@ -65,7 +71,11 @@ public final class RunicAchievements extends JavaPlugin implements Listener {
     public void onEnable() {
         plugin = this;
         taskChainFactory = BukkitTaskChainFactory.create(this);
-        api = new AchievementManager();
+
+        AchievementManager apiImplementation = new AchievementManager();
+        api = apiImplementation;
+        RunicCommon.registerAchievementsAPI(apiImplementation);
+
         commandManager = new PaperCommandManager(this);
         mongoTask = new MongoTask();
         /*

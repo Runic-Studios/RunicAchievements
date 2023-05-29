@@ -27,7 +27,7 @@ public class GathererSetListener implements Listener {
         if (achievement == null) return; // Ensure some achievement listens for this resource
 
         UUID uuid = event.getPlayer().getUniqueId();
-        AchievementData achievementData = (AchievementData) RunicAchievements.getAPI().getSessionData(uuid);
+        AchievementData achievementData = (AchievementData) RunicAchievements.getDataAPI().getSessionData(uuid);
         AchievementStatus achievementStatus = achievementData.getAchievementStatusMap().get(achievement.getId());
         if (achievementStatus.isUnlocked()) return; // Ignore completed achievements
 

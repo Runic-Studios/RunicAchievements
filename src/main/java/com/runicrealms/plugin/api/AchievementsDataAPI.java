@@ -1,7 +1,6 @@
 package com.runicrealms.plugin.api;
 
 import com.runicrealms.plugin.rdb.model.SessionDataNested;
-import org.bukkit.entity.Player;
 
 import java.util.Map;
 
@@ -11,7 +10,7 @@ import java.util.Map;
  *
  * @author Skyfallin
  */
-public interface AchievementsAPI {
+public interface AchievementsDataAPI {
 
     /**
      * Tries to retrieve an AchievementData object from server memory.
@@ -21,15 +20,6 @@ public interface AchievementsAPI {
      * @return an AchievementData object
      */
     SessionDataNested getSessionData(Object object, int... slot);
-
-    /**
-     * Check whether the player has unlocked the given achievement
-     *
-     * @param player        to check
-     * @param achievementId unique internal id of the achievement
-     * @return true if the player has unlocked it
-     */
-    boolean hasAchievement(Player player, String achievementId);
 
     /**
      * @return The map of in-memory achievement data

@@ -30,7 +30,7 @@ public class FastTravelShopInitializer {
                         new RunicShopItem(5,
                                 wagonItem(TravelLocation.AZANA, "None"),
                                 runWagonBuy(TravelLocation.AZANA),
-                                Collections.singletonList(player -> RunicAchievements.getAPI().hasAchievement(player, ""))
+                                Collections.singletonList(player -> RunicAchievements.getAchievementsAPI().hasAchievement(player, ""))
                         )
                 );
         shopItems.add
@@ -38,7 +38,7 @@ public class FastTravelShopInitializer {
                         new RunicShopItem(5,
                                 wagonItem(TravelLocation.KOLDORE, Achievement.DISCOVER_KOLDORE.getName()),
                                 runWagonBuy(TravelLocation.KOLDORE),
-                                Collections.singletonList(player -> RunicAchievements.getAPI().hasAchievement(player, Achievement.DISCOVER_KOLDORE.getId()))
+                                Collections.singletonList(player -> RunicAchievements.getAchievementsAPI().hasAchievement(player, Achievement.DISCOVER_KOLDORE.getId()))
                         )
                 );
         shopItems.add
@@ -46,7 +46,7 @@ public class FastTravelShopInitializer {
                         new RunicShopItem(5,
                                 wagonItem(TravelLocation.WHALETOWN, Achievement.DISCOVER_WHALETOWN.getName()),
                                 runWagonBuy(TravelLocation.WHALETOWN),
-                                Collections.singletonList(player -> RunicAchievements.getAPI().hasAchievement(player, Achievement.DISCOVER_WHALETOWN.getId()))
+                                Collections.singletonList(player -> RunicAchievements.getAchievementsAPI().hasAchievement(player, Achievement.DISCOVER_WHALETOWN.getId()))
                         )
                 );
         shopItems.add
@@ -54,7 +54,7 @@ public class FastTravelShopInitializer {
                         new RunicShopItem(5,
                                 wagonItem(TravelLocation.HILSTEAD, Achievement.DISCOVER_HILSTEAD.getName()),
                                 runWagonBuy(TravelLocation.HILSTEAD),
-                                Collections.singletonList(player -> RunicAchievements.getAPI().hasAchievement(player, Achievement.DISCOVER_HILSTEAD.getId()))
+                                Collections.singletonList(player -> RunicAchievements.getAchievementsAPI().hasAchievement(player, Achievement.DISCOVER_HILSTEAD.getId()))
                         )
                 );
         shopItems.add
@@ -62,7 +62,7 @@ public class FastTravelShopInitializer {
                         new RunicShopItem(10,
                                 wagonItem(TravelLocation.WINTERVALE, Achievement.DISCOVER_WINTERVALE.getName()),
                                 runWagonBuy(TravelLocation.WINTERVALE),
-                                Collections.singletonList(player -> RunicAchievements.getAPI().hasAchievement(player, Achievement.DISCOVER_WINTERVALE.getId()))
+                                Collections.singletonList(player -> RunicAchievements.getAchievementsAPI().hasAchievement(player, Achievement.DISCOVER_WINTERVALE.getId()))
                         )
                 );
         shopItems.add
@@ -70,7 +70,7 @@ public class FastTravelShopInitializer {
                         new RunicShopItem(10,
                                 wagonItem(TravelLocation.DEAD_MANS_REST, Achievement.DISCOVER_DEAD_MANS_REST.getName()),
                                 runWagonBuy(TravelLocation.DEAD_MANS_REST),
-                                Collections.singletonList(player -> RunicAchievements.getAPI().hasAchievement(player, Achievement.DISCOVER_DEAD_MANS_REST.getId()))
+                                Collections.singletonList(player -> RunicAchievements.getAchievementsAPI().hasAchievement(player, Achievement.DISCOVER_DEAD_MANS_REST.getId()))
                         )
                 );
         shopItems.add
@@ -78,7 +78,7 @@ public class FastTravelShopInitializer {
                         new RunicShopItem(10,
                                 wagonItem(TravelLocation.ISFODAR, Achievement.DISCOVER_ISFODAR.getName()),
                                 runWagonBuy(TravelLocation.ISFODAR),
-                                Collections.singletonList(player -> RunicAchievements.getAPI().hasAchievement(player, Achievement.DISCOVER_ISFODAR.getId()))
+                                Collections.singletonList(player -> RunicAchievements.getAchievementsAPI().hasAchievement(player, Achievement.DISCOVER_ISFODAR.getId()))
                         )
                 );
         shopItems.add
@@ -86,7 +86,7 @@ public class FastTravelShopInitializer {
                         new RunicShopItem(10,
                                 wagonItem(TravelLocation.TIRNEAS, Achievement.DISCOVER_TIRENEAS.getName()),
                                 runWagonBuy(TravelLocation.TIRNEAS),
-                                Collections.singletonList(player -> RunicAchievements.getAPI().hasAchievement(player, Achievement.DISCOVER_TIRENEAS.getId()))
+                                Collections.singletonList(player -> RunicAchievements.getAchievementsAPI().hasAchievement(player, Achievement.DISCOVER_TIRENEAS.getId()))
                         )
                 );
         shopItems.add
@@ -94,7 +94,7 @@ public class FastTravelShopInitializer {
                         new RunicShopItem(15,
                                 wagonItem(TravelLocation.ZENYTH, Achievement.DISCOVER_ZENYTH.getName()),
                                 runWagonBuy(TravelLocation.ZENYTH),
-                                Collections.singletonList(player -> RunicAchievements.getAPI().hasAchievement(player, Achievement.DISCOVER_ZENYTH.getId()))
+                                Collections.singletonList(player -> RunicAchievements.getAchievementsAPI().hasAchievement(player, Achievement.DISCOVER_ZENYTH.getId()))
                         )
                 );
         shopItems.add
@@ -102,7 +102,7 @@ public class FastTravelShopInitializer {
                         new RunicShopItem(15,
                                 wagonItem(TravelLocation.NAHEEN, Achievement.DISCOVER_NAHEEN.getName()),
                                 runWagonBuy(TravelLocation.NAHEEN),
-                                Collections.singletonList(player -> RunicAchievements.getAPI().hasAchievement(player, Achievement.DISCOVER_NAHEEN.getId()))
+                                Collections.singletonList(player -> RunicAchievements.getAchievementsAPI().hasAchievement(player, Achievement.DISCOVER_NAHEEN.getId()))
                         )
                 );
         shopItems.add
@@ -110,7 +110,7 @@ public class FastTravelShopInitializer {
                         new RunicShopItem(15,
                                 wagonItem(TravelLocation.NAZMORA, Achievement.DISCOVER_NAZMORA.getName()),
                                 runWagonBuy(TravelLocation.NAZMORA),
-                                Collections.singletonList(player -> RunicAchievements.getAPI().hasAchievement(player, Achievement.DISCOVER_NAZMORA.getId()))
+                                Collections.singletonList(player -> RunicAchievements.getAchievementsAPI().hasAchievement(player, Achievement.DISCOVER_NAZMORA.getId()))
                         )
                 );
         shopItems.add
@@ -118,7 +118,7 @@ public class FastTravelShopInitializer {
                         new RunicShopItem(15,
                                 wagonItem(TravelLocation.STONEHAVEN, Achievement.DISCOVER_STONEHAVEN.getName()),
                                 runWagonBuy(TravelLocation.STONEHAVEN),
-                                Collections.singletonList(player -> RunicAchievements.getAPI().hasAchievement(player, Achievement.DISCOVER_STONEHAVEN.getId()))
+                                Collections.singletonList(player -> RunicAchievements.getAchievementsAPI().hasAchievement(player, Achievement.DISCOVER_STONEHAVEN.getId()))
                         )
                 );
         shopItems.add
@@ -126,7 +126,7 @@ public class FastTravelShopInitializer {
                         new RunicShopItem(15,
                                 wagonItem(TravelLocation.FROSTS_END, Achievement.DISCOVER_FROSTS_END.getName()),
                                 runWagonBuy(TravelLocation.FROSTS_END),
-                                Collections.singletonList(player -> RunicAchievements.getAPI().hasAchievement(player, Achievement.DISCOVER_FROSTS_END.getId()))
+                                Collections.singletonList(player -> RunicAchievements.getAchievementsAPI().hasAchievement(player, Achievement.DISCOVER_FROSTS_END.getId()))
                         )
                 );
         shopItems.forEach(runicShopItem -> runicShopItem.setRemovePayment(true));

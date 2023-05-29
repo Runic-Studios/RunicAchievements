@@ -73,7 +73,7 @@ public class AchievementUnlockListener implements Listener {
     private void handleTitleReward(Player player) {
         Bukkit.getScheduler().runTaskAsynchronously(RunicAchievements.getInstance(), () -> {
             try (Jedis jedis = RunicDatabase.getAPI().getRedisAPI().getNewJedisResource()) {
-                AchievementData achievementData = (AchievementData) RunicAchievements.getAPI().getSessionData(player.getUniqueId());
+                AchievementData achievementData = (AchievementData) RunicAchievements.getDataAPI().getSessionData(player.getUniqueId());
                 achievementData.writeToJedis(jedis);
             }
         });

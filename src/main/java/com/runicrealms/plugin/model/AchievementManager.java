@@ -4,7 +4,8 @@ import co.aikar.taskchain.TaskChain;
 import co.aikar.taskchain.TaskChainAbortAction;
 import com.runicrealms.plugin.AchievementStatus;
 import com.runicrealms.plugin.RunicAchievements;
-import com.runicrealms.plugin.api.AchievementsAPI;
+import com.runicrealms.plugin.api.AchievementsDataAPI;
+import com.runicrealms.plugin.common.api.AchievementsAPI;
 import com.runicrealms.plugin.rdb.RunicDatabase;
 import com.runicrealms.plugin.rdb.event.CharacterQuitEvent;
 import com.runicrealms.plugin.rdb.event.CharacterSelectEvent;
@@ -31,7 +32,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Level;
 
-public class AchievementManager implements AchievementsAPI, Listener, SessionDataNestedManager {
+public class AchievementManager implements AchievementsDataAPI, Listener, SessionDataNestedManager, AchievementsAPI {
     public static final TaskChainAbortAction<Player, String, ?> CONSOLE_LOG = new TaskChainAbortAction<Player, String, Object>() {
         public void onAbort(TaskChain<?> chain, Player player, String message) {
             Bukkit.getLogger().log(Level.SEVERE, ChatColor.translateAlternateColorCodes('&', message));
@@ -71,7 +72,7 @@ public class AchievementManager implements AchievementsAPI, Listener, SessionDat
 
     @Override
     public boolean hasAchievement(Player player, String achievementId) {
-        AchievementData achievementData = (AchievementData) RunicAchievements.getAPI().getSessionData(player.getUniqueId());
+        AchievementData achievementData = (AchievementData) RunicAchievements.getDataAPI().getSessionData(player.getUniqueId());
         AchievementStatus achievementStatus = achievementData.getAchievementStatusMap().get(achievementId);
         if (!achievementId.equals("") && !achievementStatus.isUnlocked()) {
             player.playSound(player.getLocation(), Sound.ENTITY_GENERIC_EXTINGUISH_FIRE, 0.5f, 1.0f);
