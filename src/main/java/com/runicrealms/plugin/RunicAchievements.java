@@ -16,8 +16,8 @@ import com.runicrealms.plugin.listener.SlayerSetListener;
 import com.runicrealms.plugin.model.AchievementManager;
 import com.runicrealms.plugin.model.MongoTask;
 import com.runicrealms.plugin.shop.FastTravelShopInitializer;
+import com.runicrealms.plugin.ui.AchievementProfileUIListener;
 import com.runicrealms.plugin.ui.AchievementUIListener;
-import com.runicrealms.plugin.ui.PlayerMenuListener;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -92,7 +92,7 @@ public final class RunicAchievements extends JavaPlugin implements Listener {
                         new SlayerSetListener(),
                         new AchievementUnlockListener(),
                         new AchievementUIListener(),
-                        new PlayerMenuListener(),
+                        new AchievementProfileUIListener(),
                         new NoneSetListener(),
                         new ExplorerSetListener()
                 );
