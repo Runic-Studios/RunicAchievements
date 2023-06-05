@@ -5,7 +5,7 @@ import com.runicrealms.plugin.RunicAchievements;
 import com.runicrealms.plugin.api.Reward;
 import com.runicrealms.plugin.api.event.AchievementUnlockEvent;
 import com.runicrealms.plugin.common.util.ChatUtils;
-import com.runicrealms.plugin.events.RunicExpEvent;
+import com.runicrealms.plugin.events.RunicCombatExpEvent;
 import com.runicrealms.plugin.model.AchievementData;
 import com.runicrealms.plugin.rdb.RunicDatabase;
 import com.runicrealms.plugin.reward.ExpReward;
@@ -49,8 +49,8 @@ public class AchievementUnlockListener implements Listener {
      * @param exp    the amount of exp
      */
     public void handleExpReward(Player player, int exp) {
-        RunicExpEvent runicExpEvent = new RunicExpEvent(exp, exp, player, RunicExpEvent.RunicExpSource.OTHER, 0, null);
-        Bukkit.getPluginManager().callEvent(runicExpEvent);
+        RunicCombatExpEvent runicCombatExpEvent = new RunicCombatExpEvent(exp, false, player, RunicCombatExpEvent.RunicExpSource.OTHER, null);
+        Bukkit.getPluginManager().callEvent(runicCombatExpEvent);
     }
 
     /**
