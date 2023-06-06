@@ -182,6 +182,8 @@ public class AchievementUI implements InventoryHolder {
             Achievement achievement = achievements[i];
             AchievementStatus achievementStatus = achievementData.getAchievementStatusMap().get(achievement.getId());
             if (this.getInventory().firstEmpty() == -1) return; // inventory is filled
+            if (achievementStatus == null)
+                continue; // Error loading achievements, data is likely being unloaded right now
             this.inventory.setItem(inventory.firstEmpty(), achievementItem(achievementStatus, achievement));
         }
     }
