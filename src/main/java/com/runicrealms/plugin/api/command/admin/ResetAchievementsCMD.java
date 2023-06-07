@@ -4,6 +4,7 @@ import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CatchUnknown;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandCompletion;
+import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Default;
 import co.aikar.commands.annotation.Syntax;
 import com.runicrealms.plugin.Achievement;
@@ -19,6 +20,7 @@ import redis.clients.jedis.Jedis;
 import java.util.UUID;
 
 @CommandAlias("resetachievements")
+@CommandPermission("runic.op")
 public class ResetAchievementsCMD extends BaseCommand {
 
     // resetachievements [player]
