@@ -526,8 +526,8 @@ public enum Achievement {
             (
                     "slay-eldrid",
                     "Realm's Champion",
-                    "Obtained by defeating The Frozen Fortress dungeon and slaying Eldrid the Betrayer!",
-                    1000,
+                    "Coming soon!", // Obtained by defeating The Frozen Fortress dungeon and slaying Eldrid the Betrayer!
+                    200,
                     Material.DROWNED_SPAWN_EGG,
                     new ProgressUnlock(1),
                     Collections.singletonList(new TitleReward("Betrayer", false)),

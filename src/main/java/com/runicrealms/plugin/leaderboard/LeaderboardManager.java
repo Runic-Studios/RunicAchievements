@@ -33,6 +33,7 @@ import java.util.stream.Collectors;
  */
 public class LeaderboardManager {
     private static final int NAMES_TO_DISPLAY = 10;
+    private static final int DELAY = 20; // Seconds
     private static final int REFRESH_SECONDS = 180; // Seconds
     private static final Location AZANA_LEADERBOARD = new Location(Bukkit.getWorld("Alterra"), -718.5, 39.5, 217.5);
     private static final Location STONEHAVEN_LEADERBOARD = new Location(Bukkit.getWorld("Alterra"), -814.5, 41.5, 767.5);
@@ -43,7 +44,8 @@ public class LeaderboardManager {
         Set<Hologram> holograms = new HashSet<>();
         holograms.add(azanaHologram);
         holograms.add(stonehavenHologram);
-        Bukkit.getScheduler().runTaskTimer(RunicAchievements.getInstance(), () -> createLeaderboardHologram(holograms), 0, REFRESH_SECONDS * 20L);
+        Bukkit.getScheduler().runTaskTimer(RunicAchievements.getInstance(),
+                () -> createLeaderboardHologram(holograms), DELAY * 20L, REFRESH_SECONDS * 20L);
     }
 
     /**
@@ -88,8 +90,6 @@ public class LeaderboardManager {
             rank++;
         }
     }
-
-    // todo: projection
 
     /**
      * Uses a projection to scan all MongoDB records in Achievements collection and extract the points value
