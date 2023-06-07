@@ -4,11 +4,13 @@ import co.aikar.taskchain.TaskChain;
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 import com.runicrealms.plugin.RunicAchievements;
+import com.runicrealms.plugin.RunicCore;
+import com.runicrealms.plugin.common.util.ColorUtil;
 import com.runicrealms.plugin.model.AchievementData;
 import com.runicrealms.plugin.model.AchievementManager;
 import com.runicrealms.plugin.rdb.RunicDatabase;
 import com.runicrealms.plugin.util.AchievementUtil;
-import me.clip.placeholderapi.PlaceholderAPI;
+import net.luckperms.api.LuckPermsProvider;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -23,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 /**
@@ -69,25 +72,37 @@ public class LeaderboardManager {
     }
 
     private void updateHologram(Map<UUID, Integer> sortedMap, Hologram hologram) {
-        hologram.clearLines();
-        hologram.appendTextLine(ChatColor.GOLD + String.valueOf(ChatColor.BOLD) + "ACHIEVEMENT LEADERBOARD");
-        hologram.appendTextLine("");
-        int rank = 1;
-        for (Map.Entry<UUID, Integer> entry : sortedMap.entrySet()) {
-            OfflinePlayer player = Bukkit.getOfflinePlayer(entry.getKey());
-            String nameColorPlaceholder = PlaceholderAPI.setPlaceholders(player, "%luckperms_meta_name_color%");
-            String line = String.format
-                    (
-                            ChatColor.YELLOW + "%d. " +
-                                    ChatColor.GRAY + ChatColor.translateAlternateColorCodes('&', nameColorPlaceholder) + "%s " +
-                                    ChatColor.YELLOW + "- " +
-                                    ChatColor.GOLD + "[%d]",
-                            rank,
-                            player.getName(),
-                            entry.getValue()
-                    );
-            hologram.appendTextLine(line);
-            rank++;
+        Map<UUID, String> nameColors = new ConcurrentHashMap<>();
+        for (UUID uuid : sortedMap.keySet()) {
+            LuckPermsProvider.get().getUserManager().loadUser(uuid).thenAccept(user -> {
+                String nameColor = user.getCachedData().getMetaData().getMetaValue("name_color");
+                if (nameColor == null) nameColor = "&7";
+                nameColor = ColorUtil.format(nameColor);
+                nameColors.put(uuid, nameColor);
+                if (nameColors.size() == sortedMap.size()) {
+                    Bukkit.getScheduler().runTask(RunicCore.getInstance(), () -> {
+                        hologram.clearLines();
+                        hologram.appendTextLine(ChatColor.GOLD + String.valueOf(ChatColor.BOLD) + "ACHIEVEMENT LEADERBOARD");
+                        hologram.appendTextLine("");
+                        int rank = 1;
+                        for (Map.Entry<UUID, Integer> entry : sortedMap.entrySet()) {
+                            OfflinePlayer player = Bukkit.getOfflinePlayer(entry.getKey());
+                            String line = String.format
+                                    (
+                                            ChatColor.YELLOW + "%d. " +
+                                                    nameColors.get(player.getUniqueId()) + "%s " +
+                                                    ChatColor.YELLOW + "- " +
+                                                    ChatColor.GOLD + "[%d]",
+                                            rank,
+                                            player.getName(),
+                                            entry.getValue()
+                                    );
+                            hologram.appendTextLine(line);
+                            rank++;
+                        }
+                    });
+                }
+            });
         }
     }
 

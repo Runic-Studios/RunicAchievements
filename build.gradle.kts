@@ -24,6 +24,7 @@ dependencies {
     compileOnly(commonLibs.mongodbdriversync)
     compileOnly(commonLibs.holographicdisplays)
     compileOnly(commonLibs.placeholderapi)
+    compileOnly(commonLibs.luckperms)
     compileOnly(project(":Projects:Core"))
     compileOnly(project(":Projects:Guilds"))
     compileOnly(project(":Projects:Items"))
