@@ -8,6 +8,7 @@ import com.runicrealms.plugin.api.AchievementsDataAPI;
 import com.runicrealms.plugin.api.command.admin.ResetAchievementsCMD;
 import com.runicrealms.plugin.common.RunicCommon;
 import com.runicrealms.plugin.common.api.AchievementsAPI;
+import com.runicrealms.plugin.leaderboard.LeaderboardManager;
 import com.runicrealms.plugin.listener.AchievementUnlockListener;
 import com.runicrealms.plugin.listener.ExplorerSetListener;
 import com.runicrealms.plugin.listener.GathererSetListener;
@@ -72,6 +73,7 @@ public final class RunicAchievements extends JavaPlugin implements Listener {
 
         commandManager = new PaperCommandManager(this);
         mongoTask = new MongoTask();
+        new LeaderboardManager(); // todo
         /*
         Shops
          */

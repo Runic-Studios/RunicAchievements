@@ -11,6 +11,7 @@ import com.runicrealms.plugin.common.util.GUIUtil;
 import com.runicrealms.plugin.model.AchievementData;
 import com.runicrealms.plugin.reward.TitleReward;
 import com.runicrealms.plugin.unlock.ProgressUnlock;
+import com.runicrealms.plugin.util.AchievementUtil;
 import com.runicrealms.plugin.utilities.NumRounder;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -55,21 +56,6 @@ public class AchievementUI implements InventoryHolder {
     }
 
     /**
-     * Calculates the total achievement points of the player
-     *
-     * @param achievementData their data wrapper object
-     * @return points for each achievement
-     */
-    private static int calculateTotalAchievementPoints(AchievementData achievementData) {
-        int totalPoints = 0;
-        for (AchievementStatus achievementStatus : achievementData.getAchievementStatusMap().values()) {
-            if (!achievementStatus.isUnlocked()) continue;
-            totalPoints += achievementStatus.getAchievement().getPointValue();
-        }
-        return totalPoints;
-    }
-
-    /**
      * Creates a visual progress bar for progress-based achievements in the ui
      *
      * @param achievementStatus the current status of the achievement progress
@@ -100,7 +86,7 @@ public class AchievementUI implements InventoryHolder {
         meta.setDisplayName(ChatColor.YELLOW + "Achievement Info");
         List<String> lore = new ArrayList<>();
         lore.add("");
-        lore.add(ChatColor.GOLD + "Achievement Points: " + calculateTotalAchievementPoints(achievementData));
+        lore.add(ChatColor.GOLD + "Achievement Points: " + AchievementUtil.calculateTotalAchievementPoints(achievementData));
         lore.addAll(ChatUtils.formattedText("&7Achievement points track your total achievement progress!"));
         lore.add("");
         lore.add(ChatColor.DARK_AQUA + "Set Progress:");

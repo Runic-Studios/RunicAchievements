@@ -22,6 +22,8 @@ dependencies {
     compileOnly(commonLibs.springdatamongodb)
     compileOnly(commonLibs.mongodbdrivercore)
     compileOnly(commonLibs.mongodbdriversync)
+    compileOnly(commonLibs.holographicdisplays)
+    compileOnly(commonLibs.placeholderapi)
     compileOnly(project(":Projects:Core"))
     compileOnly(project(":Projects:Guilds"))
     compileOnly(project(":Projects:Items"))
