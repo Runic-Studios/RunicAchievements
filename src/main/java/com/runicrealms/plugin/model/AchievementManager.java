@@ -58,7 +58,7 @@ public class AchievementManager implements AchievementsDataAPI, Listener, Sessio
         String database = RunicDatabase.getAPI().getDataAPI().getMongoDatabase().getName();
         UUID uuid = (UUID) object;
         if (jedis.exists(database + ":" + uuid + ":hasAchievementData")) {
-            return new AchievementData(uuid);
+            return new AchievementData(uuid, jedis);
         }
         return null;
     }
