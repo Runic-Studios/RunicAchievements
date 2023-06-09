@@ -51,34 +51,35 @@ public class AchievementData implements SessionDataMongo, SessionDataNested {
     /**
      * AchievementData binds player's uuid to a map of achievement id's to their current status, used to track their progress
      *
-     * @param uuid  of the player
-     * @param jedis the jedis resource
+     * @param uuid of the player
      */
-    public AchievementData(UUID uuid, Jedis jedis) {
+    public AchievementData(UUID uuid) {
         this.uuid = uuid;
         String database = RunicDatabase.getAPI().getDataAPI().getMongoDatabase().getName();
         String rootKey = database + ":" + uuid + ":" + DATA_SECTION_ACHIEVEMENTS;
 
         this.achievementStatusMap = new HashMap<>();
 
-        for (String key : RunicDatabase.getAPI().getRedisAPI().getNewJedisResource().keys(rootKey + ":*")) {
-            int lastIndex = key.lastIndexOf(':');
-            String achievementId = lastIndex != -1 ? key.substring(lastIndex + 1) : key;
-            Map<String, String> fieldsMap = getDataMapFromJedis(jedis, achievementId);
-            AchievementStatus achievementStatus = new AchievementStatus
-                    (
-                            uuid,
-                            Achievement.getFromId(achievementId),
-                            Integer.parseInt(fieldsMap.get(AchievementField.PROGRESS.getField())),
-                            Boolean.parseBoolean(fieldsMap.get(AchievementField.IS_UNLOCKED.getField()))
-                    );
-            achievementStatusMap.put(achievementId, achievementStatus);
-        }
+        try (Jedis jedis = RunicDatabase.getAPI().getRedisAPI().getNewJedisResource()) {
+            for (String key : jedis.keys(rootKey + ":*")) {
+                int lastIndex = key.lastIndexOf(':');
+                String achievementId = lastIndex != -1 ? key.substring(lastIndex + 1) : key;
+                Map<String, String> fieldsMap = getDataMapFromJedis(jedis, achievementId);
+                AchievementStatus achievementStatus = new AchievementStatus
+                        (
+                                uuid,
+                                Achievement.getFromId(achievementId),
+                                Integer.parseInt(fieldsMap.get(AchievementField.PROGRESS.getField())),
+                                Boolean.parseBoolean(fieldsMap.get(AchievementField.IS_UNLOCKED.getField()))
+                        );
+                achievementStatusMap.put(achievementId, achievementStatus);
+            }
 
-        for (Achievement achievement : Achievement.values()) { // Load blank values for achievements w/ no data to prevent npe
-            if (achievementStatusMap.get(achievement.getId()) != null)
-                continue; // Ignore where there is data
-            achievementStatusMap.put(achievement.getId(), new AchievementStatus(uuid, achievement));
+            for (Achievement achievement : Achievement.values()) { // Load blank values for achievements w/ no data to prevent npe
+                if (achievementStatusMap.get(achievement.getId()) != null)
+                    continue; // Ignore where there is data
+                achievementStatusMap.put(achievement.getId(), new AchievementStatus(uuid, achievement));
+            }
         }
     }
 
