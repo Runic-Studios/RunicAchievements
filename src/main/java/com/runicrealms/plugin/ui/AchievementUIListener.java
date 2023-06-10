@@ -1,6 +1,5 @@
 package com.runicrealms.plugin.ui;
 
-import co.aikar.taskchain.TaskChain;
 import com.runicrealms.plugin.Achievement;
 import com.runicrealms.plugin.AchievementStatus;
 import com.runicrealms.plugin.RunicAchievements;
@@ -8,9 +7,7 @@ import com.runicrealms.plugin.RunicCore;
 import com.runicrealms.plugin.api.Reward;
 import com.runicrealms.plugin.common.util.GUIUtil;
 import com.runicrealms.plugin.model.AchievementData;
-import com.runicrealms.plugin.model.AchievementManager;
 import com.runicrealms.plugin.model.TitleData;
-import com.runicrealms.plugin.rdb.RunicDatabase;
 import com.runicrealms.plugin.reward.TitleReward;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -21,7 +18,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
-import redis.clients.jedis.Jedis;
 
 public class AchievementUIListener implements Listener {
 
@@ -49,26 +45,22 @@ public class AchievementUIListener implements Listener {
         }
         if (titleReward == null) return;
 
-        // Write Title Data Async
+        // Write Title Data Async using TaskChain
         String completeMessage = ChatColor.DARK_AQUA + "You have enabled the title: " + ChatColor.AQUA + titleReward.getTitle() + ChatColor.DARK_AQUA + "!";
-        TaskChain<?> chain = RunicAchievements.newChain();
         TitleReward finalTitleReward = titleReward;
-        chain
-                .asyncFirst(() -> {
-                    try (Jedis jedis = RunicDatabase.getAPI().getRedisAPI().getNewJedisResource()) {
-                        TitleData titleData = RunicCore.getTitleAPI().loadTitleData(player.getUniqueId(), jedis);
-                        if (finalTitleReward.isSuffix()) {
-                            titleData.setSuffix(finalTitleReward.getTitle());
-                        } else {
-                            titleData.setPrefix(finalTitleReward.getTitle());
-                        }
-                        titleData.writeToJedis(player.getUniqueId(), jedis);
-                        return titleData;
-                    }
-                })
-                .abortIfNull(AchievementManager.CONSOLE_LOG, null, "RunicAchievements failed to write title!")
-                .syncLast(data -> player.sendMessage(completeMessage))
-                .execute();
+        TitleData titleData = RunicCore.getTitleAPI().getTitleData(player.getUniqueId());
+        if (finalTitleReward.isSuffix()) {
+            titleData.setSuffix(finalTitleReward.getTitle());
+        } else {
+            titleData.setPrefix(finalTitleReward.getTitle());
+        }
+        RunicCore.getCoreWriteOperation().updateCorePlayerData
+                (
+                        player.getUniqueId(),
+                        "titleData",
+                        titleData,
+                        () -> player.sendMessage(completeMessage)
+                );
     }
 
     @EventHandler
