@@ -72,14 +72,16 @@ public class LeaderboardManager {
     }
 
     private void updateHologram(Map<UUID, Integer> sortedMap, Hologram hologram) {
-        Map<UUID, String> nameColors = new ConcurrentHashMap<>();
+        Map<UUID, String> names = new ConcurrentHashMap<>();
         for (UUID uuid : sortedMap.keySet()) {
             LuckPermsProvider.get().getUserManager().loadUser(uuid).thenAccept(user -> {
                 String nameColor = user.getCachedData().getMetaData().getMetaValue("name_color");
                 if (nameColor == null) nameColor = "&7";
                 nameColor = ColorUtil.format(nameColor);
-                nameColors.put(uuid, nameColor);
-                if (nameColors.size() == sortedMap.size()) {
+                String name = user.getUsername();
+                if (name == null) name = "Unknown";
+                names.put(uuid, nameColor + name);
+                if (names.size() == sortedMap.size()) {
                     Bukkit.getScheduler().runTask(RunicCore.getInstance(), () -> {
                         hologram.clearLines();
                         hologram.appendTextLine(ChatColor.GOLD + String.valueOf(ChatColor.BOLD) + "ACHIEVEMENT LEADERBOARD");
@@ -87,17 +89,12 @@ public class LeaderboardManager {
                         int rank = 1;
                         for (Map.Entry<UUID, Integer> entry : sortedMap.entrySet()) {
                             OfflinePlayer player = Bukkit.getOfflinePlayer(entry.getKey());
-                            String line = String.format
-                                    (
-                                            ChatColor.YELLOW + "%d. " +
-                                                    nameColors.get(player.getUniqueId()) + "%s " +
-                                                    ChatColor.YELLOW + "- " +
-                                                    ChatColor.GOLD + "[%d]",
-                                            rank,
-                                            player.getName(),
-                                            entry.getValue()
-                                    );
-                            hologram.appendTextLine(line);
+                            hologram.appendTextLine(
+                                    ChatColor.YELLOW.toString() + rank + ". " +
+                                            names.get(player.getUniqueId()) + " " +
+                                            ChatColor.YELLOW + "- " +
+                                            ChatColor.GOLD + "[" + entry.getValue() + "]"
+                            );
                             rank++;
                         }
                     });
