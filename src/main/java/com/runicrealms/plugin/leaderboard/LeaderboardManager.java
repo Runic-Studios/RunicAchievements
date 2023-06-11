@@ -14,7 +14,6 @@ import net.luckperms.api.LuckPermsProvider;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.OfflinePlayer;
 import org.springframework.data.mongodb.core.MongoTemplate;
 
 import java.util.Comparator;
@@ -88,10 +87,9 @@ public class LeaderboardManager {
                         hologram.appendTextLine("");
                         int rank = 1;
                         for (Map.Entry<UUID, Integer> entry : sortedMap.entrySet()) {
-                            OfflinePlayer player = Bukkit.getOfflinePlayer(entry.getKey());
                             hologram.appendTextLine(
                                     ChatColor.YELLOW.toString() + rank + ". " +
-                                            names.get(player.getUniqueId()) + " " +
+                                            names.get(entry.getKey()) + " " +
                                             ChatColor.YELLOW + "- " +
                                             ChatColor.GOLD + "[" + entry.getValue() + "]"
                             );
