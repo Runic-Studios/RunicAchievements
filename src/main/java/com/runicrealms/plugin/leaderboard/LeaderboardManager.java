@@ -14,6 +14,7 @@ import net.luckperms.api.LuckPermsProvider;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.OfflinePlayer;
 import org.springframework.data.mongodb.core.MongoTemplate;
 
 import java.util.Comparator;
@@ -59,9 +60,11 @@ public class LeaderboardManager {
                 // Fetch data
                 .asyncFirst(() -> {
                     Map<UUID, Integer> pointsMap = getAllAchievementPoints();
+                    Set<UUID> operators = Bukkit.getOperators().stream().map(OfflinePlayer::getUniqueId).collect(Collectors.toUnmodifiableSet());
                     // Sort the map in descending order
                     return pointsMap.entrySet().stream()
                             .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                            .filter((entry) -> !operators.contains(entry.getKey()))
                             .limit(NAMES_TO_DISPLAY)
                             .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e2, LinkedHashMap::new));
                 })
