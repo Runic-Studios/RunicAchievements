@@ -1,8 +1,6 @@
 package com.runicrealms.plugin.leaderboard;
 
 import co.aikar.taskchain.TaskChain;
-import com.gmail.filoghost.holographicdisplays.api.Hologram;
-import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 import com.runicrealms.plugin.RunicAchievements;
 import com.runicrealms.plugin.RunicCore;
 import com.runicrealms.plugin.common.util.ColorUtil;
@@ -10,6 +8,8 @@ import com.runicrealms.plugin.model.AchievementData;
 import com.runicrealms.plugin.model.AchievementManager;
 import com.runicrealms.plugin.rdb.RunicDatabase;
 import com.runicrealms.plugin.util.AchievementUtil;
+import me.filoghost.holographicdisplays.api.HolographicDisplaysAPI;
+import me.filoghost.holographicdisplays.api.hologram.Hologram;
 import net.luckperms.api.LuckPermsProvider;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -42,8 +42,8 @@ public class LeaderboardManager {
     private static final Location STONEHAVEN_LEADERBOARD = new Location(Bukkit.getWorld("Alterra"), -814.5, 41.5, 767.5);
 
     public LeaderboardManager() {
-        Hologram azanaHologram = HologramsAPI.createHologram(RunicAchievements.getInstance(), AZANA_LEADERBOARD);
-        Hologram stonehavenHologram = HologramsAPI.createHologram(RunicAchievements.getInstance(), STONEHAVEN_LEADERBOARD);
+        Hologram azanaHologram = HolographicDisplaysAPI.get(RunicAchievements.getInstance()).createHologram(AZANA_LEADERBOARD);
+        Hologram stonehavenHologram = HolographicDisplaysAPI.get(RunicAchievements.getInstance()).createHologram(STONEHAVEN_LEADERBOARD);
         Set<Hologram> holograms = new HashSet<>();
         holograms.add(azanaHologram);
         holograms.add(stonehavenHologram);
@@ -85,12 +85,12 @@ public class LeaderboardManager {
                 names.put(uuid, nameColor + name);
                 if (names.size() == sortedMap.size()) {
                     Bukkit.getScheduler().runTask(RunicCore.getInstance(), () -> {
-                        hologram.clearLines();
-                        hologram.appendTextLine(ChatColor.GOLD + String.valueOf(ChatColor.BOLD) + "ACHIEVEMENT LEADERBOARD");
-                        hologram.appendTextLine("");
+                        hologram.getLines().clear();
+                        hologram.getLines().appendText(ChatColor.GOLD + String.valueOf(ChatColor.BOLD) + "ACHIEVEMENT LEADERBOARD");
+                        hologram.getLines().appendText("");
                         int rank = 1;
                         for (Map.Entry<UUID, Integer> entry : sortedMap.entrySet()) {
-                            hologram.appendTextLine(
+                            hologram.getLines().appendText(
                                     ChatColor.YELLOW.toString() + rank + ". " +
                                             names.get(entry.getKey()) + " " +
                                             ChatColor.YELLOW + "- " +
