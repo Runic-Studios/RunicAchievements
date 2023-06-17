@@ -622,7 +622,7 @@ public enum Achievement {
      */
     public static Achievement getFromRunicItemId(String runicItemId) {
         for (Achievement achievement : Achievement.values()) {
-            if (achievement.getRunicItemId().equals(runicItemId)) {
+            if (achievement.getRunicItemId().equalsIgnoreCase(runicItemId)) {
                 return achievement;
             }
         }
