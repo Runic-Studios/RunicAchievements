@@ -137,21 +137,21 @@ public enum Achievement {
                     Collections.singletonList(new TitleReward("Humble Farmer", false)),
                     AchievementSet.MASTER_GATHERER,
                     true,
-                    "Wheat",
+                    "wheat",
                     Collections.singletonList("")
             ),
     SMELL_ROSES
             (
                     "smell-roses",
                     "Stop and Smell the Roses",
-                    "Obtained by harvesting 1,000 petunias!",
+                    "Obtained by harvesting 10,000 plants!",
                     70,
-                    Material.WHEAT,
-                    new ProgressUnlock(1000),
+                    Material.POPPY,
+                    new ProgressUnlock(10000),
                     Collections.singletonList(new TitleReward("Green Thumb", false)),
                     AchievementSet.MASTER_GATHERER,
                     true,
-                    "Petunia",
+                    "*",
                     Collections.singletonList("")
             ),
     BOIL_EM_MASH_EM
@@ -165,7 +165,7 @@ public enum Achievement {
                     Collections.singletonList(new TitleReward("Tater Tot", false)),
                     AchievementSet.MASTER_GATHERER,
                     true,
-                    "Potato",
+                    "potato",
                     Collections.singletonList("")
             ),
     JUNGLE_LOG
@@ -179,7 +179,7 @@ public enum Achievement {
                     Collections.singletonList(new TitleReward("Harambe", false)),
                     AchievementSet.MASTER_GATHERER,
                     true,
-                    "JungleWood",
+                    "jungle-wood",
                     Collections.singletonList("")
             ),
     GO_FISH
@@ -207,7 +207,7 @@ public enum Achievement {
                     Collections.singletonList(new TitleReward("Touch Grass", false)),
                     AchievementSet.MASTER_GATHERER,
                     true,
-                    "Pufferfish",
+                    "pufferfish",
                     Collections.singletonList("")
             ),
     THE_LUMBERJACK
@@ -221,7 +221,7 @@ public enum Achievement {
                     Collections.singletonList(new TitleReward("Lumberjack", false)),
                     AchievementSet.MASTER_GATHERER,
                     true,
-                    "OakWood",
+                    "oak-wood",
                     Collections.singletonList("")
             ),
 
