@@ -124,13 +124,24 @@ public class FastTravelShopInitializer {
         shopItems.add
                 (
                         new RunicShopItem(15,
+                                wagonItem(TravelLocation.AZUREMIST, Achievement.DISCOVER_AZUREMIST.getName()),
+                                runWagonBuy(TravelLocation.AZUREMIST),
+                                Collections.singletonList(player -> RunicAchievements.getAchievementsAPI().hasAchievement(player, Achievement.DISCOVER_AZUREMIST.getId()))
+                        )
+                );
+        shopItems.add
+                (
+                        new RunicShopItem(15,
                                 wagonItem(TravelLocation.FROSTS_END, Achievement.DISCOVER_FROSTS_END.getName()),
                                 runWagonBuy(TravelLocation.FROSTS_END),
                                 Collections.singletonList(player -> RunicAchievements.getAchievementsAPI().hasAchievement(player, Achievement.DISCOVER_FROSTS_END.getId()))
                         )
                 );
         shopItems.forEach(runicShopItem -> runicShopItem.setRemovePayment(true));
-        return new RunicShopGeneric(45, ChatColor.YELLOW + "Wagonmaster", Arrays.asList(245, 246, 249, 256, 262, 267, 333, 272, 334, 285, 315, 337), shopItems);
+        return new RunicShopGeneric(45, ChatColor.YELLOW + "Wagonmaster", Arrays.asList
+                (
+                        245, 246, 249, 256, 262, 267, 333, 272, 334, 285, 315, 337, 787
+                ), shopItems);
     }
 
     /**

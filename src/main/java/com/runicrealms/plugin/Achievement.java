@@ -396,6 +396,20 @@ public enum Achievement {
                     "",
                     Collections.singletonList("")
             ),
+    DISCOVER_AZUREMIST
+            (
+                    "discover-azuremist",
+                    "Tribe of Water",
+                    "Obtained by discovering Azuremist Peak!",
+                    5,
+                    Material.WRITABLE_BOOK,
+                    new LocationUnlock("azuremist"),
+                    Collections.singletonList(new TitleReward("Tidewalker", false)),
+                    AchievementSet.EXPLORER,
+                    false,
+                    "",
+                    Collections.singletonList("")
+            ),
     DISCOVER_VALMYRA
             (
                     "discover-valmyra",
