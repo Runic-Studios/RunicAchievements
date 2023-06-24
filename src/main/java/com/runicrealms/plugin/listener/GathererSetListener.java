@@ -8,7 +8,7 @@ import com.runicrealms.plugin.model.AchievementData;
 import com.runicrealms.plugin.professions.event.GatheringEvent;
 import com.runicrealms.plugin.professions.listeners.HarvestingListener;
 import com.runicrealms.plugin.unlock.ProgressUnlock;
-import io.lumine.xikage.mythicmobs.api.bukkit.events.MythicMobDeathEvent;
+import io.lumine.mythic.bukkit.events.MythicMobDeathEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
