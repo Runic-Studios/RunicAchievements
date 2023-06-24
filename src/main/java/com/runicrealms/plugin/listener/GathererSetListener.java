@@ -6,8 +6,11 @@ import com.runicrealms.plugin.RunicAchievements;
 import com.runicrealms.plugin.api.event.AchievementUnlockEvent;
 import com.runicrealms.plugin.model.AchievementData;
 import com.runicrealms.plugin.professions.event.GatheringEvent;
+import com.runicrealms.plugin.professions.listeners.HarvestingListener;
 import com.runicrealms.plugin.unlock.ProgressUnlock;
+import io.lumine.xikage.mythicmobs.api.bukkit.events.MythicMobDeathEvent;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
@@ -21,12 +24,24 @@ import java.util.UUID;
 public class GathererSetListener implements Listener {
 
     @EventHandler
-    public void onGather(GatheringEvent event) {
+    public void onHarvest(MythicMobDeathEvent event) {
+        String faction = event.getMob().getFaction();
+        if (faction == null) return;
+        if (!faction.equals(HarvestingListener.HERB_FACTION)) return;
+        Achievement achievement = Achievement.SMELL_ROSES;
+        foo(event.getKiller().getUniqueId(), achievement);
+    }
 
+    @EventHandler
+    public void onGather(GatheringEvent event) {
         Achievement achievement = Achievement.getFromRunicItemId(event.getGatheringResource().getTemplateId());
         if (achievement == null) return; // Ensure some achievement listens for this resource
+        foo(event.getPlayer().getUniqueId(), achievement);
+    }
 
-        UUID uuid = event.getPlayer().getUniqueId();
+    private void foo(UUID uuid, Achievement achievement) {
+        Player player = Bukkit.getPlayer(uuid);
+        if (player == null) return;
         AchievementData achievementData = (AchievementData) RunicAchievements.getDataAPI().getSessionData(uuid);
         AchievementStatus achievementStatus = achievementData.getAchievementStatusMap().get(achievement.getId());
         if (achievementStatus.isUnlocked()) return; // Ignore completed achievements
@@ -39,7 +54,7 @@ public class GathererSetListener implements Listener {
         // If the player has unlocked achievement
         if (achievementStatus.getProgress() == progressUnlock.getAmountToUnlock()) {
             achievementStatus.setUnlocked(true);
-            AchievementUnlockEvent achievementUnlockEvent = new AchievementUnlockEvent(event.getPlayer(), achievementStatus.getAchievement());
+            AchievementUnlockEvent achievementUnlockEvent = new AchievementUnlockEvent(player, achievementStatus.getAchievement());
             Bukkit.getPluginManager().callEvent(achievementUnlockEvent);
         }
     }
