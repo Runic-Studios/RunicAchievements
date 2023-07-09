@@ -140,7 +140,7 @@ public class FastTravelShopInitializer {
         shopItems.forEach(runicShopItem -> runicShopItem.setRemovePayment(true));
         return new RunicShopGeneric(45, ChatColor.YELLOW + "Wagonmaster", Arrays.asList
                 (
-                        245, 246, 249, 256, 262, 267, 333, 272, 334, 285, 315, 337, 787, 789
+                        245, 246, 249, 256, 262, 267, 333, 272, 334, 285, 315, 337, 786, 806, 807
                 ), shopItems);
     }
 
