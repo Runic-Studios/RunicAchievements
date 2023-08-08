@@ -91,7 +91,7 @@ public class AchievementUI implements InventoryHolder {
         lore.add("");
         lore.add(ChatColor.DARK_AQUA + "Set Progress:");
         for (AchievementSet achievementSet : AchievementSet.values()) {
-            int total = AchievementSet.getTotalAchievementsInSet(achievementSet);
+            int total = AchievementSet.getTotalAchievementsInSet(achievementSet, true);
             int progress = 0;
             for (AchievementStatus achievementStatus : achievementData.getAchievementStatusMap().values()) {
                 if (!achievementStatus.isUnlocked()) continue;
@@ -168,7 +168,7 @@ public class AchievementUI implements InventoryHolder {
             Achievement achievement = achievements[i];
             AchievementStatus achievementStatus = achievementData.getAchievementStatusMap().get(achievement.getId());
             if (this.getInventory().firstEmpty() == -1) return; // inventory is filled
-            if (achievementStatus == null)
+            if (achievementStatus == null || !achievement.shouldDisplay())
                 continue; // Error loading achievements, data is likely being unloaded right now
             this.inventory.setItem(inventory.firstEmpty(), achievementItem(achievementStatus, achievement));
         }

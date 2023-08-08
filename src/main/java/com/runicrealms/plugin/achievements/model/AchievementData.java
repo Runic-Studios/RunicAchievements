@@ -21,7 +21,7 @@ import java.util.UUID;
 @Document(collection = "achievements")
 public class AchievementData implements SessionDataMongo, SessionDataNested {
     public static final String DATA_SECTION_ACHIEVEMENTS = "achievements";
-    public static final List<String> FIELDS = new ArrayList<String>() {{
+    public static final List<String> FIELDS = new ArrayList<>() {{
         add(AchievementField.PROGRESS.getField());
         add(AchievementField.IS_UNLOCKED.getField());
     }};

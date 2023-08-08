@@ -18,10 +18,12 @@ public enum AchievementSet {
         return name;
     }
 
-    public static int getTotalAchievementsInSet(AchievementSet achievementSet) {
+    public static int getTotalAchievementsInSet(AchievementSet achievementSet, boolean displayedOnly) {
         int result = 0;
         for (Achievement achievement : Achievement.values()) {
-            if (achievement.getAchievementSet() != achievementSet) continue;
+            if (achievement.getAchievementSet() != achievementSet || (displayedOnly && !achievement.shouldDisplay())) {
+                continue;
+            }
             result += 1;
         }
         return result;

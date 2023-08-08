@@ -120,7 +120,8 @@ public enum Achievement {
                     AchievementSet.COMBATANT,
                     true,
                     "",
-                    Collections.singletonList("")
+                    Collections.singletonList(""),
+                    false
             ),
 
     /*
@@ -548,7 +549,8 @@ public enum Achievement {
                     AchievementSet.SLAYER,
                     false,
                     "",
-                    Collections.singletonList("Eldrid")
+                    Collections.singletonList("Eldrid"),
+                    false
             );
 
     private final String id;
@@ -562,6 +564,7 @@ public enum Achievement {
     private final boolean shootsFirework;
     private final String runicItemId;
     private final List<String> internalMobNames;
+    private final boolean display;
 
     /**
      * An enumerated list of achievements
@@ -577,10 +580,11 @@ public enum Achievement {
      * @param shootsFirework   whether the achievement will shoot a firework
      * @param runicItemId      a param to add a runic item for gathering achievements
      * @param internalMobNames a list of Strings of mobs to slay (if any)
+     * @param display          if this achievement should be visible to the user
      */
     Achievement(String id, String name, String description, int pointValue, Material guiItem,
                 UnlockMethod unlockMethod, List<Reward> rewards, AchievementSet achievementSet,
-                boolean shootsFirework, String runicItemId, List<String> internalMobNames) {
+                boolean shootsFirework, String runicItemId, List<String> internalMobNames, boolean display) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -592,6 +596,13 @@ public enum Achievement {
         this.shootsFirework = shootsFirework;
         this.runicItemId = runicItemId;
         this.internalMobNames = internalMobNames;
+        this.display = display;
+    }
+
+    Achievement(String id, String name, String description, int pointValue, Material guiItem,
+                UnlockMethod unlockMethod, List<Reward> rewards, AchievementSet achievementSet,
+                boolean shootsFirework, String runicItemId, List<String> internalMobNames) {
+        this(id, name, description, pointValue, guiItem, unlockMethod, rewards, achievementSet, shootsFirework, runicItemId, internalMobNames, true);
     }
 
     /**
@@ -700,5 +711,9 @@ public enum Achievement {
 
     public boolean shouldShootFirework() {
         return shootsFirework;
+    }
+
+    public boolean shouldDisplay() {
+        return this.display;
     }
 }
