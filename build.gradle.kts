@@ -15,7 +15,6 @@ dependencies {
     compileOnly(commonLibs.spigot)
     compileOnly(commonLibs.jedis)
     compileOnly(commonLibs.mythicmobs)
-    compileOnly(commonLibs.craftbukkit)
     compileOnly(commonLibs.worldguardevents)
     compileOnly(commonLibs.acf)
     compileOnly(commonLibs.taskchain)

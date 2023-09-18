@@ -1,6 +1,6 @@
 name: RunicAchievements
 version: '${project.version}'
-main: com.runicrealms.plugin.RunicAchievements
+main: com.runicrealms.plugin.achievements.RunicAchievements
 api-version: 1.16
 depend:
   - RunicCore
