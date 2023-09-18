@@ -537,6 +537,34 @@ public enum Achievement {
                     "",
                     Collections.singletonList("InfernalGrunt")
             ),
+    SLAY_NOMAN
+            (
+                    "slay-noman",
+                    "The Bigger They Are",
+                    "Obtained by slaying the world boss - Noman Type A!",
+                    100,
+                    Material.IRON_GOLEM_SPAWN_EGG,
+                    new ProgressUnlock(1),
+                    Collections.singletonList(new TitleReward("World Renowned", false)),
+                    AchievementSet.SLAYER,
+                    true,
+                    "",
+                    Collections.singletonList("Noman")
+            ),
+    SLAY_PRAETORIUM
+            (
+                    "slay-praetorium",
+                    "The Sands of Time",
+                    "Obtained by slaying the invaders of the Praetorium!",
+                    100,
+                    Material.HUSK_SPAWN_EGG,
+                    new ProgressUnlock(100),
+                    Collections.singletonList(new TitleReward("Telmarine", false)),
+                    AchievementSet.SLAYER,
+                    true,
+                    "",
+                    Arrays.asList("praetorium-archer", "praetorium-cleric", "praetorium-mage", "praetorium-rogue", "praetorium-warrior")
+            ),
     SLAY_ELDRID
             (
                     "slay-eldrid",
