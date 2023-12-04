@@ -1,15 +1,3 @@
-val artifactName = "achievements"
-val rrGroup: String by rootProject.extra
-val rrVersion: String by rootProject.extra
-
-plugins {
-    `java-library`
-    `maven-publish`
-}
-
-version = rrVersion
-group = rrGroup
-
 dependencies {
     compileOnly(commonLibs.paper)
     compileOnly(commonLibs.spigot)
@@ -30,19 +18,4 @@ dependencies {
     compileOnly(project(":Projects:Professions"))
     compileOnly(project(":Projects:Database"))
     compileOnly(project(":Projects:Common"))
-}
-
-java {
-    toolchain.languageVersion.set(JavaLanguageVersion.of(17))
-}
-
-publishing {
-    publications {
-        create<MavenPublication>("maven") {
-            groupId = rrGroup
-            artifactId = artifactName
-            version = rrVersion
-            from(components["java"])
-        }
-    }
 }
