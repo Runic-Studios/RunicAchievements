@@ -9,7 +9,6 @@ import com.runicrealms.plugin.common.api.AchievementsAPI;
 import com.runicrealms.plugin.rdb.RunicDatabase;
 import com.runicrealms.plugin.rdb.event.CharacterQuitEvent;
 import com.runicrealms.plugin.rdb.event.CharacterSelectEvent;
-import com.runicrealms.plugin.rdb.event.MongoSaveEvent;
 import com.runicrealms.plugin.rdb.model.CharacterField;
 import com.runicrealms.plugin.rdb.model.SessionDataNested;
 import com.runicrealms.plugin.rdb.model.SessionDataNestedManager;
