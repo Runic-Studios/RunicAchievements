@@ -1,10 +1,13 @@
 package com.runicrealms.plugin.achievements.ui;
 
+import com.runicrealms.plugin.common.RunicCommon;
 import com.runicrealms.plugin.player.ui.ProfileUI;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.inventory.InventoryType;
 
 /**
@@ -35,5 +38,14 @@ public class AchievementProfileUIListener implements Listener {
             event.setCancelled(true);
             player.openInventory(new AchievementUI(player).getInventory());
         }
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    private void onInventoryOpen(InventoryOpenEvent event) {
+        if (!(event.getInventory().getHolder() instanceof AchievementUI)) {
+            return;
+        }
+
+        RunicCommon.getQuestsAPI().triggerQuest(false, (Player) event.getPlayer(), "achievement-menu", null);
     }
 }

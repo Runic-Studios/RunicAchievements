@@ -425,6 +425,20 @@ public enum Achievement {
                     "",
                     Collections.singletonList("")
             ),
+    DISCOVER_UNDERGROUND
+            (
+                    "discover-underground",
+                    "The Underground Passages",
+                    "Obtained by discovering the Underground!",
+                    20,
+                    Material.WRITABLE_BOOK,
+                    new LocationUnlock("underground"),
+                    Collections.singletonList(new TitleReward("Roguelike", false)),
+                    AchievementSet.EXPLORER,
+                    false,
+                    "",
+                    Collections.singletonList("")
+            ),
     DISCOVER_FROSTS_END
             (
                     "discover-frosts-end",
@@ -551,7 +565,7 @@ public enum Achievement {
                     "",
                     Collections.singletonList("Noman")
             ),
-    SLAY_PRAETORIUM // Comment to force commit
+    SLAY_PRAETORIUM
             (
                     "slay-praetorium",
                     "The Sands of Time",
@@ -565,6 +579,62 @@ public enum Achievement {
                     "",
                     Arrays.asList("praetorium-archer", "praetorium-cleric", "praetorium-mage", "praetorium-rogue", "praetorium-warrior")
             ),
+    SLAY_MAGMAHEART
+            (
+                    "slay-magmaheart-enclave",
+                    "The Magmaheart Colossus",
+                    "Obtained by defeating the colossus of the Magmaheart Enclave!",
+                    100,
+                    Material.IRON_GOLEM_SPAWN_EGG,
+                    new ProgressUnlock(1),
+                    Collections.singletonList(new TitleReward("Magmaheart", false)),
+                    AchievementSet.SLAYER,
+                    true,
+                    "",
+                    Collections.singletonList("golem-conjured")
+            ),
+    SLAY_BLACKFROST_DEVOURER
+            (
+                    "slay-blackfrost-devourer",
+                    "The Blackfrost Devourer",
+                    "Obtained by defeating the Blackfrost Devourer!",
+                    100,
+                    Material.WARDEN_SPAWN_EGG,
+                    new ProgressUnlock(1),
+                    Collections.singletonList(new TitleReward("Fleshcarver", false)),
+                    AchievementSet.SLAYER,
+                    true,
+                    "",
+                    Collections.singletonList("blackfrost-devourer")
+            ),
+    SLAY_WINTER_2023
+            (
+                    "slay-winter-2023",
+                    "The Fallen Frost Lord",
+                    "Obtained by defeating the Winter 2023 world boss!",
+                    20,
+                    Material.PARROT_SPAWN_EGG,
+                    new ProgressUnlock(1),
+                    Collections.singletonList(new TitleReward("Emberfrost Champion", false)),
+                    AchievementSet.SLAYER,
+                    true,
+                    "",
+                    Collections.singletonList("winter-2023-world-boss")
+            ),
+    SLAY_IGNAROTH
+            (
+                    "slay-ignaroth",
+                    "King of the Underworld",
+                    "Obtained by defeating Ignaroth on the hardest difficulty!",
+                    200,
+                    Material.ZOGLIN_SPAWN_EGG,
+                    new ProgressUnlock(1),
+                    Collections.singletonList(new TitleReward("Realm's Champion", false)),
+                    AchievementSet.SLAYER,
+                    true,
+                    "",
+                    Collections.singletonList("pyromancer-iii")
+            ),
     SLAY_ELDRID
             (
                     "slay-eldrid",
@@ -575,7 +645,7 @@ public enum Achievement {
                     new ProgressUnlock(1),
                     Collections.singletonList(new TitleReward("Betrayer", false)),
                     AchievementSet.SLAYER,
-                    false,
+                    true,
                     "",
                     Collections.singletonList("Eldrid"),
                     false
