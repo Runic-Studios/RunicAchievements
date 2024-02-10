@@ -161,7 +161,7 @@ public class AchievementUI implements InventoryHolder {
     }
 
     private void fillAchievementsForPage(AchievementData achievementData) {
-        int location = (currentPage - 1) * INVENTORY_SIZE; // holds our place in the list of pages
+        int location = (currentPage - 1) * (INVENTORY_SIZE + 1); // holds our place in the list of pages
         Achievement[] achievements = Achievement.values();
 
         for (int i = location; i < achievements.length; i++) {
