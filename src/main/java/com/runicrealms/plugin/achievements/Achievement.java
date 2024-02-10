@@ -621,10 +621,66 @@ public enum Achievement {
                     "",
                     Collections.singletonList("winter-2023-world-boss")
             ),
+    SLAY_CYRUS
+            (
+                    "slay-cyrus",
+                    "Eye of the Dark One",
+                    "Obtained by defeating Cyrus in Ignaroth's Lair!",
+                    100,
+                    Material.PIGLIN_SPAWN_EGG,
+                    new ProgressUnlock(1),
+                    Collections.singletonList(new TitleReward("Overseer", false)),
+                    AchievementSet.SLAYER,
+                    true,
+                    "",
+                    Collections.singletonList("cyrus")
+            ),
+    SLAY_PAIMON
+            (
+                    "slay-paimon",
+                    "Hand of the King",
+                    "Obtained by defeating Paimon in Ignaroth's Lair!",
+                    100,
+                    Material.PIGLIN_BRUTE_SPAWN_EGG,
+                    new ProgressUnlock(1),
+                    Collections.singletonList(new TitleReward("Unshackled", false)),
+                    AchievementSet.SLAYER,
+                    true,
+                    "",
+                    Collections.singletonList("paimon")
+            ),
+    SLAY_IGNAROTH_i
+            (
+                    "slay-ignaroth_i",
+                    "King of the Underworld I",
+                    "Obtained by defeating Ignaroth on normal difficulty!",
+                    200,
+                    Material.ZOGLIN_SPAWN_EGG,
+                    new ProgressUnlock(1),
+                    Collections.singletonList(new TitleReward("Realm's Knight", false)),
+                    AchievementSet.SLAYER,
+                    true,
+                    "",
+                    Collections.singletonList("pyromancer-i")
+            ),
+    SLAY_IGNAROTH_ii
+            (
+                    "slay-ignaroth_ii",
+                    "King of the Underworld II",
+                    "Obtained by defeating Ignaroth on medium difficulty!",
+                    200,
+                    Material.ZOGLIN_SPAWN_EGG,
+                    new ProgressUnlock(1),
+                    Collections.singletonList(new TitleReward("Realm's Hero", false)),
+                    AchievementSet.SLAYER,
+                    true,
+                    "",
+                    Collections.singletonList("pyromancer-ii")
+            ),
     SLAY_IGNAROTH
             (
                     "slay-ignaroth",
-                    "King of the Underworld",
+                    "King of the Underworld III",
                     "Obtained by defeating Ignaroth on the hardest difficulty!",
                     200,
                     Material.ZOGLIN_SPAWN_EGG,
